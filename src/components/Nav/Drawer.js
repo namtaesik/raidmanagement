@@ -12,6 +12,9 @@ import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MenuIcon from '@mui/icons-material/Menu';
 import IconButton from '@mui/material/IconButton';
 import { useNavigate } from "react-router-dom";
+import {  SET_SELECTOR } from "../../constants/action-types";
+import {store} from '../../store/index'
+
 export default function TemporaryDrawer() {
     const navigate = useNavigate();
 
@@ -26,15 +29,16 @@ export default function TemporaryDrawer() {
 
     setState({ ...state, [anchor]: open });
   };
-  function PageMove(obj,e){
-     navigate(obj);
+  function PageMove(item,index,e){
+    pageList.selector = index;
+    store.dispatch({
+      type:'SET_SELECTOR',
+      payload: pageList
+    });
+     navigate(item.path);
   }
   // Drawer에 그려줄 리스트 목록을 Path와 Name으로 구분.
-  const pageList = [
-    {path :"/Home", name:"홈"}, 
-    {path :"/Sub", name:"서브"},
-    {path :"/Raid/ChanmiNoonNa", name:"서브2"}
-]
+  const pageList = store.getState().navMenu;
   const list = (anchor) => (
     <Box
       sx={{ width: 250 }}
@@ -42,9 +46,9 @@ export default function TemporaryDrawer() {
           onClick={toggleDrawer(anchor, false)}
     >
       <List>
-        {pageList.map((item, index) => (
+        {pageList.menu.map((item, index) => (
           <ListItem key={item.path} disablePadding
-          onClick={(e) =>{PageMove(item.path,e)}}>
+          onClick={(e) =>{PageMove(item,index,e)}}>
             <ListItemButton >
               <ListItemIcon>
                <InboxIcon />
