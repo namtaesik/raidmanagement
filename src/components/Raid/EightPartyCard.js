@@ -12,11 +12,14 @@ import CommentIcon from "@mui/icons-material/Comment";
 import IconButton from "@mui/material/IconButton";
 import { Divider } from "@mui/material";
 import KeyboardArrowDown from "@mui/icons-material/KeyboardArrowDown";
-
+import BtnSignUp from "./BtnSignUp";
 export default function RaidCard(props) {
   const [open, setOpen] = React.useState(false);
-
-  return (
+  //console.log(user);
+  React.useEffect(() => {
+    console.log(user);
+  }, []);
+  const card = (
     <Card
       sx={{
         minWidth: 260,
@@ -96,16 +99,7 @@ export default function RaidCard(props) {
                     <ListItem
                       key={"first" + index}
                       disableGutters
-                      secondaryAction={
-                        <Button
-                          size="small"
-                          onClick={() => {
-                            alert(item.name);
-                          }}
-                        >
-                          신청하기
-                        </Button>
-                      }
+                      secondaryAction={<BtnSignUp title="신청하기"></BtnSignUp>}
                     >
                       <Box>
                         <ListItemText primary="신청자가 없습니다. 신청하기를 눌러 참여하세요."></ListItemText>
@@ -193,4 +187,5 @@ export default function RaidCard(props) {
       <CardActions></CardActions>
     </Card>
   );
+  return card;
 }
