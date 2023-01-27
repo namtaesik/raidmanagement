@@ -68,8 +68,7 @@ export default function BtnSignUp(props) {
           <Divider />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleClose}>Subscribe</Button>
+          <Button onClick={handleClose}>취소</Button>
         </DialogActions>
       </Dialog>
     </>

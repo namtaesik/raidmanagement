@@ -15,10 +15,7 @@ import KeyboardArrowDown from "@mui/icons-material/KeyboardArrowDown";
 import BtnSignUp from "./BtnSignUp";
 export default function RaidCard(props) {
   const [open, setOpen] = React.useState(false);
-  //console.log(user);
-  React.useEffect(() => {
-    console.log(user);
-  }, []);
+
   const card = (
     <Card
       sx={{
