@@ -57,7 +57,102 @@ export default function RaidCard(props) {
               1P
             </Typography>
           )}
-          {open &&
+          {open && (
+              <div key="First">
+                <ListItem
+                  key={props.party[0].first}
+                  disableGutters
+                  secondaryAction={
+                    <Button
+                      size="small"
+                      onClick={() => {
+                        alert(props.party[0].first);
+                      }}
+                    >
+                      삭제하기
+                    </Button>
+                  }
+                >
+                  <Box>
+                    <Typography variant="caption" display="block" gutterBottom>
+                      {props.party[0].first}
+                    </Typography>
+                    <ListItemText primary={props.party[0].first}></ListItemText>
+                  </Box>
+                </ListItem>
+                <Divider />
+                <ListItem
+                  key={props.party[0].second}
+                  disableGutters
+                  secondaryAction={
+                    <Button
+                      size="small"
+                      onClick={() => {
+                        alert(props.party[0].second);
+                      }}
+                    >
+                      삭제하기
+                    </Button>
+                  }
+                >
+                  <Box>
+                    <Typography variant="caption" display="block" gutterBottom>
+                      {props.party[0].second}
+                    </Typography>
+                    <ListItemText
+                      primary={props.party[0].second}
+                    ></ListItemText>
+                  </Box>
+                </ListItem>
+                <Divider />
+                <ListItem
+                  key={props.party[0].third}
+                  disableGutters
+                  secondaryAction={
+                    <Button
+                      size="small"
+                      onClick={() => {
+                        alert(props.party[0].third);
+                      }}
+                    >
+                      삭제하기
+                    </Button>
+                  }
+                >
+                  <Box>
+                    <Typography variant="caption" display="block" gutterBottom>
+                      {props.party[0].third}
+                    </Typography>
+                    <ListItemText primary={props.party[0].third}></ListItemText>
+                  </Box>
+                </ListItem>
+                <Divider />
+                <ListItem
+                  key={props.party[0].fourth}
+                  disableGutters
+                  secondaryAction={
+                    <Button
+                      size="small"
+                      onClick={() => {
+                        alert(props.party[0].fourth);
+                      }}
+                    >
+                      삭제하기
+                    </Button>
+                  }
+                >
+                  <Box>
+                    <Typography variant="caption" display="block" gutterBottom>
+                      {props.party[0].fourth}
+                    </Typography>
+                    <ListItemText
+                      primary={props.party[0].fourth}
+                    ></ListItemText>
+                  </Box>
+                </ListItem>
+                <Divider />
+              </div>
+            ) &&
             props.party[0].map((item, index) => {
               if (item.expedition_name != "") {
                 return (
