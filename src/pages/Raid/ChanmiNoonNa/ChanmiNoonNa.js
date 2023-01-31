@@ -3,9 +3,9 @@ import EightPartyCard from "../../../components/Raid/EightPartyCard";
 import axios from "axios";
 export default function ChanmiNoonNa() {
   axios
-    .get("http://127.0.0.1:64602/api/RaidCardSelectList", {
+    .get("http://127.0.0.1:3000/raid?RaidType=CHANMI", {
       headers: {
-        Authorization: "AIzaSyAp7b4zwx3v_22j0xuX3qrmkvB0mst9gfI",
+        //Authorization: "AIzaSyAp7b4zwx3v_22j0xuX3qrmkvB0mst9gfI",
         AccessControlAllowOrigin: false,
       },
     })
