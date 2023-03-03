@@ -4,7 +4,7 @@ const initialState = {
     { path: "/", name: "홈" },
     //{ path: "/Home", name: "홈" },
     { path: "/Sub", name: "서브" },
-    { path: "/Raid/ChanmiNoonNa", name: "찬미" },
+    { path: "/Raid", name: "메뉴 타이틀" },
   ],
   selector: 0,
 };

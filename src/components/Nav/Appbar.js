@@ -12,18 +12,8 @@ export default function ButtonAppBar() {
   //  const [Opener, setOpener] = useState(false);
   const [Title, setTitle] = useState("");
 
-  // const menuStateChanged= () =>{
-  //   console.log(menuState);
-  //   //menuState = store.getState();
-  //   setTitle(menuState.menu[menuState.selector].name);
-  // }
-  // store.subscribe(menuStateChanged);
-
   const location = useLocation();
   useEffect(() => {
-    //console.log(location.pathname);
-
-    //console.log(menuState.menu.find((c) => c.path === location.pathname));
     setTitle(menuState.menu.find((c) => c.path === location.pathname).name);
   });
 
@@ -32,12 +22,14 @@ export default function ButtonAppBar() {
       <AppBar position="static" enableColorOnDark={true}>
         <Toolbar>
           <Drawer />
-
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             {/* 230117 | 작업필요 | Redux를 이용하여 띄우는 페이지의 제목을 띄워주기. 
             아니면 Drawer를 여기에 편입시키면 좀 편할거같은데.*/}
             {Title}
           </Typography>
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+            {store.getState().testUser.userName}
+          </Typography>{" "}
           <Button color="inherit" type="hidden">
             Login
           </Button>

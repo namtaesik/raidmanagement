@@ -13,7 +13,27 @@ import {
   Divider,
   DialogActions,
 } from "@mui/material";
+import store from "../../store";
 export default function BtnSignUp(props) {
+  console.log(props);
+  const testCharacter = [
+    {
+      userId: 1,
+      characterId: 1,
+      characterName: "character1",
+      characterLevel: 1472.25,
+      classCode: "Reaper",
+      className: "리퍼",
+    },
+    {
+      userId: 1,
+      characterId: 2,
+      characterName: "character2",
+      characterLevel: 1472.25,
+      classCode: "Reaper2",
+      className: "리퍼2",
+    },
+  ];
   const [open, setOpen] = React.useState(false);
   const handleClickOpen = () => {
     setOpen(true);
@@ -25,12 +45,14 @@ export default function BtnSignUp(props) {
   const param = {
     page: props.page,
     btnTitle: props.title,
+    characters: testCharacter, // 테스트 캐릭터셋. 추후 axios 조회로 변경
+    raidId: props.raidId,
   };
-  const user = useSelector((state) => state.loginUser);
+  const userInfo = store.getState().testUser;
   function btnClick(obj, e) {
     setOpen(true);
   }
-  console.log(user);
+  console.log(userInfo);
   return (
     <>
       <Button size="small" onClick={btnClick}>
@@ -38,20 +60,20 @@ export default function BtnSignUp(props) {
       </Button>
 
       <Dialog open={open} onClose={handleClose} fullWidth={true}>
-        <DialogTitle>원정대명 {user.expedition_name}님</DialogTitle>
+        <DialogTitle> {userInfo.userName}님</DialogTitle>
         <DialogContent>
           <DialogContentText>캐릭터를 선택하세요.</DialogContentText>
 
-          {user.characters.map((item, index) => {
+          {param.characters.map((item, index) => {
             return (
               <ListItem
-                key={item.name}
+                key={item.characterName}
                 disableGutters
                 secondaryAction={
                   <Button
                     size="small"
                     onClick={() => {
-                      alert(item.name);
+                      alert(item.characterName);
                     }}
                   >
                     신청
@@ -59,7 +81,7 @@ export default function BtnSignUp(props) {
                 }
               >
                 <Box>
-                  <ListItemText primary={item.name}></ListItemText>
+                  <ListItemText primary={item.characterName}></ListItemText>
                 </Box>
               </ListItem>
             );

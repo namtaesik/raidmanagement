@@ -2,8 +2,7 @@ import "./App.css";
 import "./styles/App/App.css";
 import Home from "./pages/Home/Home";
 import Sub from "./pages/Sub/Sub";
-import ChanmiNoonNa from "./pages/Raid/ChanmiNoonNa/ChanmiNoonNa";
-import ChanmiNoonNaSignUp from "./pages/Raid/ChanmiNoonNa/SignUp";
+import Raid from "./pages/Raid/Raid";
 import React from "react";
 import { Route, Routes, BrowserRouter } from "react-router-dom";
 import { Container } from "@mui/material";
@@ -17,14 +16,7 @@ class App extends React.Component {
           <Routes>
             <Route path="/" element={<Home></Home>}></Route>
             <Route path="/Sub" element={<Sub></Sub>}></Route>
-            <Route
-              path="/Raid/ChanmiNoonNa/"
-              element={<ChanmiNoonNa></ChanmiNoonNa>}
-            ></Route>
-            <Route
-              path="/Raid/ChanmiNoonNa/SignUp"
-              element={<ChanmiNoonNaSignUp></ChanmiNoonNaSignUp>}
-            ></Route>
+            <Route path="/Raid/" element={<Raid></Raid>}></Route>
           </Routes>
         </BrowserRouter>
       </div>
