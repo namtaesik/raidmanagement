@@ -1,2 +1,3 @@
 export const ADD_MENU = "NAV_MENU/ADD_MENU";
+export const SET_USER = "LOGIN_USER/SET_USER";
 export const SET_SELECTOR = "NAV_MENU/SET_SELECTOR";

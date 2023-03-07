@@ -2,16 +2,16 @@ import React, { useEffect, useState } from "react";
 import RaidScheduleCard from "../../components/Raid/RaidScheduleCard";
 import axios from "axios";
 export default function Raid() {
-  //   axios
-  //     .get("http://127.0.0.1:64602/api/RaidCardSelectList", {
-  //       headers: {
-  //         Authorization: "AIzaSyAp7b4zwx3v_22j0xuX3qrmkvB0mst9gfI",
-  //         AccessControlAllowOrigin: false,
-  //       },
-  //     })
-  //     .then((result) => {
-  //       console.log(result.data);
-  //     });
+  axios
+    .get("/api/raid-calendar", {
+      headers: {
+        //Authorization: "AIzaSyAp7b4zwx3v_22j0xuX3qrmkvB0mst9gfI",
+        AccessControlAllowOrigin: false,
+      },
+    })
+    .then((result) => {
+      console.log(result.data);
+    });
   const party = [
     {
       RaidId: 1,

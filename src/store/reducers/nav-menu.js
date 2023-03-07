@@ -5,6 +5,8 @@ const initialState = {
     //{ path: "/Home", name: "홈" },
     { path: "/Sub", name: "서브" },
     { path: "/Raid", name: "메뉴 타이틀" },
+
+    { path: "/Test", name: "테스트Page" },
   ],
   selector: 0,
 };

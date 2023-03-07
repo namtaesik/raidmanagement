@@ -1,16 +1,16 @@
 //setupProxy.js
 
 const { createProxyMiddleware } = require("http-proxy-middleware");
-
+//https://freestrokes.tistory.com/164
 module.exports = function (app) {
   app.use(
-    createProxyMiddleware(["/v1"], {
-      target: "http://localhost:3000/api/",
+    createProxyMiddleware(['/api'], {
+      target: "http://localhost:3000/",
       pathRewrite: {
         "/api": "",
       },
       router: {
-        "/api": "http://localhost:3000/api/",
+        "/api": "http://localhost:3000/",
       },
       changeOrigin: false,
     })
