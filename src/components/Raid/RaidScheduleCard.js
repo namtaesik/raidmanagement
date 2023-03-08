@@ -14,40 +14,23 @@ import { Divider } from "@mui/material";
 import KeyboardArrowDown from "@mui/icons-material/KeyboardArrowDown";
 import BtnSignUp from "./BtnSignUp";
 import store from "../../store";
+import { apiAxiosPromise } from "../../services/apiAxios/apiAxios";
+
+import CharacterInfo from "./CharacterInfo";
 export default function RaidCard(props) {
   const [open, setOpen] = React.useState(false);
   const [partyData, setPartyData] = React.useState([{}]);
   var isJoined = false; // 해당 스케줄에 참가하였는지여부(userId 기준)
-  const raidId = props.RaidSchedule.RaidId; // 스케줄 ID
 
-  const testPartyData = [
-    {
-      userId: 2,
-      characterId: 1,
-      characterName: "character1",
-      characterLevel: 1472.25,
-      classCode: "Reaper",
-      className: "리퍼",
-    },
-    {
-      userId: 31,
-      characterId: 1,
-      characterName: "character2",
-      characterLevel: 1472.25,
-      classCode: "Reaper2",
-      className: "리퍼2",
-    },
-  ];
+  const attackId = props.RaidSchedule.attackId; // 스케줄 ID
   function ClickDelBtn(userId, characterId) {
     // 삭제요청
-
-    console.log(raidId, userId, characterId);
+    //console.log(attackId, userId, characterId);
   }
   function ClickAddBtn() {
     // 클릭시 참가 팝업 표출
-    BtnSignUp(raidId);
+    BtnSignUp(attackId);
   }
-  var PartyData = [{}];
   const card = (
     <Card
       sx={{
@@ -55,22 +38,26 @@ export default function RaidCard(props) {
         maxWidth: "calc(100% - 20px)",
         padding: "3px 3px 3px 3px",
         margin: "7px 7px 7px 7px",
-        background: "#d08856",
+        background: "#D3D3D3",
       }}
-      key={props.RaidSchedule.AttackDate}
+      key={props.RaidSchedule.attackDate}
     >
       <Box
         sx={{ display: "flex", alignItems: "center" }}
-        onClick={() => {
+        onClick={async () => {
           if (!open) {
             // 데이터 불러오기 (axios)
+            var PartyDetail = await apiAxiosPromise(
+              "GET",
+              "/api/raid-calendar/detail",
+              { query: { attackId: attackId } }
+            );
 
             // 데이터 담기
-            setPartyData(testPartyData);
+            setPartyData(PartyDetail);
             // 아이디 확인
             partyData.map((item) => {
-              console.log(item.userId, store.getState().testUser.useId);
-              if (item.userId == store.getState().testUser.useId)
+              if (item.userId == store.getState().loginUser.userId)
                 isJoined = true;
             });
           } else {
@@ -82,7 +69,7 @@ export default function RaidCard(props) {
       >
         <div style={{ fontSize: 20, display: "flex", alignItems: "center" }}>
           <Typography color="text.secondary" gutterBottom>
-            {props.RaidSchedule.AttackDate}
+            {props.RaidSchedule.attackDate}
           </Typography>
           <Typography
             sx={{
@@ -94,7 +81,7 @@ export default function RaidCard(props) {
             color="text.secondary"
             gutterBottom
           >
-            {props.RaidSchedule.RaidName}
+            {props.RaidSchedule.bossName}
           </Typography>
         </div>
         <KeyboardArrowDown
@@ -111,39 +98,25 @@ export default function RaidCard(props) {
       {open && (
         <CardContent>
           {partyData.map((item, index) => {
-            //console.log(PartyData);
-            if (item.userId == store.getState().testUser.userId) {
-              isJoined = true;
-              // 로그인자랑 같을 경우에만 삭제 가능
-              return (
-                <div key={item.userId}>
-                  <h1>{item.characterName}</h1>
-                  <h3>{item.characterLevel}</h3>
-                  <Button
-                    onClick={() => {
-                      ClickDelBtn(item.userId, item.characterId);
-                    }}
-                  >
-                    삭제하기
-                  </Button>
-                </div>
-              );
-            } else {
-              return (
-                <div key={item.userId}>
-                  <h1>{item.characterName}</h1>
-                  <h3>{item.characterLevel}</h3>
-                </div>
-              );
-            }
+            return (
+              <ListItem>
+                <CharacterInfo
+                  key={item.userId}
+                  userId={item.userId}
+                  characterName={item.characterName}
+                  characterLevel={item.characterLevel}
+                  className={item.className}
+                ></CharacterInfo>
+              </ListItem>
+            );
           })}
-          {!isJoined && (
-            <ListItem
-              secondaryAction={
-                <BtnSignUp title="신청하기" raidId={raidId}></BtnSignUp>
-              }
-            ></ListItem>
-          )}
+          <ListItem
+          // secondaryAction={
+          //   <BtnSignUp title="신청하기" attackId={attackId}></BtnSignUp>
+          // }
+          >
+            <BtnSignUp title="신청하기" attackId={attackId}></BtnSignUp>
+          </ListItem>
         </CardContent>
       )}
     </Card>

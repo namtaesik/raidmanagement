@@ -14,8 +14,8 @@ import {
   DialogActions,
 } from "@mui/material";
 import store from "../../store";
+import { apiAxiosPromise } from "../../services/apiAxios/apiAxios";
 export default function BtnSignUp(props) {
-  console.log(props);
   const testCharacter = [
     {
       userId: 1,
@@ -34,6 +34,8 @@ export default function BtnSignUp(props) {
       className: "리퍼2",
     },
   ];
+  const characterList = store.getState().loginUserDetail;
+
   const [open, setOpen] = React.useState(false);
   const handleClickOpen = () => {
     setOpen(true);
@@ -45,17 +47,16 @@ export default function BtnSignUp(props) {
   const param = {
     page: props.page,
     btnTitle: props.title,
-    characters: testCharacter, // 테스트 캐릭터셋. 추후 axios 조회로 변경
-    raidId: props.raidId,
+    characters: characterList, // 테스트 캐릭터셋. 추후 axios 조회로 변경
+    attackId: props.attackId,
   };
   const userInfo = store.getState().testUser;
   function btnClick(obj, e) {
     setOpen(true);
   }
-  console.log(userInfo);
   return (
     <>
-      <Button size="small" onClick={btnClick}>
+      <Button variant="contained" size="small" onClick={btnClick}>
         {param.btnTitle}
       </Button>
 
@@ -67,13 +68,21 @@ export default function BtnSignUp(props) {
           {param.characters.map((item, index) => {
             return (
               <ListItem
-                key={item.characterName}
+                key={item.characterId}
                 disableGutters
                 secondaryAction={
                   <Button
+                    variant="contained"
                     size="small"
                     onClick={() => {
-                      alert(item.characterName);
+                      var result = apiAxiosPromise(
+                        "POST",
+                        "/api/raid-calendar/join",
+                        { body: { ...item, attackId: param.attackId } }
+                      ).then((res) => {
+                        console.log(res);
+                        alert(res[0].codeName);
+                      });
                     }}
                   >
                     신청

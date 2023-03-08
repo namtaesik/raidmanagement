@@ -1,7 +1,7 @@
 import { combineReducers } from "redux";
 import navMenu from "./nav-menu";
 import loginUser from "./login-user";
-
+import loginUserDetail from "./login-user-detail";
 // 테스트용 store
 import testUser from "./test/user-store";
 import testUserDetail from "./test/user-detail-store";
@@ -10,6 +10,7 @@ import testUserDetail from "./test/user-detail-store";
 const rootReducer = combineReducers({
   navMenu,
   loginUser,
+  loginUserDetail,
   testUser,
   testUserDetail,
 });

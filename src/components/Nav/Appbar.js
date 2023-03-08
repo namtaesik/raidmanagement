@@ -9,47 +9,13 @@ import { store } from "../../store/index";
 import Drawer from "./Drawer";
 import axios from "axios";
 import { SET_USER } from "../../constants/action-types";
+import LoginPopup from "../Popup/LoginPopup";
 export default function ButtonAppBar() {
   var menuState = store.getState().navMenu;
   //  const [Opener, setOpener] = useState(false);
   const [Title, setTitle] = useState("");
   const [IsLogin, setIsLogin] = useState(false);
-
-  function funcLogin(id, pw) {
-    if (!IsLogin) {
-      axios
-        .get("/api/user?userName=기상군당장", {
-          headers: {
-            //Authorization: "AIzaSyAp7b4zwx3v_22j0xuX3qrmkvB0mst9gfI",
-            AccessControlAllowOrigin: false,
-          },
-        })
-        .then((result) => {
-          console.log(result.data);
-          if (result.data.length > 0) {
-            store.dispatch({
-              type: SET_USER,
-              payload: result.data,
-            });
-            setIsLogin(true);
-          }
-        });
-    } else {
-      store.dispatch({
-        type: SET_USER,
-        payload: [{}],
-      });
-      setIsLogin(false);
-    }
-  }
-  const party = [
-    {
-      RaidId: 1,
-      AttackDate: "2023-03-03 13:30",
-      RaidCode: "Cucu",
-      RaidName: "타이틀",
-    },
-  ];
+  const [open, setOpen] = useState(false);
 
   function test() {
     console.log("로그인아이디 : ", store.getState().loginUser.userId);
@@ -69,10 +35,10 @@ export default function ButtonAppBar() {
             아니면 Drawer를 여기에 편입시키면 좀 편할거같은데.*/}
             {Title}
           </Typography>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            {store.getState().testUser.userName}
+          <Typography component="div" sx={{ flexGrow: 1 }}>
+            {store.getState().loginUser.userName}
           </Typography>{" "}
-          <Button
+          {/* <Button
             color="inherit"
             type="hidden"
             onClick={() => {
@@ -80,16 +46,38 @@ export default function ButtonAppBar() {
             }}
           >
             Test
-          </Button>
+          </Button> */}
           <Button
             color="inherit"
             type="hidden"
             onClick={() => {
-              funcLogin("1", "2");
+              if (IsLogin) {
+                alert("로그아웃");
+                store.dispatch({
+                  type: SET_USER,
+                  payload: [{}],
+                });
+                setIsLogin(false);
+              } else {
+                setOpen(true);
+              }
+              //funcLogin("1", "2");
             }}
           >
             {IsLogin ? "LogOut" : "Login"}
           </Button>
+          <LoginPopup
+            open={open}
+            handleClose={() => {
+              setOpen(false);
+              var loginUserInfo = store.getState().loginUser;
+              if (loginUserInfo && loginUserInfo.userId > 0) {
+                setIsLogin(true);
+              } else {
+                setIsLogin(false);
+              }
+            }}
+          ></LoginPopup>
         </Toolbar>
       </AppBar>
     </Box>
