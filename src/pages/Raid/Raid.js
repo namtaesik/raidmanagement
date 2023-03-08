@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from "react";
 import RaidScheduleCard from "../../components/Raid/RaidScheduleCard";
 import axios from "axios";
+import { apiAxiosPromise } from "../../services/apiAxios/apiAxios";
 export default function Raid() {
-  axios
-    .get("/api/raid-calendar", {
-      headers: {
-        //Authorization: "AIzaSyAp7b4zwx3v_22j0xuX3qrmkvB0mst9gfI",
-        AccessControlAllowOrigin: false,
-      },
-    })
-    .then((result) => {
-      console.log(result.data);
-    });
+  const [schedule, setSchedule] = React.useState([{}]);
+  async function getRaidCalendar() {
+    var result = await apiAxiosPromise("GET", "/api/raid-calendar", {});
+    // console.log("resuilt", result);
+    setSchedule(result);
+    return result;
+  }
+  React.useEffect(() => {
+    getRaidCalendar();
+  }, []);
+
   const party = [
     {
       RaidId: 1,
@@ -20,8 +22,8 @@ export default function Raid() {
       RaidName: "타이틀",
     },
   ];
-  return party.map((item, index) => {
-    return <RaidScheduleCard key={item.RaidId} RaidSchedule={item} />;
+  return schedule.map((item, index) => {
+    return <RaidScheduleCard key={item.attackId} RaidSchedule={item} />;
   });
   // 230117 | 작업필요 | 카드들넣어야함.
 }
