@@ -13,53 +13,68 @@ import IconButton from "@mui/material/IconButton";
 import { Divider } from "@mui/material";
 import KeyboardArrowDown from "@mui/icons-material/KeyboardArrowDown";
 import BtnSignUp from "./BtnSignUp";
-import store from "../../store";
-import { apiAxiosPromise } from "../../services/apiAxios/apiAxios";
-
+import store from "../../../store";
+import { apiAxiosPromise } from "../../../services/apiAxios/apiAxios";
+import { useState, useEffect } from "react";
 import CharacterInfo from "./CharacterInfo";
+import moment from "moment/moment";
+import weekOfDay from "../../../services/dateFormat/weekOfDay";
 export default function RaidCard(props) {
   const [open, setOpen] = React.useState(false);
   const [partyData, setPartyData] = React.useState([{}]);
   var isJoined = false; // 해당 스케줄에 참가하였는지여부(userId 기준)
-
+  const [resize, setResize] = useState();
+  const handleResize = () => {
+    console.log(window.innerWidth);
+    setResize(window.innerWidth);
+  };
+  useEffect(() => {
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
   const attackId = props.RaidSchedule.attackId; // 스케줄 ID
   function ClickDelBtn(userId, characterId) {
     // 삭제요청
     //console.log(attackId, userId, characterId);
   }
-  function ClickAddBtn() {
-    // 클릭시 참가 팝업 표출
-    BtnSignUp(attackId);
+  function ClickBtn() {
+    GetRaidDetail();
+  }
+  function DateFormatter(date) {
+    return moment(date).format("MM/DD HH:mm (") + weekOfDay(date) + ")";
+  }
+  async function GetRaidDetail() {
+    // 데이터 불러오기 (axios)
+    var PartyDetail = await apiAxiosPromise(
+      "GET",
+      "/api/raid-calendar/detail",
+      { attackId: attackId }
+    );
+
+    // 데이터 담기
+    setPartyData(PartyDetail);
+    // 아이디 확인
+    partyData.map((item) => {
+      if (item.userId == store.getState().loginUser.userId) isJoined = true;
+    });
   }
   const card = (
     <Card
       sx={{
-        minWidth: 260,
-        maxWidth: "calc(100% - 20px)",
-        padding: "3px 3px 3px 3px",
+        width: resize > 1000 ? 500 : "auto",
+        minWidth: 400,
         margin: "7px 7px 7px 7px",
         background: "#D3D3D3",
       }}
-      key={props.RaidSchedule.attackDate}
+      key={attackId}
     >
       <Box
         sx={{ display: "flex", alignItems: "center" }}
         onClick={async () => {
           if (!open) {
-            // 데이터 불러오기 (axios)
-            var PartyDetail = await apiAxiosPromise(
-              "GET",
-              "/api/raid-calendar/detail",
-              { query: { attackId: attackId } }
-            );
-
-            // 데이터 담기
-            setPartyData(PartyDetail);
-            // 아이디 확인
-            partyData.map((item) => {
-              if (item.userId == store.getState().loginUser.userId)
-                isJoined = true;
-            });
+            GetRaidDetail();
           } else {
             //데이터 삭제
             setPartyData([{}]);
@@ -69,7 +84,8 @@ export default function RaidCard(props) {
       >
         <div style={{ fontSize: 20, display: "flex", alignItems: "center" }}>
           <Typography color="text.secondary" gutterBottom>
-            {props.RaidSchedule.attackDate}
+            {/* {props.RaidSchedule.attackDateOrigin} */}
+            {DateFormatter(props.RaidSchedule.attackDateOrigin)}
           </Typography>
           <Typography
             sx={{
@@ -106,6 +122,8 @@ export default function RaidCard(props) {
                   characterName={item.characterName}
                   characterLevel={item.characterLevel}
                   className={item.className}
+                  attackId={attackId}
+                  onClickHandler={ClickBtn}
                 ></CharacterInfo>
               </ListItem>
             );
@@ -115,7 +133,11 @@ export default function RaidCard(props) {
           //   <BtnSignUp title="신청하기" attackId={attackId}></BtnSignUp>
           // }
           >
-            <BtnSignUp title="신청하기" attackId={attackId}></BtnSignUp>
+            <BtnSignUp
+              title="신청하기"
+              attackId={attackId}
+              onClickHandler={ClickBtn}
+            ></BtnSignUp>
           </ListItem>
         </CardContent>
       )}

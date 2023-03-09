@@ -9,7 +9,7 @@ export default function apiAxios(actionType, url, param) {
             //Authorization: "AIzaSyAp7b4zwx3v_22j0xuX3qrmkvB0mst9gfI",
             AccessControlAllowOrigin: false,
           },
-          params: param.query,
+          params: param,
         })
         .then((result) => {
           console.log(result.data);
@@ -17,7 +17,7 @@ export default function apiAxios(actionType, url, param) {
         });
       break;
     case "POST":
-      axios.post(url, param.body).then((result) => {
+      axios.post(url, param).then((result) => {
         //console.log(result.data);
         return result.data;
       });
@@ -34,7 +34,7 @@ export function apiAxiosPromise(actionType, url, param) {
               //Authorization: "AIzaSyAp7b4zwx3v_22j0xuX3qrmkvB0mst9gfI",
               AccessControlAllowOrigin: false,
             },
-            params: param.query,
+            params: param,
           })
           .then((result) => {
             //console.log(result.data);
@@ -46,9 +46,9 @@ export function apiAxiosPromise(actionType, url, param) {
         break;
       case "POST":
         axios
-          .post(url, param.body)
+          .post(url, param)
           .then((result) => {
-            //console.log(result.data);
+            //console.log("test", result.data);
             resolve(result.data);
           })
           .catch((err) => {

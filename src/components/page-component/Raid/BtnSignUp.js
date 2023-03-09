@@ -13,8 +13,8 @@ import {
   Divider,
   DialogActions,
 } from "@mui/material";
-import store from "../../store";
-import { apiAxiosPromise } from "../../services/apiAxios/apiAxios";
+import store from "../../../store";
+import { apiAxiosPromise } from "../../../services/apiAxios/apiAxios";
 export default function BtnSignUp(props) {
   const testCharacter = [
     {
@@ -50,12 +50,13 @@ export default function BtnSignUp(props) {
     characters: characterList, // 테스트 캐릭터셋. 추후 axios 조회로 변경
     attackId: props.attackId,
   };
-  const userInfo = store.getState().testUser;
+  const userInfo = store.getState().loginUser;
+  console.log(userInfo);
   function btnClick(obj, e) {
     setOpen(true);
   }
   return (
-    <>
+    <div key={userInfo.userId}>
       <Button variant="contained" size="small" onClick={btnClick}>
         {param.btnTitle}
       </Button>
@@ -78,11 +79,16 @@ export default function BtnSignUp(props) {
                       var result = apiAxiosPromise(
                         "POST",
                         "/api/raid-calendar/join",
-                        { body: { ...item, attackId: param.attackId } }
-                      ).then((res) => {
-                        console.log(res);
-                        alert(res[0].codeName);
-                      });
+                        { ...item, attackId: param.attackId }
+                      )
+                        .then((res) => {
+                          alert(res[0].codeName);
+                          props.onClickHandler();
+                          setOpen(false);
+                        })
+                        .catch((err) => {
+                          alert("오류발생 : ", err);
+                        });
                     }}
                   >
                     신청
@@ -102,6 +108,6 @@ export default function BtnSignUp(props) {
           <Button onClick={handleClose}>취소</Button>
         </DialogActions>
       </Dialog>
-    </>
+    </div>
   );
 }

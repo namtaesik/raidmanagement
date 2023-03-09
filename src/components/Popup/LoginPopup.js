@@ -14,27 +14,31 @@ import {
   Divider,
   DialogActions,
 } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 import { SET_USER, SET_CHARACTER } from "../../constants/action-types";
 export default function LoginPopup(props) {
+  const navigator = useNavigate();
   var loginModel = {
     userId: "",
     pw: "",
   };
   async function handleLogin() {
-    var result = await apiAxiosPromise("POST", "/api/login", {
-      body: loginModel,
-    });
+    var result = await apiAxiosPromise("POST", "/api/login", loginModel);
     if (result.length > 0) {
       // 캐릭터 정보 가져오기
-      var characterList = await apiAxiosPromise("GET", "/api/character", {
-        query: loginModel,
-      });
+      var characterList = await apiAxiosPromise(
+        "GET",
+        "/api/character",
+        loginModel
+      );
       if (characterList.length > 0) {
         //console.log(characterList);
         store.dispatch({ type: SET_CHARACTER, payload: characterList });
       }
       alert("로그인성공");
       store.dispatch({ type: SET_USER, payload: result });
+      navigator("/Raid");
+      // 페이지 이동
     } else {
       alert("로그인실패");
     }
@@ -50,6 +54,7 @@ export default function LoginPopup(props) {
             <input
               onChange={(evt) => {
                 loginModel.userId = evt.target.value;
+                console.log("loginModel", loginModel);
               }}
             ></input>
           </ListItem>

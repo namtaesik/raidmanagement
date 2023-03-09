@@ -10,19 +10,23 @@ import Drawer from "./Drawer";
 import axios from "axios";
 import { SET_USER } from "../../constants/action-types";
 import LoginPopup from "../Popup/LoginPopup";
+import { useNavigate } from "react-router-dom";
 export default function ButtonAppBar() {
+  const navigator = useNavigate();
   var menuState = store.getState().navMenu;
   //  const [Opener, setOpener] = useState(false);
   const [Title, setTitle] = useState("");
   const [IsLogin, setIsLogin] = useState(false);
   const [open, setOpen] = useState(false);
 
-  function test() {
-    console.log("로그인아이디 : ", store.getState().loginUser.userId);
-  }
   const location = useLocation();
   useEffect(() => {
     setTitle(menuState.menu.find((c) => c.path === location.pathname).name);
+    if (
+      store.getState().loginUser.userId != undefined &&
+      store.getState().loginUser.userId > 0
+    )
+      setIsLogin(true);
   });
 
   return (
@@ -58,6 +62,7 @@ export default function ButtonAppBar() {
                   payload: [{}],
                 });
                 setIsLogin(false);
+                navigator("/");
               } else {
                 setOpen(true);
               }

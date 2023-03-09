@@ -8,13 +8,29 @@ import ImageIcon from "@mui/icons-material/Image";
 import WorkIcon from "@mui/icons-material/Work";
 import BeachAccessIcon from "@mui/icons-material/BeachAccess";
 import { Button } from "@mui/material";
-import store from "../../store";
+import store from "../../../store";
+import { apiAxiosPromise } from "../../../services/apiAxios/apiAxios";
 export default function CharacterInfo(props) {
   var ItemTextSecondary = props.className + " (" + props.characterLevel + ")";
-  console.log(store.getState().loginUser);
-  console.log(props.userId);
+
+  function quitRaid() {
+    if (window.confirm("삭제하시겠습니까?")) {
+      apiAxiosPromise("POST", "/api/raid-calendar/quit", {
+        attackId: props.attackId,
+        userId: props.userId,
+      })
+        .then((res) => {
+          alert("삭제되었습니다.");
+        })
+        .catch((err) => {
+          alert("오류발생 : ", err);
+        });
+    } else {
+      return false;
+    }
+  }
   return (
-    <ListItem divider="1px">
+    <ListItem divider="1px" disablePadding>
       <ListItemAvatar>
         <Avatar>
           <ImageIcon />
@@ -25,7 +41,14 @@ export default function CharacterInfo(props) {
         secondary={ItemTextSecondary}
       />
       {store.getState().loginUser.userId == props.userId ? (
-        <Button size="small" variant="contained">
+        <Button
+          size="small"
+          variant="contained"
+          onClick={() => {
+            quitRaid();
+            props.onClickHandler();
+          }}
+        >
           삭제하기
         </Button>
       ) : (

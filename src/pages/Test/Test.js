@@ -42,7 +42,8 @@ class Test extends React.Component {
             <Button
               onClick={() => {
                 apiAxios("POST", "/api/user", {
-                  body: { userName: inputUserName, userGrant: "User" },
+                  userName: inputUserName,
+                  userGrant: "User",
                 });
               }}
             >
@@ -101,12 +102,10 @@ class Test extends React.Component {
                   return false;
                 }
                 apiAxios("POST", "/api/character", {
-                  body: {
-                    userId: AddCaracter.UserId,
-                    characterName: AddCaracter.CharacterName,
-                    class: AddCaracter.Class,
-                    characterLevel: AddCaracter.CharacterLevel,
-                  },
+                  userId: AddCaracter.UserId,
+                  characterName: AddCaracter.CharacterName,
+                  class: AddCaracter.Class,
+                  characterLevel: AddCaracter.CharacterLevel,
                 });
               }}
             >
@@ -140,10 +139,8 @@ class Test extends React.Component {
             <Button
               onClick={() => {
                 apiAxios("POST", "/api/raid-calendar", {
-                  body: {
-                    attackDate: AddRaidCalendar.attackDate,
-                    bossCode: AddRaidCalendar.bossCode,
-                  },
+                  attackDate: AddRaidCalendar.attackDate,
+                  bossCode: AddRaidCalendar.bossCode,
                 });
               }}
             >
@@ -186,11 +183,9 @@ class Test extends React.Component {
             <Button
               onClick={() => {
                 apiAxios("POST", "/api/raid-calendar/join", {
-                  body: {
-                    attackId: AddJoinRaid.attackId,
-                    userId: AddJoinRaid.userId,
-                    characterId: AddJoinRaid.characterId,
-                  },
+                  attackId: AddJoinRaid.attackId,
+                  userId: AddJoinRaid.userId,
+                  characterId: AddJoinRaid.characterId,
                 });
               }}
             >
