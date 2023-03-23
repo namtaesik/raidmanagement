@@ -13,6 +13,7 @@ import {
   ListItemText,
   Divider,
   DialogActions,
+  TextField,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { SET_USER, SET_CHARACTER } from "../../constants/action-types";
@@ -20,50 +21,73 @@ export default function LoginPopup(props) {
   const navigator = useNavigate();
   var loginModel = {
     userId: "",
-    pw: "",
+    password: "",
   };
   async function handleLogin() {
-    var result = await apiAxiosPromise("POST", "/api/login", loginModel);
-    if (result.length > 0) {
-      // 캐릭터 정보 가져오기
-      var characterList = await apiAxiosPromise(
-        "GET",
-        "/api/character",
-        loginModel
-      );
-      if (characterList.length > 0) {
-        //console.log(characterList);
-        store.dispatch({ type: SET_CHARACTER, payload: characterList });
-      }
-      alert("로그인성공");
-      store.dispatch({ type: SET_USER, payload: result });
-      navigator("/Raid");
-      // 페이지 이동
-    } else {
-      alert("로그인실패");
-    }
-    props.handleClose();
+    var result = await apiAxiosPromise("POST", "/api/login", loginModel)
+      .then(async (res) => {
+        console.log(res);
+        if (res.length > 0 && res[0].userId != undefined) {
+          // 캐릭터 정보 가져오기
+          await apiAxiosPromise("GET", "/api/character", res[0]).then(
+            (characterList) => {
+              if (characterList.length > 0) {
+                store.dispatch({ type: SET_CHARACTER, payload: characterList });
+              }
+              store.dispatch({ type: SET_USER, payload: res });
+              alert("로그인성공");
+              navigator("/Raid");
+              props.handleClose();
+            }
+          );
+          // 페이지 이동
+        } else {
+          alert(res[0].message);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        alert("에러가 발생했습니다.");
+      });
   }
   return (
     <>
-      <Dialog open={props.open} onClose={props.handleClose} fullWidth={true}>
-        <DialogTitle> 로그인하기</DialogTitle>
+      <Dialog open={props.open} onClose={props.handleClose} fullWidth={false}>
+        <DialogTitle> 로그인</DialogTitle>
         <DialogContent>
-          <DialogContentText>ID를 입력하세요.</DialogContentText>
           <ListItem>
-            <input
+            <TextField
+              required
+              id="outlined-required"
+              label="아이디"
               onChange={(evt) => {
                 loginModel.userId = evt.target.value;
                 console.log("loginModel", loginModel);
               }}
-            ></input>
+              sx={{ width: "200px" }}
+            />
           </ListItem>
-
-          <Divider />
+          <ListItem>
+            <TextField
+              required
+              id="outlined-required"
+              label="암호"
+              type="password"
+              onChange={(evt) => {
+                loginModel.password = evt.target.value;
+                console.log("loginModel", loginModel);
+              }}
+              sx={{ width: "200px" }}
+            />
+          </ListItem>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleLogin}>확인</Button>
-          <Button onClick={props.handleClose}>취소</Button>
+          <Button onClick={handleLogin} variant="contained">
+            확인
+          </Button>
+          <Button onClick={props.handleClose} variant="outlined">
+            취소
+          </Button>
         </DialogActions>
       </Dialog>
     </>

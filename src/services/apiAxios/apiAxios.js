@@ -41,6 +41,7 @@ export function apiAxiosPromise(actionType, url, param) {
             resolve(result.data);
           })
           .catch((err) => {
+            console.log(err);
             reject(err);
           });
         break;
@@ -52,6 +53,7 @@ export function apiAxiosPromise(actionType, url, param) {
             resolve(result.data);
           })
           .catch((err) => {
+            console.log(err);
             reject(err);
           });
         break;

@@ -2,9 +2,19 @@ import { Button, List, ListItem } from "@mui/material";
 import { extendSxProp } from "@mui/system";
 import axios from "axios";
 import React from "react";
+import { Navigate } from "react-router-dom";
 import apiAxios from "../../services/apiAxios/apiAxios";
+import store from "../../store";
 class Test extends React.Component {
   render() {
+    if (
+      store.getState().loginUser.userId == undefined ||
+      store.getState().loginUser.userGrant != "admin"
+    ) {
+      // 있으면 리다이렉트
+      return <Navigate to="/" />;
+    }
+
     var inputUserName = "";
     var AddCaracter = {
       UserId: -1,

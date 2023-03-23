@@ -45,12 +45,32 @@ export default function CharacterManagement() {
 
   function AddCharacter() {
     console.log(inputCharacterInfo);
+    //예외처리
+    if (inputCharacterInfo.characterName == "") {
+      alert("캐릭터명을 입력하세요.");
+      return false;
+    }
+    if (inputCharacterInfo.characterLevel == "") {
+      alert("레벨을 입력하세요.");
+      return false;
+    }
+    if (inputCharacterInfo.class == "") {
+      alert("클래스를 선택하세요.");
+      return false;
+    }
     apiAxiosPromise("POST", "/api/character/add", inputCharacterInfo)
       .then((res) => {
         alert("정상처리되었습니다.");
+        // 캐릭터이름, 레벨 초기화
+        setInputCharacterInfo({
+          ...inputCharacterInfo,
+          characterName: "",
+          characterLevel: 0.0,
+        });
       })
       .catch((err) => {
-        alert("오류발생 : ", err);
+        console.log(err);
+        alert("오류발생 : ", err.response.data);
       })
       .finally(() => {
         apiAxiosPromise(
@@ -94,13 +114,19 @@ export default function CharacterManagement() {
         );
       })}
 
-      <ListItem sx={{ justifyContent: "center" }}>
+      <ListItem
+        sx={{
+          justifyContent: "center",
+          flexDirection: "column",
+          alignItems: "flex-start",
+        }}
+      >
         <TextField
           required
           id="outlined-required"
           label="캐릭터명"
-          defaultValue=""
-          sx={{ width: "200px" }}
+          value={inputCharacterInfo.characterName}
+          sx={{ width: "200px", margin: "5px" }}
           onChange={(evt) => {
             setInputCharacterInfo({
               ...inputCharacterInfo,
@@ -113,8 +139,8 @@ export default function CharacterManagement() {
           type="number"
           id="outlined-required"
           label="레벨"
-          defaultValue=""
-          sx={{ width: "200px" }}
+          value={inputCharacterInfo.characterLevel}
+          sx={{ width: "200px", margin: "5px" }}
           onChange={(evt) => {
             setInputCharacterInfo({
               ...inputCharacterInfo,
@@ -123,7 +149,7 @@ export default function CharacterManagement() {
           }}
         />
 
-        <Box sx={{ minWidth: 120 }}>
+        <Box sx={{ width: "200px", minWidth: 120, margin: "5px" }}>
           <FormControl fullWidth>
             <InputLabel id="demo-simple-select-label">뿌리클래스</InputLabel>
             <Select
@@ -143,7 +169,7 @@ export default function CharacterManagement() {
             </Select>
           </FormControl>
         </Box>
-        <Box sx={{ minWidth: 120 }}>
+        <Box sx={{ width: "200px", minWidth: 120, margin: "5px" }}>
           <FormControl fullWidth>
             <InputLabel id="demo-simple-select-label">클래스</InputLabel>
             <Select
@@ -164,6 +190,8 @@ export default function CharacterManagement() {
           </FormControl>
         </Box>
         <Button
+          variant="contained"
+          sx={{ minWidth: 120, margin: "5px" }}
           onClick={() => {
             if (window.confirm("추가하시겠습니까?")) {
               AddCharacter();

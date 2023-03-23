@@ -8,7 +8,7 @@ import { useLocation } from "react-router-dom";
 import { store } from "../../store/index";
 import Drawer from "./Drawer";
 import axios from "axios";
-import { SET_USER } from "../../constants/action-types";
+import { SET_USER, SET_CHARACTER } from "../../constants/action-types";
 import LoginPopup from "../Popup/LoginPopup";
 import { useNavigate } from "react-router-dom";
 export default function ButtonAppBar() {
@@ -22,12 +22,8 @@ export default function ButtonAppBar() {
   const location = useLocation();
   useEffect(() => {
     setTitle(menuState.menu.find((c) => c.path === location.pathname).name);
-    if (
-      store.getState().loginUser.userId != undefined &&
-      store.getState().loginUser.userId > 0
-    )
-      setIsLogin(true);
-  });
+    if (store.getState().loginUser.userId ?? "" != "") setIsLogin(true);
+  }, []);
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -57,6 +53,10 @@ export default function ButtonAppBar() {
             onClick={() => {
               if (IsLogin) {
                 alert("로그아웃");
+                store.dispatch({
+                  type: SET_CHARACTER,
+                  payload: [{}],
+                });
                 store.dispatch({
                   type: SET_USER,
                   payload: [{}],

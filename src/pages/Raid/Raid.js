@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import RaidScheduleCard from "../../components/page-component/Raid/RaidScheduleCard";
-import axios from "axios";
 import { apiAxiosPromise } from "../../services/apiAxios/apiAxios";
 import { Grid } from "@mui/material";
 import store from "../../store";
@@ -27,16 +26,16 @@ export default function Raid() {
   }
 
   return (
-    <Grid container spacing={1} padding={"20px 0px 0px 5px"}>
+    <div padding={"20px 0px 0px 5px"}>
       {isRendered &&
         schedule.map((item, index) => {
           return (
-            <Grid>
-              <RaidScheduleCard key={item.attackId} RaidSchedule={item} />
-            </Grid>
+            // <Grid key={item.atta}>
+            <RaidScheduleCard key={item.attackId} RaidSchedule={item} />
+            // </Grid>
           );
         })}
-    </Grid>
+    </div>
   );
 
   // 230117 | 작업필요 | 카드들넣어야함.

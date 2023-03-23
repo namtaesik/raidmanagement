@@ -10,6 +10,7 @@ import BeachAccessIcon from "@mui/icons-material/BeachAccess";
 import { Button } from "@mui/material";
 import store from "../../../store";
 import { apiAxiosPromise } from "../../../services/apiAxios/apiAxios";
+import { Box } from "@mui/system";
 export default function CharacterInfo(props) {
   var ItemTextSecondary = props.className + " (" + props.characterLevel + ")";
 
@@ -29,31 +30,49 @@ export default function CharacterInfo(props) {
       return false;
     }
   }
+
   return (
-    <ListItem divider="1px" disablePadding>
-      <ListItemAvatar>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "center",
+        alignItems: "center",
+        width: "100%",
+        borderBottom: 1,
+        borderColor: "grey",
+        paddingBottom: 1,
+      }}
+      divider
+    >
+      {/* <ListItemAvatar>
         <Avatar>
           <ImageIcon />
         </Avatar>
-      </ListItemAvatar>
+      </ListItemAvatar> */}
       <ListItemText
         primary={props.characterName}
         secondary={ItemTextSecondary}
+        sx={{ userSelect: "none" }}
       />
       {store.getState().loginUser.userId == props.userId ? (
         <Button
           size="small"
           variant="contained"
+          sx={{
+            height: "30px",
+            width: "60px",
+          }}
           onClick={() => {
             quitRaid();
             props.onClickHandler();
           }}
         >
-          삭제하기
+          삭제
         </Button>
       ) : (
         ""
       )}
-    </ListItem>
+    </Box>
   );
 }

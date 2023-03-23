@@ -1,6 +1,7 @@
 import React from "react";
 import Button from "@mui/material/Button";
 import { useSelector } from "react-redux";
+import { SET_CHARACTER } from "../../../constants/action-types";
 import {
   Dialog,
   DialogTitle,
@@ -16,24 +17,33 @@ import {
 import store from "../../../store";
 import { apiAxiosPromise } from "../../../services/apiAxios/apiAxios";
 export default function BtnSignUp(props) {
-  const testCharacter = [
-    {
-      userId: 1,
-      characterId: 1,
-      characterName: "character1",
-      characterLevel: 1472.25,
-      classCode: "Reaper",
-      className: "리퍼",
-    },
-    {
-      userId: 1,
-      characterId: 2,
-      characterName: "character2",
-      characterLevel: 1472.25,
-      classCode: "Reaper2",
-      className: "리퍼2",
-    },
-  ];
+  // const testCharacter = [
+  //   {
+  //     userId: 1,
+  //     characterId: 1,
+  //     characterName: "character1",
+  //     characterLevel: 1472.25,
+  //     classCode: "Reaper",
+  //     className: "리퍼",
+  //   },
+  //   {
+  //     userId: 1,
+  //     characterId: 2,
+  //     characterName: "character2",
+  //     characterLevel: 1472.25,
+  //     classCode: "Reaper2",
+  //     className: "리퍼2",
+  //   },
+  // ];
+  // 최초 캐릭터 조회
+  apiAxiosPromise("GET", "/api/character", store.getState().loginUser).then(
+    (characterList) => {
+      if (characterList.length > 0) {
+        store.dispatch({ type: SET_CHARACTER, payload: characterList });
+      }
+    }
+  );
+
   const characterList = store.getState().loginUserDetail;
 
   const [open, setOpen] = React.useState(false);
@@ -51,7 +61,6 @@ export default function BtnSignUp(props) {
     attackId: props.attackId,
   };
   const userInfo = store.getState().loginUser;
-  console.log(userInfo);
   function btnClick(obj, e) {
     setOpen(true);
   }
@@ -61,45 +70,53 @@ export default function BtnSignUp(props) {
         {param.btnTitle}
       </Button>
 
-      <Dialog open={open} onClose={handleClose} fullWidth={true}>
-        <DialogTitle> {userInfo.userName}님</DialogTitle>
+      <Dialog open={open} onClose={handleClose} fullWidth={false}>
+        <DialogTitle> {userInfo.userId}님</DialogTitle>
         <DialogContent>
           <DialogContentText>캐릭터를 선택하세요.</DialogContentText>
 
           {param.characters.map((item, index) => {
-            return (
-              <ListItem
-                key={item.characterId}
-                disableGutters
-                secondaryAction={
-                  <Button
-                    variant="contained"
-                    size="small"
-                    onClick={() => {
-                      var result = apiAxiosPromise(
-                        "POST",
-                        "/api/raid-calendar/join",
-                        { ...item, attackId: param.attackId }
-                      )
-                        .then((res) => {
-                          alert(res[0].codeName);
-                          props.onClickHandler();
-                          setOpen(false);
-                        })
-                        .catch((err) => {
-                          alert("오류발생 : ", err);
-                        });
-                    }}
-                  >
-                    신청
-                  </Button>
-                }
-              >
-                <Box>
-                  <ListItemText primary={item.characterName}></ListItemText>
-                </Box>
-              </ListItem>
-            );
+            if (item.characterId != undefined) {
+              var ItemTextSecondary =
+                item.className + " (" + item.characterLevel + ")";
+              return (
+                <ListItem
+                  key={item.characterId}
+                  disableGutters
+                  secondaryAction={
+                    <Button
+                      variant="contained"
+                      size="small"
+                      onClick={() => {
+                        var result = apiAxiosPromise(
+                          "POST",
+                          "/api/raid-calendar/join",
+                          { ...item, attackId: param.attackId }
+                        )
+                          .then((res) => {
+                            alert(res[0].codeName);
+                            props.onClickHandler();
+                            setOpen(false);
+                          })
+                          .catch((err) => {
+                            alert("오류발생 : ", err);
+                          });
+                      }}
+                    >
+                      신청
+                    </Button>
+                  }
+                  sx={{ width: "270px" }}
+                >
+                  <Box>
+                    <ListItemText
+                      primary={item.characterName}
+                      secondary={ItemTextSecondary}
+                    ></ListItemText>
+                  </Box>
+                </ListItem>
+              );
+            }
           })}
 
           <Divider />

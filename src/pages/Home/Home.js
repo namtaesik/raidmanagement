@@ -1,10 +1,11 @@
-import { ListItem, TextField } from "@mui/material";
+import { Button, ListItem, TextField, Typography } from "@mui/material";
 import { Container } from "@mui/system";
 import { height } from "@mui/system";
 import { Box } from "@mui/system";
 import { extendSxProp } from "@mui/system";
 import React from "react";
 import { Navigate } from "react-router-dom";
+import { apiAxiosPromise } from "../../services/apiAxios/apiAxios";
 import store from "../../store";
 
 class Home extends React.Component {
@@ -13,8 +14,36 @@ class Home extends React.Component {
       // 있으면 리다이렉트
       return <Navigate to="/Raid" />;
     }
+    function refresh() {
+      return <Navigate to="/" />;
+    }
+    var userModel = { userId: "", password: "" };
+    function AddNewUser() {
+      if (userModel.userId == "") {
+        alert("아이디를 입력하세요.");
+        return false;
+      }
+      if (userModel.password == "") {
+        alert("비밀번호를 입력하세요.");
+        return false;
+      }
+      apiAxiosPromise("POST", "/api/user", userModel)
+        .then((res) => {
+          console.log(res[0]);
+          if (res[0].code > 0) {
+            alert("완료되었습니다.");
+            window.location.reload();
+          } else {
+            alert(res[0].codeName);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+          alert("오류가 발생했습니다.");
+        });
+    }
     return (
-      <Container maxWidth="lg">
+      <Container maxWidth="md">
         <Box
           sx={{
             bgcolor: "#cfe8fc",
@@ -29,17 +58,43 @@ class Home extends React.Component {
             paddingRight: "10px",
           }}
         >
-          <h1 style={{ display: "flex", justifyContent: "center" }}>asd</h1>
+          <Typography style={{ display: "flex", justifyContent: "center" }}>
+            우측 상단의 LOGIN 버튼을 눌러 로그인하거나, 아래 정보를 입력 후
+            회원가입하세요.
+          </Typography>
           <ListItem sx={{ justifyContent: "center" }}>
             <TextField
               required
               id="outlined-required"
-              label="Required"
-              defaultValue="Hello World"
+              label="아이디"
+              onChange={(evt) => {
+                userModel.userId = evt.target.value;
+              }}
               sx={{ width: "200px" }}
             />
           </ListItem>
-          <h1>asd</h1>
+          <ListItem sx={{ justifyContent: "center" }}>
+            <TextField
+              required
+              id="outlined-required"
+              label="암호"
+              type="password"
+              onChange={(evt) => {
+                userModel.password = evt.target.value;
+              }}
+              sx={{ width: "200px" }}
+            />
+          </ListItem>
+          <Button
+            variant="contained"
+            size="medium"
+            sx={{ width: "100px" }}
+            onClick={() => {
+              AddNewUser();
+            }}
+          >
+            회원가입
+          </Button>
         </Box>
       </Container>
     );

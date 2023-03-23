@@ -10,7 +10,6 @@ import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import CommentIcon from "@mui/icons-material/Comment";
 import IconButton from "@mui/material/IconButton";
-import { Divider } from "@mui/material";
 import KeyboardArrowDown from "@mui/icons-material/KeyboardArrowDown";
 import BtnSignUp from "./BtnSignUp";
 import store from "../../../store";
@@ -25,7 +24,7 @@ export default function RaidCard(props) {
   var isJoined = false; // 해당 스케줄에 참가하였는지여부(userId 기준)
   const [resize, setResize] = useState();
   const handleResize = () => {
-    console.log(window.innerWidth);
+    //console.log(window.innerWidth);
     setResize(window.innerWidth);
   };
   useEffect(() => {
@@ -39,9 +38,9 @@ export default function RaidCard(props) {
     // 삭제요청
     //console.log(attackId, userId, characterId);
   }
-  function ClickBtn() {
-    GetRaidDetail();
-  }
+  // function ClickBtn() {
+  //   GetRaidDetail();
+  // }
   function DateFormatter(date) {
     return moment(date).format("MM/DD HH:mm (") + weekOfDay(date) + ")";
   }
@@ -64,7 +63,7 @@ export default function RaidCard(props) {
     <Card
       sx={{
         width: resize > 1000 ? 500 : "auto",
-        minWidth: 400,
+        minWidth: 264,
         margin: "7px 7px 7px 7px",
         background: "#D3D3D3",
       }}
@@ -73,6 +72,7 @@ export default function RaidCard(props) {
       <Box
         sx={{ display: "flex", alignItems: "center" }}
         onClick={async () => {
+          console.log("1");
           if (!open) {
             GetRaidDetail();
           } else {
@@ -82,23 +82,18 @@ export default function RaidCard(props) {
           setOpen(!open);
         }}
       >
-        <div style={{ fontSize: 20, display: "flex", alignItems: "center" }}>
-          <Typography color="text.secondary" gutterBottom>
+        <div
+          style={{ fontSize: 20, display: "flex", alignItems: "center" }}
+          key={attackId}
+        >
+          <ListItemText
+            primaryTypographyProps={{ fontWeight: "bold" }}
+            secondary={props.RaidSchedule.bossName}
+            sx={{ userSelect: "none" }}
+          >
             {/* {props.RaidSchedule.attackDateOrigin} */}
             {DateFormatter(props.RaidSchedule.attackDateOrigin)}
-          </Typography>
-          <Typography
-            sx={{
-              fontSize: 20,
-              paddingLeft: "20px",
-              color: "black",
-              fontWeight: "bold",
-            }}
-            color="text.secondary"
-            gutterBottom
-          >
-            {props.RaidSchedule.bossName}
-          </Typography>
+          </ListItemText>
         </div>
         <KeyboardArrowDown
           sx={{
@@ -112,31 +107,40 @@ export default function RaidCard(props) {
         />
       </Box>
       {open && (
-        <CardContent>
-          {partyData.map((item, index) => {
-            return (
-              <ListItem>
-                <CharacterInfo
-                  key={item.userId}
-                  userId={item.userId}
-                  characterName={item.characterName}
-                  characterLevel={item.characterLevel}
-                  className={item.className}
-                  attackId={attackId}
-                  onClickHandler={ClickBtn}
-                ></CharacterInfo>
-              </ListItem>
-            );
+        <CardContent key={attackId}>
+          {partyData?.map((item, index) => {
+            if (item.userId != undefined) {
+              return (
+                <ListItem key={item.userId}>
+                  <CharacterInfo
+                    key={item.userId}
+                    userId={item.userId}
+                    characterName={item.characterName}
+                    characterLevel={item.characterLevel}
+                    className={item.className}
+                    attackId={attackId}
+                    onClickHandler={() => {
+                      GetRaidDetail();
+                    }}
+                  ></CharacterInfo>
+                </ListItem>
+              );
+            }
           })}
+
           <ListItem
-          // secondaryAction={
-          //   <BtnSignUp title="신청하기" attackId={attackId}></BtnSignUp>
-          // }
+            key={attackId}
+            // secondaryAction={
+            //   <BtnSignUp title="신청하기" attackId={attackId}></BtnSignUp>
+            // }
           >
             <BtnSignUp
+              key={attackId}
               title="신청하기"
               attackId={attackId}
-              onClickHandler={ClickBtn}
+              onClickHandler={() => {
+                GetRaidDetail();
+              }}
             ></BtnSignUp>
           </ListItem>
         </CardContent>
