@@ -43,7 +43,6 @@ export default function CharacterInfo(props) {
         borderColor: "grey",
         paddingBottom: 1,
       }}
-      divider
     >
       {/* <ListItemAvatar>
         <Avatar>

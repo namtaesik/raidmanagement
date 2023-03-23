@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Button from "@mui/material/Button";
 import { useSelector } from "react-redux";
 import { SET_CHARACTER } from "../../../constants/action-types";
@@ -11,7 +11,6 @@ import {
   Box,
   Typography,
   ListItemText,
-  Divider,
   DialogActions,
 } from "@mui/material";
 import store from "../../../store";
@@ -36,13 +35,15 @@ export default function BtnSignUp(props) {
   //   },
   // ];
   // 최초 캐릭터 조회
-  apiAxiosPromise("GET", "/api/character", store.getState().loginUser).then(
-    (characterList) => {
-      if (characterList.length > 0) {
-        store.dispatch({ type: SET_CHARACTER, payload: characterList });
+  useEffect(() => {
+    apiAxiosPromise("GET", "/api/character", store.getState().loginUser).then(
+      (characterList) => {
+        if (characterList.length > 0) {
+          store.dispatch({ type: SET_CHARACTER, payload: characterList });
+        }
       }
-    }
-  );
+    );
+  }, []);
 
   const characterList = store.getState().loginUserDetail;
 
@@ -118,8 +119,6 @@ export default function BtnSignUp(props) {
               );
             }
           })}
-
-          <Divider />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>취소</Button>
