@@ -6,18 +6,13 @@ import {
   Dialog,
   DialogTitle,
   DialogContent,
-  DialogContentText,
   ListItem,
-  Box,
-  Typography,
-  ListItemText,
-  Divider,
   DialogActions,
   TextField,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { SET_USER, SET_CHARACTER } from "../../constants/action-types";
-import CustomDatePicker from "../DatePicker/customDatePicker";
+import { encryptAES256 } from "../../utils/crypto";
 export default function LoginPopup(props) {
   const navigator = useNavigate();
   var loginModel = {
@@ -73,7 +68,7 @@ export default function LoginPopup(props) {
               label="암호"
               type="password"
               onChange={(evt) => {
-                loginModel.password = evt.target.value;
+                loginModel.password = encryptAES256(evt.target.value);
               }}
               sx={{ width: "200px" }}
             />
