@@ -17,6 +17,7 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { SET_USER, SET_CHARACTER } from "../../constants/action-types";
+import CustomDatePicker from "../DatePicker/customDatePicker";
 export default function LoginPopup(props) {
   const navigator = useNavigate();
   var loginModel = {
@@ -54,6 +55,7 @@ export default function LoginPopup(props) {
     <>
       <Dialog open={props.open} onClose={props.handleClose} fullWidth={false}>
         <DialogTitle> 로그인</DialogTitle>
+
         <DialogContent>
           <ListItem>
             <TextField

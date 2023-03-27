@@ -18,6 +18,7 @@ import { useState, useEffect } from "react";
 import CharacterInfo from "./CharacterInfo";
 import moment from "moment/moment";
 import weekOfDay from "../../../services/dateFormat/weekOfDay";
+import { extendMoment } from "moment-range";
 export default function RaidCard(props) {
   const [open, setOpen] = React.useState(false);
   const [partyData, setPartyData] = React.useState([{}]);
@@ -38,11 +39,17 @@ export default function RaidCard(props) {
     // 삭제요청
     //console.log(attackId, userId, characterId);
   }
-  // function ClickBtn() {
-  //   GetRaidDetail();
-  // }
+  const momentRange = extendMoment(moment);
+
+  function isThisWeek(date) {
+    const today = moment();
+    const startOfWeek = today.clone().startOf("week").add(1, "day"); // 한 주의 시작일을 월요일로 설정
+    const endOfWeek = today.clone().endOf("week").add(1, "day"); // 한 주의 마지막일을 일요일로 설정
+    return moment(date).isBetween(startOfWeek, endOfWeek);
+  }
+  const isWeek = isThisWeek(props.RaidSchedule.attackDateOrigin);
   function DateFormatter(date) {
-    return moment(date).format("MM/DD HH:mm (") + weekOfDay(date) + ")";
+    return moment(date).format("M월D일 HH시mm분 (") + weekOfDay(date) + ")";
   }
   async function GetRaidDetail() {
     // 데이터 불러오기 (axios)
@@ -59,20 +66,25 @@ export default function RaidCard(props) {
       if (item.userId == store.getState().loginUser.userId) isJoined = true;
     });
   }
+
   const card = (
     <Card
       sx={{
-        width: resize > 1000 ? 500 : "auto",
+        width: resize > 1014 ? "auto" : "auto",
         minWidth: 264,
         margin: "7px 7px 7px 7px",
-        background: "#D3D3D3",
+        background: isWeek ? "#f0f7ff" : "#D3D3D3",
+        borderColor: isWeek ? "#007fff" : "#D3D3D3",
+        borderRadius: "10px",
+        borderWidth: "1px",
+        borderStyle: "solid",
+        color: "black",
       }}
       key={attackId}
     >
       <Box
         sx={{ display: "flex", alignItems: "center" }}
         onClick={async () => {
-          console.log("1");
           if (!open) {
             GetRaidDetail();
           } else {
@@ -83,11 +95,16 @@ export default function RaidCard(props) {
         }}
       >
         <div
-          style={{ fontSize: 20, display: "flex", alignItems: "center" }}
+          style={{
+            fontSize: 20,
+            display: "flex",
+            alignItems: "center",
+            paddingLeft: "10px",
+          }}
           key={attackId}
         >
           <ListItemText
-            primaryTypographyProps={{ fontWeight: "bold" }}
+            primaryTypographyProps={{ fontWeight: "" }}
             secondary={props.RaidSchedule.bossName}
             sx={{ userSelect: "none" }}
           >
@@ -107,7 +124,7 @@ export default function RaidCard(props) {
         />
       </Box>
       {open && (
-        <CardContent key={attackId}>
+        <CardContent key={attackId} sx={{ margin: "0px", padding: "0px" }}>
           {partyData?.map((item, index) => {
             if (item.userId != undefined) {
               return (
@@ -128,12 +145,7 @@ export default function RaidCard(props) {
             }
           })}
 
-          <ListItem
-            key={attackId}
-            // secondaryAction={
-            //   <BtnSignUp title="신청하기" attackId={attackId}></BtnSignUp>
-            // }
-          >
+          <ListItem key={attackId} sx={{ paddingLeft: "13px" }}>
             <BtnSignUp
               key={attackId}
               title="신청하기"
