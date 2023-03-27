@@ -1,15 +1,9 @@
 import * as React from "react";
 import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
-import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
-import CommentIcon from "@mui/icons-material/Comment";
-import IconButton from "@mui/material/IconButton";
 import KeyboardArrowDown from "@mui/icons-material/KeyboardArrowDown";
 import BtnSignUp from "./BtnSignUp";
 import store from "../../../store";
@@ -18,7 +12,7 @@ import { useState, useEffect } from "react";
 import CharacterInfo from "./CharacterInfo";
 import moment from "moment/moment";
 import weekOfDay from "../../../services/dateFormat/weekOfDay";
-import { extendMoment } from "moment-range";
+import BtnDelSchedule from "../../page-component/Raid/BtnDelSchedule";
 export default function RaidCard(props) {
   const [open, setOpen] = React.useState(false);
   const [partyData, setPartyData] = React.useState([{}]);
@@ -35,10 +29,6 @@ export default function RaidCard(props) {
     };
   }, []);
   const attackId = props.RaidSchedule.attackId; // 스케줄 ID
-  function ClickDelBtn(userId, characterId) {
-    // 삭제요청
-  }
-  const momentRange = extendMoment(moment);
 
   function isThisWeek(date) {
     const today = moment();
@@ -144,7 +134,10 @@ export default function RaidCard(props) {
             }
           })}
 
-          <ListItem key={attackId} sx={{ paddingLeft: "13px" }}>
+          <ListItem
+            key={attackId}
+            sx={{ paddingLeft: "13px", justifyContent: "space-between" }}
+          >
             <BtnSignUp
               key={attackId}
               title="신청하기"
@@ -153,6 +146,14 @@ export default function RaidCard(props) {
                 GetRaidDetail();
               }}
             ></BtnSignUp>
+            <BtnDelSchedule
+              key={attackId}
+              title="일정삭제"
+              attackId={attackId}
+              onClickHandler={() => {
+                GetRaidDetail();
+              }}
+            ></BtnDelSchedule>
           </ListItem>
         </CardContent>
       )}

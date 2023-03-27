@@ -16,24 +16,6 @@ import {
 import store from "../../../store";
 import { apiAxiosPromise } from "../../../services/apiAxios/apiAxios";
 export default function BtnSignUp(props) {
-  // const testCharacter = [
-  //   {
-  //     userId: 1,
-  //     characterId: 1,
-  //     characterName: "character1",
-  //     characterLevel: 1472.25,
-  //     classCode: "Reaper",
-  //     className: "리퍼",
-  //   },
-  //   {
-  //     userId: 1,
-  //     characterId: 2,
-  //     characterName: "character2",
-  //     characterLevel: 1472.25,
-  //     classCode: "Reaper2",
-  //     className: "리퍼2",
-  //   },
-  // ];
   // 최초 캐릭터 조회
   useEffect(() => {
     apiAxiosPromise("GET", "/api/character", store.getState().loginUser).then(

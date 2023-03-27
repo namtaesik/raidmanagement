@@ -1,10 +1,9 @@
-import { fabClasses } from "@mui/material";
 import { ADD_MENU, SET_SELECTOR } from "../../constants/action-types";
 const initialState = {
   menu: [
     { useyn: true, path: "/", name: "홈", auth: false, loginHide: true },
     //{ path: "/Home", name: "홈" },
-    { useyn: true, path: "/Sub", name: "서브", auth: true },
+    { useyn: false, path: "/Sub", name: "서브", auth: true },
     { useyn: true, path: "/Raid", name: "레이드일정", auth: true },
     {
       useyn: true,

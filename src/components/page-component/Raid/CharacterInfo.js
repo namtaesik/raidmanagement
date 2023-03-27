@@ -22,6 +22,7 @@ export default function CharacterInfo(props) {
       })
         .then((res) => {
           alert("삭제되었습니다.");
+          props.onClickHandler();
         })
         .catch((err) => {
           alert("오류발생 : ", err);
@@ -64,7 +65,6 @@ export default function CharacterInfo(props) {
           }}
           onClick={() => {
             quitRaid();
-            props.onClickHandler();
           }}
         >
           삭제
