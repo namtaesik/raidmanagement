@@ -37,7 +37,6 @@ export default function RaidCard(props) {
   const attackId = props.RaidSchedule.attackId; // 스케줄 ID
   function ClickDelBtn(userId, characterId) {
     // 삭제요청
-    //console.log(attackId, userId, characterId);
   }
   const momentRange = extendMoment(moment);
 

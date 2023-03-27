@@ -119,7 +119,6 @@ export default function DatePickerPopup(props) {
       //console.log(param);
       apiAxiosPromise("POST", "/api/raid-calendar", param)
         .then((res) => {
-          console.log(res[0]?.code);
           if (res[0]?.code < 0) {
             alert(res[0]?.codeName);
           } else {

@@ -31,12 +31,22 @@ export default function CharacterInfo(props) {
     }
   }
   return (
-    <ListItem divider="1px" disablePadding>
-      <ListItemAvatar>
+    <ListItem
+      divider="1px"
+      sx={{
+        background: "#f0f7ff",
+        borderColor: "#007fff",
+        borderRadius: "10px",
+        borderWidth: "1px",
+        borderStyle: "solid",
+        color: "black",
+      }}
+    >
+      {/* <ListItemAvatar>
         <Avatar>
           <ImageIcon />
         </Avatar>
-      </ListItemAvatar>
+      </ListItemAvatar> */}
       <ListItemText
         primary={props.info.characterName}
         secondary={ItemTextSecondary}

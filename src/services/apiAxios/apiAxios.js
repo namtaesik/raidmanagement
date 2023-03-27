@@ -12,13 +12,11 @@ export default function apiAxios(actionType, url, param) {
           params: param,
         })
         .then((result) => {
-          console.log(result.data);
           return result.data;
         });
       break;
     case "POST":
       axios.post(url, param).then((result) => {
-        //console.log(result.data);
         return result.data;
       });
       break;

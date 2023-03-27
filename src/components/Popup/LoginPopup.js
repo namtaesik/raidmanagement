@@ -27,7 +27,6 @@ export default function LoginPopup(props) {
   async function handleLogin() {
     var result = await apiAxiosPromise("POST", "/api/login", loginModel)
       .then(async (res) => {
-        console.log(res);
         if (res.length > 0 && res[0].userId != undefined) {
           // 캐릭터 정보 가져오기
           await apiAxiosPromise("GET", "/api/character", res[0]).then(
@@ -47,7 +46,6 @@ export default function LoginPopup(props) {
         }
       })
       .catch((err) => {
-        console.log(err);
         alert("에러가 발생했습니다.");
       });
   }
@@ -64,7 +62,6 @@ export default function LoginPopup(props) {
               label="아이디"
               onChange={(evt) => {
                 loginModel.userId = evt.target.value;
-                console.log("loginModel", loginModel);
               }}
               sx={{ width: "200px" }}
             />
@@ -77,7 +74,6 @@ export default function LoginPopup(props) {
               type="password"
               onChange={(evt) => {
                 loginModel.password = evt.target.value;
-                console.log("loginModel", loginModel);
               }}
               sx={{ width: "200px" }}
             />

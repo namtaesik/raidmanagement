@@ -18,7 +18,6 @@ export default function CustomDatePicker() {
       const month = now.clone().add(i, "month").format("M"); // 앞뒤 1월의 연도를 구함
       var yList = [];
       var mList = [];
-      console.log(month);
       if (!yList.includes(year)) {
         yList.push(year); // 중복되지 않는 연도만 리스트에 추가
       }
@@ -34,8 +33,6 @@ export default function CustomDatePicker() {
     var dList = [];
 
     var trueMonth = month - 1;
-    console.log("month", trueMonth);
-    console.log(moment({ year, month: trueMonth, day }).endOf("month").date());
     for (
       let i = 1;
       i <= moment({ year, month: trueMonth, day }).endOf("month").date();
@@ -57,7 +54,6 @@ export default function CustomDatePicker() {
         id="demo-simple-select"
         label="년"
         onChange={(evt) => {
-          console.log(evt.target.value);
           setYear(evt.target.value);
         }}
       >
@@ -90,7 +86,6 @@ export default function CustomDatePicker() {
         id="demo-simple-select"
         label="일"
         onChange={(evt) => {
-          console.log(evt.target.value);
           setDay(evt.target.value);
         }}
       >

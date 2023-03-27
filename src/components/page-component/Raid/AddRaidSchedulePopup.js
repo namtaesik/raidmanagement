@@ -35,7 +35,6 @@ export default function LoginPopup(props) {
               label="날짜"
               onChange={(evt) => {
                 loginModel.userId = evt.target.value;
-                console.log("loginModel", loginModel);
               }}
               sx={{ width: "200px" }}
             />

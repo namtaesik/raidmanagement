@@ -29,7 +29,6 @@ class Home extends React.Component {
       }
       apiAxiosPromise("POST", "/api/user", userModel)
         .then((res) => {
-          console.log(res[0]);
           if (res[0].code > 0) {
             alert("완료되었습니다.");
             window.location.reload();

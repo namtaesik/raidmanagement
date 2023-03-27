@@ -21,9 +21,10 @@ export default function ButtonAppBar() {
 
   const location = useLocation();
   useEffect(() => {
+    console.log("rendered");
     setTitle(menuState.menu.find((c) => c.path === location.pathname).name);
     if (store.getState().loginUser.userId ?? "" != "") setIsLogin(true);
-  }, []);
+  });
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -37,32 +38,25 @@ export default function ButtonAppBar() {
           </Typography>
           <Typography component="div" sx={{ flexGrow: 1 }}>
             {store.getState().loginUser.userName}
-          </Typography>{" "}
-          {/* <Button
-            color="inherit"
-            type="hidden"
-            onClick={() => {
-              test();
-            }}
-          >
-            Test
-          </Button> */}
+          </Typography>
           <Button
             color="inherit"
             type="hidden"
             onClick={() => {
               if (IsLogin) {
-                alert("로그아웃");
-                store.dispatch({
-                  type: SET_CHARACTER,
-                  payload: [{}],
-                });
-                store.dispatch({
-                  type: SET_USER,
-                  payload: [{}],
-                });
-                setIsLogin(false);
-                navigator("/");
+                if (window.confirm("로그아웃 하시겠습니까?")) {
+                  alert("로그아웃 되었습니다.");
+                  store.dispatch({
+                    type: SET_CHARACTER,
+                    payload: [{}],
+                  });
+                  store.dispatch({
+                    type: SET_USER,
+                    payload: [{}],
+                  });
+                  setIsLogin(false);
+                  navigator("/");
+                }
               } else {
                 setOpen(true);
               }
