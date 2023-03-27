@@ -1,22 +1,20 @@
-import { Button, ListItem, TextField, Typography } from "@mui/material";
+import { Button, List, ListItem, TextField, Typography } from "@mui/material";
 import { Container } from "@mui/system";
-import { height } from "@mui/system";
 import { Box } from "@mui/system";
-import { extendSxProp } from "@mui/system";
 import React from "react";
 import { Navigate } from "react-router-dom";
 import { apiAxiosPromise } from "../../services/apiAxios/apiAxios";
 import store from "../../store";
-
+import { encryptAES256 } from "../../utils/crypto";
 class Home extends React.Component {
   render() {
+    const test = process.env.REACT_APP_CPT_KEY;
+    console.log(test);
     if (store.getState().loginUser.userId) {
       // 있으면 리다이렉트
       return <Navigate to="/Raid" />;
     }
-    function refresh() {
-      return <Navigate to="/" />;
-    }
+
     var userModel = { userId: "", password: "" };
     function AddNewUser() {
       if (userModel.userId == "") {
@@ -42,48 +40,49 @@ class Home extends React.Component {
         });
     }
     return (
-      <Container maxWidth="md">
-        <Box
-          sx={{
-            bgcolor: "#cfe8fc",
-            height: "200px",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            marginTop: "30px",
-            paddingTop: "20px",
-            paddingBottom: "20px",
-            paddingLeft: "10px",
-            paddingRight: "10px",
-          }}
-        >
-          <Typography style={{ display: "flex", justifyContent: "center" }}>
+      <List
+        sx={{
+          bgcolor: "#cfe8fc",
+          flexDirection: "column",
+          justifyContent: "center",
+          margin: "30px 20px 30px 20px",
+          paddingTop: "20px",
+          paddingBottom: "20px",
+          paddingLeft: "10px",
+          paddingRight: "10px",
+          borderRadius: "10px",
+        }}
+      >
+        <ListItem>
+          <Typography>
             우측 상단의 LOGIN 버튼을 눌러 로그인하거나, 아래 정보를 입력 후
             회원가입하세요.
           </Typography>
-          <ListItem sx={{ justifyContent: "center" }}>
-            <TextField
-              required
-              id="outlined-required"
-              label="아이디"
-              onChange={(evt) => {
-                userModel.userId = evt.target.value;
-              }}
-              sx={{ width: "200px" }}
-            />
-          </ListItem>
-          <ListItem sx={{ justifyContent: "center" }}>
-            <TextField
-              required
-              id="outlined-required"
-              label="암호"
-              type="password"
-              onChange={(evt) => {
-                userModel.password = evt.target.value;
-              }}
-              sx={{ width: "200px" }}
-            />
-          </ListItem>
+        </ListItem>
+        <ListItem sx={{ justifyContent: "center" }}>
+          <TextField
+            required
+            id="outlined-required"
+            label="아이디"
+            onChange={(evt) => {
+              userModel.userId = evt.target.value;
+            }}
+            sx={{ width: "200px" }}
+          />
+        </ListItem>
+        <ListItem sx={{ justifyContent: "center" }}>
+          <TextField
+            required
+            id="outlined-required"
+            label="암호"
+            type="password"
+            onChange={(evt) => {
+              userModel.password = encryptAES256(evt.target.value);
+            }}
+            sx={{ width: "200px" }}
+          />
+        </ListItem>
+        <ListItem sx={{ justifyContent: "center" }}>
           <Button
             variant="contained"
             size="medium"
@@ -94,8 +93,8 @@ class Home extends React.Component {
           >
             회원가입
           </Button>
-        </Box>
-      </Container>
+        </ListItem>
+      </List>
     );
   }
 }

@@ -1,4 +1,3 @@
-import React from "react";
 export default function getWeekDayString(date) {
   var dt = new Date(date);
   switch (dt.getDay()) {
@@ -16,5 +15,7 @@ export default function getWeekDayString(date) {
       return "금";
     case 6:
       return "토";
+    default:
+      return "툐";
   }
 }

@@ -7,9 +7,6 @@ import classInfo from "./class-info";
 // redux-persist (새로고침해도 stroe 저장)
 import storage from "redux-persist/lib/storage";
 import { persistReducer } from "redux-persist";
-// 테스트용 store
-import testUser from "./test/user-store";
-import testUserDetail from "./test/user-detail-store";
 
 // redux-persist config 작성
 const persistConfig = {
@@ -22,8 +19,6 @@ const rootReducer = combineReducers({
   navMenu: navMenu,
   loginUser: loginUser,
   loginUserDetail: loginUserDetail,
-  testUser: testUser,
-  testUserDetail: testUserDetail,
   rootClass: rootClass,
   classInfo: classInfo,
 });

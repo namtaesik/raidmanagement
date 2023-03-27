@@ -3,6 +3,7 @@ import axios from "axios";
 export default function apiAxios(actionType, url, param) {
   switch (actionType) {
     case "GET":
+    default:
       axios
         .get(url, {
           headers: {
@@ -26,6 +27,7 @@ export function apiAxiosPromise(actionType, url, param) {
   const promise = new Promise((resolve, reject) => {
     switch (actionType) {
       case "GET":
+      default:
         axios
           .get(url, {
             headers: {
