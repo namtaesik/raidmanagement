@@ -94,7 +94,7 @@ export default function RaidCard(props) {
         >
           <ListItemText
             primaryTypographyProps={{ fontWeight: "" }}
-            secondary={props.RaidSchedule.bossName}
+            secondary={props.RaidSchedule.bossCode}
             sx={{ userSelect: "none" }}
           >
             {/* {props.RaidSchedule.attackDateOrigin} */}
@@ -125,6 +125,8 @@ export default function RaidCard(props) {
                     characterLevel={item.characterLevel}
                     className={item.className}
                     attackId={attackId}
+                    remark={item.remark}
+                    proficiency={item.proficiency}
                     onClickHandler={() => {
                       GetRaidDetail();
                     }}

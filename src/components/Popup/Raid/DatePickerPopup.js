@@ -29,11 +29,10 @@ export default function DatePickerPopup(props) {
   const [year, setYear] = useState("");
   const [month, setMonth] = useState("");
   const [day, setDay] = useState("");
-  const [boss, setBoss] = useState({});
+  const [boss, setBoss] = useState("");
   const [yearList, setyearList] = useState([]);
   const [monthList, setmonthList] = useState([]);
   const [dayList, setDayList] = useState([]);
-  const [bossList, setBossList] = useState([]);
   const aMPMList = ["오전", "오후"];
   const [aMPM, setAMPM] = useState("오후");
   const hourList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
@@ -77,18 +76,7 @@ export default function DatePickerPopup(props) {
     setmonthList(mList);
     setMonth(mList[0]);
   }, []);
-  useEffect(() => {
-    // 보스 세팅
-    const param = { groupCode: "EndContents" };
-    apiAxiosPromise("GET", "/api/code", param)
-      .then((res) => {
-        setBossList(res);
-        setBoss(res[0]);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
+
   const createCustomDate = (year, month, day, amPm, hour, minute) => {
     // amPm이 "am"인 경우 hour은 그대로, "pm"인 경우 hour에 12를 더해줍니다.
     if (amPm === "오후") {
@@ -114,7 +102,7 @@ export default function DatePickerPopup(props) {
           hour,
           minute
         ).format("YYYY-MM-DD HH:mm"),
-        bossCode: boss.code,
+        bossCode: boss,
       };
       //console.log(param);
       apiAxiosPromise("POST", "/api/raid-calendar", param)
@@ -131,7 +119,7 @@ export default function DatePickerPopup(props) {
         });
     }
   }
-  if (monthList[0] == undefined || bossList[0] == undefined) {
+  if (monthList[0] == undefined) {
     return (
       <Dialog open={props.open} onClose={props.handleClose} fullWidth={false}>
         <DialogTitle> 날짜를 선택하세요.</DialogTitle>
@@ -270,26 +258,17 @@ export default function DatePickerPopup(props) {
             </DialogContent>
             <Stack sx={{ marginTop: "10px" }}>
               <DialogTitle sx={{ fontSize: "1rem" }}>
-                컨텐츠를 선택하세요
+                컨텐츠를 입력하세요
               </DialogTitle>
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                label="일"
+              <TextField
+                required
+                id="outlined-required"
+                label="ex)하브14 숙련팟"
                 onChange={(evt) => {
                   setBoss(evt.target.value);
                 }}
-                value={boss}
-              >
-                {" "}
-                {bossList.map((item, index) => {
-                  return (
-                    <MenuItem key={item.code} value={item}>
-                      {item.codeName}
-                    </MenuItem>
-                  );
-                })}
-              </Select>
+                sx={{ width: "200px" }}
+              />
             </Stack>
           </DialogContent>
           <DialogActions>

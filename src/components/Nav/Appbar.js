@@ -31,7 +31,11 @@ export default function ButtonAppBar() {
       <AppBar position="static" enableColorOnDark={true}>
         <Toolbar>
           <Drawer />
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+          <Typography
+            variant="h6"
+            component="div"
+            sx={{ flexGrow: 1, userSelect: "none" }}
+          >
             {/* 230117 | 작업필요 | Redux를 이용하여 띄우는 페이지의 제목을 띄워주기. 
             아니면 Drawer를 여기에 편입시키면 좀 편할거같은데.*/}
             {Title}
