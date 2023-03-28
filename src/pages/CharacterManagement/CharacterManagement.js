@@ -4,21 +4,25 @@ import { ListItem, List, Fab, SpeedDialIcon } from "@mui/material";
 import { apiAxiosPromise } from "../../services/apiAxios/apiAxios";
 import CharacterInfo from "../../components/page-component/CharacterManagement/CharacterInfo";
 import AddCharacterPopup from "../../components/Popup/CharacterManagement/AddCharacterPopup";
+import { Box } from "@mui/system";
 export default function CharacterManagement() {
   // 캐릭터 불러오기
   const [characters, setCharacters] = useState([{}]);
   // 캐릭터 추가 팝업
   const [open, setOpen] = useState(false);
   useEffect(() => {
+    getCharacters();
+  }, []);
+  function getCharacters() {
     apiAxiosPromise("GET", "/api/character", store.getState().loginUser).then(
       (res) => {
         setCharacters(res);
       }
     );
-  }, []);
+  }
   if (!characters[0]) {
     return (
-      <div>
+      <Box key="load">
         <Fab
           aria-label="SpeedDial controlled open example"
           size="small"
@@ -42,23 +46,24 @@ export default function CharacterManagement() {
             setOpen(false);
           }}
         ></AddCharacterPopup>
-      </div>
+      </Box>
     );
   } else {
     return (
-      <>
-        <List>
-          {characters.map((item, index) => {
-            return (
-              <ListItem
+      <List>
+        {characters.map((item, index) => {
+          return (
+            <ListItem key={item.characterId} sx={{ justifyContent: "center" }}>
+              <CharacterInfo
                 key={item.characterId}
-                sx={{ justifyContent: "center" }}
-              >
-                <CharacterInfo info={item}></CharacterInfo>
-              </ListItem>
-            );
-          })}
-        </List>
+                info={item}
+                onClickHandler={() => {
+                  getCharacters();
+                }}
+              ></CharacterInfo>
+            </ListItem>
+          );
+        })}
         <Fab
           aria-label="SpeedDial controlled open example"
           size="small"
@@ -82,7 +87,7 @@ export default function CharacterManagement() {
             setOpen(false);
           }}
         ></AddCharacterPopup>
-      </>
+      </List>
     );
   }
 }

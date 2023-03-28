@@ -123,8 +123,8 @@ export default function AddCharacterPopup(props) {
               sx={{ width: "190px", marginTop: "8px" }}
               onChange={(evt) => {
                 if (evt.target.value.length > 10) {
-                  alert("캐릭터명은 10글자 까지만 입력해주세요(UI 깨짐 방지)");
-                  return false;
+                  // alert("캐릭터명은 10글자 까지만 입력해주세요(UI 깨짐 방지)");
+                  // return false;
                 }
                 setInputCharacterInfo({
                   ...inputCharacterInfo,
