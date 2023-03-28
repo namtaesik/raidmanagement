@@ -7,10 +7,11 @@ import Avatar from "@mui/material/Avatar";
 import ImageIcon from "@mui/icons-material/Image";
 import WorkIcon from "@mui/icons-material/Work";
 import BeachAccessIcon from "@mui/icons-material/BeachAccess";
-import { Button } from "@mui/material";
+import { Button, TextField } from "@mui/material";
 import store from "../../../store";
 import { apiAxiosPromise } from "../../../services/apiAxios/apiAxios";
-import { Box } from "@mui/system";
+import { Box, fontSize } from "@mui/system";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 export default function CharacterInfo(props) {
   var ItemTextSecondary = props.className + " (" + props.characterLevel + ")";
 
@@ -43,6 +44,7 @@ export default function CharacterInfo(props) {
         borderBottom: 1,
         borderColor: "grey",
         paddingBottom: 1,
+        height: "65px",
       }}
     >
       {/* <ListItemAvatar>
@@ -50,25 +52,50 @@ export default function CharacterInfo(props) {
           <ImageIcon />
         </Avatar>
       </ListItemAvatar> */}
+      <Box
+        component="span"
+        sx={{
+          border: "1px solid #1565c0",
+          marginRight: "5px",
+          padding: "0px 10px 0px 10px",
+          borderRadius: "5px",
+        }}
+      >
+        <ListItemText
+          sx={{ color: "#1565c0", userSelect: "none", width: "10px" }}
+          primary={props.proficiency}
+          primaryTypographyProps={{ fontSize: "12px", fontWeight: "bold" }}
+        ></ListItemText>
+      </Box>
       <ListItemText
         primary={props.characterName}
         secondary={ItemTextSecondary}
-        sx={{ userSelect: "none" }}
+        sx={{ userSelect: "none", maxWidth: "200px" }}
       />
+
+      <ListItemText primary={props.remark} />
       {store.getState().loginUser.userId == props.userId ? (
-        <Button
+        // <Button
+        //   size="small"
+        //   variant="contained"
+        //   sx={{
+        //     height: "30px",
+        //     width: "60px",
+        //   }}
+        //   onClick={() => {
+        //     quitRaid();
+        //   }}
+        // >
+        //   삭제
+        // </Button>
+        <DeleteForeverIcon
           size="small"
           variant="contained"
-          sx={{
-            height: "30px",
-            width: "60px",
-          }}
           onClick={() => {
             quitRaid();
           }}
-        >
-          삭제
-        </Button>
+          color="error"
+        ></DeleteForeverIcon>
       ) : (
         ""
       )}

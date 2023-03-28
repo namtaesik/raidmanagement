@@ -118,9 +118,14 @@ export default function AddCharacterPopup(props) {
               required
               id="outlined-required"
               label="캐릭터명"
+              inputProps={{ maxLength: 10 }}
               value={inputCharacterInfo.characterName}
-              sx={{ width: "200px", margin: "5px" }}
+              sx={{ width: "190px", marginTop: "8px" }}
               onChange={(evt) => {
+                if (evt.target.value.length > 10) {
+                  alert("캐릭터명은 10글자 까지만 입력해주세요(UI 깨짐 방지)");
+                  return false;
+                }
                 setInputCharacterInfo({
                   ...inputCharacterInfo,
                   characterName: evt.target.value,
@@ -133,7 +138,7 @@ export default function AddCharacterPopup(props) {
               id="outlined-required"
               label="레벨"
               value={inputCharacterInfo.characterLevel}
-              sx={{ width: "200px", margin: "5px" }}
+              sx={{ width: "190px", marginTop: "8px" }}
               onChange={(evt) => {
                 setInputCharacterInfo({
                   ...inputCharacterInfo,
@@ -142,7 +147,7 @@ export default function AddCharacterPopup(props) {
               }}
             />
 
-            <Box sx={{ width: "200px", minWidth: 120, margin: "5px" }}>
+            <Box sx={{ width: "190px", minWidth: 120, marginTop: "8px" }}>
               <FormControl fullWidth>
                 <InputLabel id="demo-simple-select-label">
                   뿌리클래스
@@ -164,7 +169,7 @@ export default function AddCharacterPopup(props) {
                 </Select>
               </FormControl>
             </Box>
-            <Box sx={{ width: "200px", minWidth: 120, margin: "5px" }}>
+            <Box sx={{ width: "190px", minWidth: 120, marginTop: "8px" }}>
               <FormControl fullWidth>
                 <InputLabel id="demo-simple-select-label">클래스</InputLabel>
                 <Select
