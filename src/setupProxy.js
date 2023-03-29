@@ -4,15 +4,15 @@ const { createProxyMiddleware } = require("http-proxy-middleware");
 //https://freestrokes.tistory.com/164
 module.exports = function (app) {
   app.use(
-    createProxyMiddleware(['/api'], {
-      target: "http://localhost:3000/",
+    createProxyMiddleware(["/api"], {
+      target: "http://loacatcountryserver.cafe24app.com",
       pathRewrite: {
         "/api": "",
       },
       router: {
-        "/api": "http://localhost:3000/",
+        "/api": "http://loacatcountryserver.cafe24app.com",
       },
-      changeOrigin: false,
+      changeOrigin: true,
     })
   );
 

@@ -5,9 +5,10 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { Provider } from "react-redux";
 import { store, persistor } from "./store/index";
-const root = ReactDOM.createRoot(document.getElementById("root"));
+const root = ReactDOM.createRoot(document.querySelector("#root"));
 root.render(
   <React.StrictMode>
+    <meta name="google" content="notranslate"></meta>
     <Provider store={store} persistor={persistor}>
       <App />
     </Provider>
