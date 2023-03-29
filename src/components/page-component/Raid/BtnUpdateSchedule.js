@@ -22,15 +22,9 @@ import { Stack } from "@mui/system";
 import DatePickerPopup from "../../Popup/Raid/DatePickerPopup";
 export default function BtnUpdateSchedule(props) {
   const [open, setOpen] = React.useState(false);
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-  var addJoinRaidParams = {};
-
   const userInfo = store.getState().loginUser;
   function btnClick(obj, e) {
-    if (userInfo.userId != props.regUser) {
+    if (userInfo.userId != props.regUser && userInfo.userGrant != "admin") {
       alert(
         "등록한 사람만 수정이 가능합니다. \n등록자는 " +
           props.regUser +
