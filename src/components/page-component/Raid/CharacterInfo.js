@@ -14,7 +14,7 @@ import { Box, fontSize } from "@mui/system";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 export default function CharacterInfo(props) {
   var ItemTextSecondary = props.className + " (" + props.characterLevel + ")";
-
+  const supportClass = ["HolyNight", "Artist", "Bard"];
   function quitRaid() {
     if (window.confirm("삭제하시겠습니까?")) {
       apiAxiosPromise("POST", "/api/raid-calendar/quit", {
@@ -61,6 +61,7 @@ export default function CharacterInfo(props) {
           borderRadius: "5px",
         }}
       >
+        {/* "#1565c0" */}
         <ListItemText
           sx={{ color: "#1565c0", userSelect: "none", width: "10px" }}
           primary={props.proficiency}
@@ -70,6 +71,18 @@ export default function CharacterInfo(props) {
       <ListItemText
         primary={props.characterName}
         secondary={ItemTextSecondary}
+        secondaryTypographyProps={{
+          //"none",
+          backgroundColor:
+            supportClass.findIndex((el) => {
+              return el === props.classCode;
+            }) < 0
+              ? "none"
+              : "#00D8FF",
+          borderRadius: "5px",
+          marginRight: "10px",
+          // paddingLeft: "3px",
+        }}
         sx={{ userSelect: "none", maxWidth: "200px" }}
       />
 

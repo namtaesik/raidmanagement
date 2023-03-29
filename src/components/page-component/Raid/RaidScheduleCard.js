@@ -13,6 +13,8 @@ import CharacterInfo from "./CharacterInfo";
 import moment from "moment/moment";
 import weekOfDay from "../../../services/dateFormat/weekOfDay";
 import BtnDelSchedule from "../../page-component/Raid/BtnDelSchedule";
+import { Button } from "@mui/material";
+import BtnUpdateSchedule from "./BtnUpdateSchedule";
 export default function RaidCard(props) {
   const [open, setOpen] = React.useState(false);
   const [partyData, setPartyData] = React.useState([{}]);
@@ -98,7 +100,9 @@ export default function RaidCard(props) {
             sx={{ userSelect: "none" }}
           >
             {/* {props.RaidSchedule.attackDateOrigin} */}
-            {DateFormatter(props.RaidSchedule.attackDateOrigin)}
+            {props.RaidSchedule.isUnknown
+              ? "[날짜미정]" + props.RaidSchedule.unknownRemark
+              : DateFormatter(props.RaidSchedule.attackDateOrigin)}
           </ListItemText>
         </div>
         <KeyboardArrowDown
@@ -124,6 +128,7 @@ export default function RaidCard(props) {
                     characterName={item.characterName}
                     characterLevel={item.characterLevel}
                     className={item.className}
+                    classCode={item.classCode}
                     attackId={attackId}
                     remark={item.remark}
                     proficiency={item.proficiency}
@@ -137,21 +142,34 @@ export default function RaidCard(props) {
           })}
 
           <ListItem
-            key={attackId}
+            key="btngrpRaidCard"
             sx={{ paddingLeft: "13px", justifyContent: "space-between" }}
           >
             <BtnSignUp
-              key={attackId}
+              key="btnJoin"
               title="신청하기"
               attackId={attackId}
               onClickHandler={() => {
                 GetRaidDetail();
               }}
             ></BtnSignUp>
+            <BtnUpdateSchedule
+              key="btnUpdateSchedule"
+              title="일정수정"
+              attackId={attackId}
+              isUnknown={props.RaidSchedule.isUnknown}
+              unknownRemark={props.RaidSchedule.unknownRemark}
+              boss={props.RaidSchedule.bossCode}
+              regUser={props.RaidSchedule.regUser}
+              onClickHandler={() => {
+                GetRaidDetail();
+              }}
+            ></BtnUpdateSchedule>
             <BtnDelSchedule
-              key={attackId}
+              key="btnDelSchedule"
               title="일정삭제"
               attackId={attackId}
+              regUser={props.RaidSchedule.regUser}
               onClickHandler={() => {
                 GetRaidDetail();
               }}

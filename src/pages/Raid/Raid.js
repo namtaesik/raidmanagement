@@ -21,7 +21,6 @@ export default function Raid() {
     return <Navigate to="/" />;
   }
   async function getRaidCalendar() {
-    console.log("여기호출");
     await apiAxiosPromise("GET", "/api/raid-calendar", {})
       .then((res) => {
         setSchedule(res);
