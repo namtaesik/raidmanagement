@@ -36,6 +36,9 @@ export default function RaidCard(props) {
     const today = moment();
     const startOfWeek = today.clone().startOf("week").add(1, "day"); // 한 주의 시작일을 월요일로 설정
     const endOfWeek = today.clone().endOf("week").add(1, "day"); // 한 주의 마지막일을 일요일로 설정
+    if (props.RaidSchedule.isUnknown) {
+      return true;
+    }
     return moment(date).isBetween(startOfWeek, endOfWeek);
   }
   const isWeek = isThisWeek(props.RaidSchedule.attackDateOrigin);
