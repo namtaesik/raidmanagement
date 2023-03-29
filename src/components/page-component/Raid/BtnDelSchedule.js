@@ -23,7 +23,7 @@ export default function BtnDelSchedule(props) {
   };
   const userInfo = store.getState().loginUser;
   function btnClick(obj, e) {
-    if (userInfo.userId != props.regUser) {
+    if (userInfo.userId != props.regUser && userInfo.userGrant != "admin") {
       alert(
         "등록한 사람만 수정이 가능합니다. \n등록자는 " +
           props.regUser +
