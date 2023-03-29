@@ -1,6 +1,11 @@
 import axios from "axios";
 
 export default function apiAxios(actionType, url, param) {
+  url =
+    window.location.hostname === "localhost"
+      ? url
+      : "http://loacatcountryserver.cafe24app.com" + url.replace("/api", "");
+
   switch (actionType) {
     case "GET":
     default:
@@ -24,6 +29,11 @@ export default function apiAxios(actionType, url, param) {
   }
 }
 export function apiAxiosPromise(actionType, url, param) {
+  url =
+    window.location.hostname === "localhost"
+      ? url
+      : "http://loacatcountryserver.cafe24app.com" + url.replace("/api", "");
+
   const promise = new Promise((resolve, reject) => {
     switch (actionType) {
       case "GET":
@@ -47,7 +57,12 @@ export function apiAxiosPromise(actionType, url, param) {
         break;
       case "POST":
         axios
-          .post(url, param)
+          .post(url, param, {
+            headers: {
+              //Authorization: "AIzaSyAp7b4zwx3v_22j0xuX3qrmkvB0mst9gfI",
+              AccessControlAllowOrigin: false,
+            },
+          })
           .then((result) => {
             //console.log("test", result.data);
             resolve(result.data);
