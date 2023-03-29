@@ -24,25 +24,40 @@ import { Stack } from "@mui/system";
 import { apiAxiosPromise } from "../../../services/apiAxios/apiAxios";
 
 import { SET_ROOT_CLASS, SET_CLASS } from "../../../constants/action-types";
-export default function AddCharacterPopup(props) {
+export default function EditCharacterPopup(props) {
   const userId = store.getState().loginUser.userId;
   const [inputCharacterInfo, setInputCharacterInfo] = useState({
     userId: userId,
-    characterName: "",
-    characterLevel: 1445.0,
-    class: "",
+    characterId: props.characterInfo.characterId,
+    characterName: props.characterInfo.characterName,
+    characterLevel: props.characterInfo.characterLevel,
+    class: props.characterInfo.characterClass,
   });
   const [rootClass, setRootClass] = useState([{}]);
   const [classDetail, setClassDetail] = useState([{}]);
-  const [rootClassCode, setRootClassCode] = useState("");
-  const [classDetailCode, setClassDetailCode] = useState("");
+  const [rootClassCode, setRootClassCode] = useState(
+    props.characterInfo.rootClassCode
+  );
+  const [classDetailCode, setClassDetailCode] = useState(
+    props.characterInfo.characterClass
+  );
   useEffect(() => {
     apiAxiosPromise("GET", "/api/code", {
       groupCode: "RootClass",
     }).then((res) => {
       store.dispatch({ type: SET_ROOT_CLASS, payload: res });
       setRootClass(res);
+      setRootClassCode(props.characterInfo.rootClassCode);
     });
+    // 수정이므로 기본 root클래스 지정 및 class 세팅
+    console.log("test", props.characterInfo.rootClassCode);
+    apiAxiosPromise("GET", "/api/code", {
+      groupCode: props.characterInfo.rootClassCode,
+    }).then((res) => {
+      store.dispatch({ type: SET_CLASS, payload: res });
+      setClassDetail(res);
+    });
+    setClassDetailCode(props.characterInfo.characterClass);
   }, []);
   // classDetailCode 변경시 state 최신화
   useEffect(() => {
@@ -51,7 +66,7 @@ export default function AddCharacterPopup(props) {
       class: classDetailCode,
     });
   }, [classDetailCode]);
-  function AddCharacter() {
+  function EditCharacter() {
     //예외처리
     if (inputCharacterInfo.characterName == "") {
       alert("캐릭터명을 입력하세요.");
@@ -65,7 +80,7 @@ export default function AddCharacterPopup(props) {
       alert("클래스를 선택하세요.");
       return false;
     }
-    apiAxiosPromise("POST", "/api/character/add", inputCharacterInfo)
+    apiAxiosPromise("POST", "/api/character/edit", inputCharacterInfo)
       .then((res) => {
         alert("정상처리되었습니다.");
         // 캐릭터이름, 레벨 초기화
@@ -74,14 +89,14 @@ export default function AddCharacterPopup(props) {
           characterName: "",
           characterLevel: 0.0,
         });
+
+        window.location.reload();
       })
       .catch((err) => {
         console.log(err);
         alert("오류발생 : ", err.response.data);
       })
-      .finally(() => {
-        window.location.reload();
-      });
+      .finally(() => {});
   }
 
   const handleRootClassChange = (event) => {
@@ -107,7 +122,7 @@ export default function AddCharacterPopup(props) {
     <>
       <Dialog open={props.open} onClose={props.handleClose} fullWidth={false}>
         <DialogTitle sx={{ fontSize: "1rem" }}>
-          {"캐릭터 정보를 입력하세요."}
+          {"원하는 내용을 수정하세요!"}
         </DialogTitle>
 
         <DialogContent sx={{ padding: "7px" }}>
@@ -201,12 +216,12 @@ export default function AddCharacterPopup(props) {
             variant="contained"
             sx={{ minWidth: 120, margin: "5px" }}
             onClick={() => {
-              if (window.confirm("추가하시겠습니까?")) {
-                AddCharacter();
+              if (window.confirm("캐릭터 정보를 수정하시겠습니까?")) {
+                EditCharacter();
               }
             }}
           >
-            추가
+            변경
           </Button>
         </DialogActions>
       </Dialog>

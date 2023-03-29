@@ -55,7 +55,6 @@ export default function CharacterManagement() {
           return (
             <ListItem key={item.characterId} sx={{ justifyContent: "center" }}>
               <CharacterInfo
-                key={item.characterId}
                 info={item}
                 onClickHandler={() => {
                   getCharacters();
@@ -65,6 +64,7 @@ export default function CharacterManagement() {
           );
         })}
         <Fab
+          key="AddFab"
           aria-label="SpeedDial controlled open example"
           size="small"
           direction="right"
@@ -82,6 +82,7 @@ export default function CharacterManagement() {
           {<SpeedDialIcon />}
         </Fab>
         <AddCharacterPopup
+          key="AddCharacterPopup"
           open={open}
           handleClose={() => {
             setOpen(false);

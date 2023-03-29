@@ -12,15 +12,22 @@ import {
   Typography,
   ListItemText,
   DialogActions,
+  TextField,
+  ToggleButtonGroup,
+  ToggleButton,
 } from "@mui/material";
 import store from "../../../store";
 import { apiAxiosPromise } from "../../../services/apiAxios/apiAxios";
-export default function BtnDelSchedule(props) {
-  const param = {
-    page: props.page,
-    btnTitle: props.title,
-    attackId: props.attackId,
+import { Stack } from "@mui/system";
+import DatePickerPopup from "../../Popup/Raid/DatePickerPopup";
+export default function BtnUpdateSchedule(props) {
+  const [open, setOpen] = React.useState(false);
+
+  const handleClose = () => {
+    setOpen(false);
   };
+  var addJoinRaidParams = {};
+
   const userInfo = store.getState().loginUser;
   function btnClick(obj, e) {
     if (userInfo.userId != props.regUser) {
@@ -31,23 +38,24 @@ export default function BtnDelSchedule(props) {
       );
       return false;
     }
-    const param = { attackId: props.attackId };
-    if (window.confirm("일정을 정말로 삭제하시겠습니까?")) {
-      apiAxiosPromise("POST", "/api/raid-calendar/remove", param)
-        .then((res) => {
-          alert("삭제되었습니다.");
-          window.location.reload();
-        })
-        .catch((err) => {
-          alert("에러가 발생했습니다.");
-          console.log(err);
-        })
-        .finally(() => {});
-    }
+    setOpen(true);
   }
   return (
-    <Button variant="contained" size="small" onClick={btnClick}>
-      {param.btnTitle}
-    </Button>
+    <div key={userInfo.userId}>
+      <Button variant="contained" size="small" onClick={btnClick}>
+        {props.title}
+      </Button>
+
+      <DatePickerPopup
+        open={open}
+        attackId={props.attackId}
+        isUnknown={props.isUnknown}
+        unknownRemark={props.unknownRemark}
+        boss={props.boss}
+        handleClose={() => {
+          setOpen(false);
+        }}
+      ></DatePickerPopup>
+    </div>
   );
 }
