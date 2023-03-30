@@ -171,7 +171,14 @@ export default function DatePickerPopup(props) {
           <DialogTitle>
             {props.attackId == undefined ? "일정등록" : "일정수정"}
           </DialogTitle>
-          <DialogContent sx={{ paddingLeft: "auto" }}>
+          <Divider />
+          <DialogContent
+            sx={{
+              paddingLeft: "auto",
+              paddingBottom: "0px",
+              paddingTop: "0px",
+            }}
+          >
             <FormControlLabel
               control={
                 <Switch
@@ -184,15 +191,22 @@ export default function DatePickerPopup(props) {
               label="날짜미정"
             />
           </DialogContent>
-          <DialogContent>
+          <DialogContent sx={{ padding: "10px" }}>
             {!isUnknown && (
               <Stack
                 direction="column"
                 justifyContent="center"
                 alignItems="center"
                 spacing={0}
+                marginTop="0px"
               >
-                <DialogTitle sx={{ fontSize: "1rem" }}>
+                <DialogTitle
+                  sx={{
+                    fontSize: "1rem",
+                    userSelect: "none",
+                    paddingBottom: "0px",
+                  }}
+                >
                   {"날짜를 선택하세요. "}
                 </DialogTitle>{" "}
                 <Stack
@@ -253,7 +267,13 @@ export default function DatePickerPopup(props) {
                     })}
                   </Select>
                 </Stack>
-                <DialogTitle sx={{ fontSize: "1rem" }}>
+                <DialogTitle
+                  sx={{
+                    fontSize: "1rem",
+                    userSelect: "none",
+                    paddingBottom: "0px",
+                  }}
+                >
                   {"시간을 선택하세요. "}
                 </DialogTitle>
                 <Stack
@@ -343,7 +363,7 @@ export default function DatePickerPopup(props) {
               </Stack>
             )}
           </DialogContent>
-
+          <Divider />
           <DialogContent sx={{ padding: "7px" }}>
             <Stack
               sx={{ marginTop: "10px" }}
@@ -352,7 +372,14 @@ export default function DatePickerPopup(props) {
               alignItems="center"
               spacing={0}
             >
-              <DialogTitle sx={{ fontSize: "1rem" }}>
+              <DialogTitle
+                sx={{
+                  fontSize: "1rem",
+                  userSelect: "none",
+                  paddingTop: "0px",
+                  paddingBottom: "0px",
+                }}
+              >
                 컨텐츠를 입력하세요
               </DialogTitle>
               <TextField

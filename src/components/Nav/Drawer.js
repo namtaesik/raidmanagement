@@ -59,7 +59,12 @@ export default function TemporaryDrawer() {
                   "images/loginUserImages/" +
                   store.getState().loginUser.image
                 }
-                style={{ width: "32px", height: "32px", objectFit: "cover" }}
+                style={{
+                  width: "32px",
+                  height: "32px",
+                  objectFit: "cover",
+                  userSelect: "none",
+                }}
                 alt="Logo"
               />
             ) : (
