@@ -5,6 +5,7 @@ import { apiAxiosPromise } from "../../services/apiAxios/apiAxios";
 import CharacterInfo from "../../components/page-component/CharacterManagement/CharacterInfo";
 import AddCharacterPopup from "../../components/Popup/CharacterManagement/AddCharacterPopup";
 import { Box } from "@mui/system";
+import { SET_CHARACTER } from "../../constants/action-types";
 export default function CharacterManagement() {
   // 캐릭터 불러오기
   const [characters, setCharacters] = useState([{}]);
@@ -17,6 +18,10 @@ export default function CharacterManagement() {
     apiAxiosPromise("GET", "/api/character", store.getState().loginUser).then(
       (res) => {
         setCharacters(res);
+        // 스토어 최신화
+        if (res.length > 0) {
+          store.dispatch({ type: SET_CHARACTER, payload: res });
+        }
       }
     );
   }

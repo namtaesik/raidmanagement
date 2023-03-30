@@ -37,7 +37,7 @@ export default function DatePickerPopup(props) {
   const [aMPM, setAMPM] = useState("오후");
   const hourList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
   const [hour, setHour] = useState(7);
-  const minuteList = [0, 15, 30, 45];
+  const minuteList = [0, 10, 20, 30, 40, 50];
   const [minute, setMinute] = useState(30);
   // 날짜 미정관련 state
   const [isUnknown, setIsUnknown] = useState(false);
@@ -330,7 +330,12 @@ export default function DatePickerPopup(props) {
                   id="outlined-required"
                   label="ex)이번주말, 태신과 협의"
                   value={unknownRemark}
+                  inputProps={{ maxLength: 25 }}
                   onChange={(evt) => {
+                    if (evt.target.value.length > 25) {
+                      alert("25글자 까지만 입력 가능합니다.");
+                      return false;
+                    }
                     setUnknownRemark(evt.target.value);
                   }}
                   sx={{ width: "200px", marginTop: "10px" }}
@@ -355,7 +360,12 @@ export default function DatePickerPopup(props) {
                 id="outlined-required"
                 label="ex)하브14 숙련팟"
                 defaultValue={boss}
+                inputProps={{ maxLength: 40 }}
                 onChange={(evt) => {
+                  if (evt.target.value.length > 40) {
+                    alert("40글자 까지만 입력 가능합니다.");
+                    return false;
+                  }
                   setBoss(evt.target.value);
                 }}
                 sx={{ width: "200px" }}

@@ -165,10 +165,10 @@ export default function BtnSignUp(props) {
                 required
                 id="outlined-required"
                 label="비고"
-                inputProps={{ maxLength: 10 }}
+                inputProps={{ maxLength: 15 }}
                 onChange={(evt) => {
-                  if (evt.target.value.length > 10) {
-                    alert("10글자 까지만 입력 가능합니다.");
+                  if (evt.target.value.length > 15) {
+                    alert("15글자 까지만 입력 가능합니다.");
                     return false;
                   }
                   setRemark(evt.target.value);
