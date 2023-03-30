@@ -52,7 +52,6 @@ export default function RaidCard(props) {
       "/api/raid-calendar/detail",
       { attackId: attackId }
     );
-
     // 데이터 담기
     setPartyData(PartyDetail);
     // 아이디 확인
@@ -113,6 +112,7 @@ export default function RaidCard(props) {
             marginLeft: "auto",
             marginRight: "10px",
             minWidth: "70px",
+            userSelect: "none",
           }}
         >
           인원:{props.RaidSchedule.memberCount}명
@@ -173,6 +173,7 @@ export default function RaidCard(props) {
               unknownRemark={props.RaidSchedule.unknownRemark}
               boss={props.RaidSchedule.bossCode}
               regUser={props.RaidSchedule.regUser}
+              attackDate={props.RaidSchedule.attackDate}
               onClickHandler={() => {
                 GetRaidDetail();
               }}

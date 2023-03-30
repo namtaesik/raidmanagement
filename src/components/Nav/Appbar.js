@@ -28,7 +28,7 @@ export default function ButtonAppBar() {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static" enableColorOnDark={true}>
-        <Toolbar sx={{ paddingRight: "5px" }}>
+        <Toolbar sx={{ paddingRight: "5px", userSelect: "none" }}>
           <Drawer />
           <Typography
             variant="h6"
@@ -84,7 +84,6 @@ export default function ButtonAppBar() {
                 userSelect: "none",
                 paddingRight: "0px",
                 objectFit: "cover",
-                userSelect: "none",
               }}
             />
           ) : (

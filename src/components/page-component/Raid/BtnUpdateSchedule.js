@@ -45,6 +45,7 @@ export default function BtnUpdateSchedule(props) {
         attackId={props.attackId}
         isUnknown={props.isUnknown}
         unknownRemark={props.unknownRemark}
+        attackDate={props.attackDate}
         boss={props.boss}
         handleClose={() => {
           setOpen(false);
