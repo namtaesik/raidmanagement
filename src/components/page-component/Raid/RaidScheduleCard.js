@@ -108,13 +108,21 @@ export default function RaidCard(props) {
               : DateFormatter(props.RaidSchedule.attackDateOrigin)}
           </ListItemText>
         </div>
+        <p
+          style={{
+            marginLeft: "auto",
+            marginRight: "10px",
+            minWidth: "70px",
+          }}
+        >
+          인원:{props.RaidSchedule.memberCount}명
+        </p>
         <KeyboardArrowDown
           sx={{
             mr: -1,
             opacity: 1,
             transform: open ? "rotate(-180deg)" : "rotate(0)",
             transition: "0.2s",
-            marginLeft: "auto",
             marginRight: "10px",
           }}
         />
@@ -135,6 +143,7 @@ export default function RaidCard(props) {
                     attackId={attackId}
                     remark={item.remark}
                     proficiency={item.proficiency}
+                    image={item.image}
                     onClickHandler={() => {
                       GetRaidDetail();
                     }}

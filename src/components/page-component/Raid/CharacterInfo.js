@@ -68,6 +68,18 @@ export default function CharacterInfo(props) {
           primaryTypographyProps={{ fontSize: "12px", fontWeight: "bold" }}
         ></ListItemText>
       </Box>
+      {props.image != undefined && props.image != "" && (
+        <img
+          src={process.env.PUBLIC_URL + "images/loginUserImages/" + props.image}
+          style={{
+            width: "32px",
+            height: "32px",
+            objectFit: "cover",
+            userSelect: "none",
+          }}
+          alt="Logo"
+        />
+      )}
       <ListItemText
         primary={props.characterName}
         secondary={ItemTextSecondary}
@@ -86,7 +98,7 @@ export default function CharacterInfo(props) {
         sx={{ userSelect: "none", maxWidth: "200px" }}
       />
 
-      <ListItemText primary={props.remark} />
+      <ListItemText primary={props.remark} sx={{ userSelect: "none" }} />
       {store.getState().loginUser.userId == props.userId ? (
         // <Button
         //   size="small"
