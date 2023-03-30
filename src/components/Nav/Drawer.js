@@ -14,7 +14,7 @@ import IconButton from "@mui/material/IconButton";
 import { useNavigate } from "react-router-dom";
 import { SET_SELECTOR } from "../../constants/action-types";
 import { store } from "../../store/index";
-
+import AccountBoxIcon from "@mui/icons-material/AccountBox";
 export default function TemporaryDrawer() {
   const navigate = useNavigate();
 
@@ -48,6 +48,31 @@ export default function TemporaryDrawer() {
       role="presentation"
       onClick={toggleDrawer(anchor, false)}
     >
+      {store.getState().loginUser.userId != undefined && (
+        <ListItem key="useInfo">
+          <ListItemIcon>
+            {store.getState().loginUser.image != undefined &&
+            store.getState().loginUser.image != "" ? (
+              <img
+                src={
+                  process.env.PUBLIC_URL +
+                  "images/loginUserImages/" +
+                  store.getState().loginUser.image
+                }
+                style={{ width: "32px", height: "32px", objectFit: "cover" }}
+                alt="Logo"
+              />
+            ) : (
+              <AccountBoxIcon />
+            )}
+          </ListItemIcon>
+          <ListItemText>
+            {store.getState().loginUser.userId}님 안녕하세요!
+          </ListItemText>
+        </ListItem>
+      )}
+
+      <Divider />
       <List>
         {pageList.menu.map(
           (item, index) =>
@@ -63,7 +88,7 @@ export default function TemporaryDrawer() {
               >
                 <ListItemButton>
                   <ListItemIcon>
-                    <InboxIcon />
+                    {item.icon != undefined ? item.icon : <InboxIcon />}
                   </ListItemIcon>
                   <ListItemText primary={item.name} />
                 </ListItemButton>

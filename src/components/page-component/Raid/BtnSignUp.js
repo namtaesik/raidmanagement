@@ -15,6 +15,7 @@ import {
   TextField,
   ToggleButtonGroup,
   ToggleButton,
+  Divider,
 } from "@mui/material";
 import store from "../../../store";
 import { apiAxiosPromise } from "../../../services/apiAxios/apiAxios";
@@ -82,16 +83,24 @@ export default function BtnSignUp(props) {
           {props.title}
         </Button>
 
-        <Dialog open={open} onClose={handleClose} fullWidth={false}>
+        <Dialog
+          open={open}
+          onClose={handleClose}
+          fullWidth={false}
+          sx={{ minWidth: "300px" }}
+        >
           <DialogTitle sx={{ userSelect: "none" }}>
             {" "}
             {userInfo.userId}님
           </DialogTitle>
-          <DialogContent>
+          <Divider />
+          <DialogContent sx={{ height: "30px", paddingBottom: "0px" }}>
             <DialogContentText sx={{ userSelect: "none" }}>
               {"캐릭터를 선택하세요."}
             </DialogContentText>
+          </DialogContent>
 
+          <DialogContent sx={{ height: "150px", paddingTop: "0px" }}>
             {characterList.map((item, index) => {
               if (item.characterId != undefined) {
                 var ItemTextSecondary =
@@ -123,42 +132,40 @@ export default function BtnSignUp(props) {
                       </Button>
                     }
                   >
-                    <Box>
-                      <ListItemText
-                        primary={item.characterName}
-                        secondary={ItemTextSecondary}
-                        sx={{ userSelect: "none" }}
-                      ></ListItemText>
-                    </Box>
+                    <ListItemText
+                      primary={item.characterName}
+                      secondary={ItemTextSecondary}
+                      sx={{ userSelect: "none", width: "220px" }}
+                    ></ListItemText>
                   </ListItem>
                 );
               }
             })}
           </DialogContent>
-          <DialogContent>
-            <Stack direction="row" spacing={4}>
+          <Divider />
+          <DialogContent
+            sx={{
+              overflowX: "scroll",
+              height: "50px",
+              whiteSpace: "nowrap",
+              padding: "15px 0px 15px 0px",
+            }}
+          >
+            <Stack direction="row" spacing={4} justifyContent="center">
               <ToggleButtonGroup
                 value={selected}
                 exclusive
                 onChange={handleSelected}
-                aria-label="text alignment"
                 color="info"
               >
-                <ToggleButton value="트라이">
-                  <Box>트라이</Box>
-                </ToggleButton>
-                <ToggleButton value="클경">
-                  <Box>클경</Box>
-                </ToggleButton>
-                <ToggleButton value="반숙">
-                  <Box>반숙</Box>
-                </ToggleButton>
-                <ToggleButton value="숙련">
-                  <Box>숙련</Box>
-                </ToggleButton>
+                <ToggleButton value="트라이">트라이</ToggleButton>
+                <ToggleButton value="클경">클경</ToggleButton>
+                <ToggleButton value="반숙">반숙</ToggleButton>
+                <ToggleButton value="숙련">숙련</ToggleButton>
               </ToggleButtonGroup>
             </Stack>
           </DialogContent>
+          <Divider />
           <DialogContent>
             <Stack sx={{ marginTop: "10px" }}>
               <TextField

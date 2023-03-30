@@ -25,11 +25,11 @@ export default function ButtonAppBar() {
     setTitle(menuState.menu.find((c) => c.path === location.pathname).name);
     if (store.getState().loginUser.userId ?? "" != "") setIsLogin(true);
   });
-
+  console.log(store.getState().loginUser.icon);
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static" enableColorOnDark={true}>
-        <Toolbar>
+        <Toolbar sx={{ paddingRight: "5px" }}>
           <Drawer />
           <Typography
             variant="h6"
@@ -43,6 +43,7 @@ export default function ButtonAppBar() {
           <Typography component="div" sx={{ flexGrow: 1 }}>
             {store.getState().loginUser.userName}
           </Typography>
+
           <Button
             color="inherit"
             type="hidden"
@@ -69,6 +70,26 @@ export default function ButtonAppBar() {
           >
             {IsLogin ? "LogOut" : "Login"}
           </Button>
+          {IsLogin &&
+          store.getState().loginUser.image != undefined &&
+          store.getState().loginUser.image != "" ? (
+            <img
+              src={
+                process.env.PUBLIC_URL +
+                "images/loginUserImages/" +
+                store.getState().loginUser.image
+              }
+              style={{
+                height: "48px",
+                width: "48px",
+                userSelect: "none",
+                paddingRight: "0px",
+                objectFit: "cover",
+              }}
+            />
+          ) : (
+            ""
+          )}
           <LoginPopup
             open={open}
             handleClose={() => {
