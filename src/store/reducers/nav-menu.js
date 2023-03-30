@@ -1,15 +1,32 @@
 import { ADD_MENU, SET_SELECTOR } from "../../constants/action-types";
+import HouseIcon from "@mui/icons-material/House";
+import EventNoteIcon from "@mui/icons-material/EventNote";
+import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 const initialState = {
   menu: [
-    { useyn: true, path: "/", name: "홈", auth: false, loginHide: true },
+    {
+      useyn: true,
+      path: "/",
+      name: "홈",
+      auth: false,
+      loginHide: true,
+      icon: <HouseIcon />,
+    },
     //{ path: "/Home", name: "홈" },
     { useyn: false, path: "/Sub", name: "서브", auth: true },
-    { useyn: true, path: "/Raid", name: "레이드일정", auth: true },
+    {
+      useyn: true,
+      path: "/Raid",
+      name: "레이드일정",
+      auth: true,
+      icon: <EventNoteIcon />,
+    },
     {
       useyn: true,
       path: "/CharacterManagement",
       name: "캐릭터관리",
       auth: true,
+      icon: <ManageAccountsIcon />,
     },
     { useyn: false, path: "/Test", name: "테스트Page", auth: true },
   ],
