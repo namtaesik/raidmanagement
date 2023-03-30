@@ -33,9 +33,10 @@ export default function DatePickerPopup(props) {
   const [yearList, setyearList] = useState([]);
   const [monthList, setmonthList] = useState([]);
   const [dayList, setDayList] = useState([]);
-  const aMPMList = ["오전", "오후"];
-  const [aMPM, setAMPM] = useState("오후");
-  const hourList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+  const hourList = [
+    0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+    21, 22, 23,
+  ];
   const [hour, setHour] = useState(7);
   const minuteList = [0, 10, 20, 30, 40, 50];
   const [minute, setMinute] = useState(30);
@@ -44,11 +45,11 @@ export default function DatePickerPopup(props) {
   const [unknownRemark, setUnknownRemark] = useState("미정");
   // 유저정보
   const userId = store.getState().loginUser.userId;
-  useEffect(() => {
+  function changeMonth(pMonth) {
     const day = 1;
     var dList = [];
 
-    var trueMonth = month - 1;
+    var trueMonth = pMonth - 1;
 
     const forDay = trueMonth == moment().month() ? moment().date() : 1;
     for (
@@ -56,11 +57,11 @@ export default function DatePickerPopup(props) {
       i <= moment({ year, month: trueMonth, day }).endOf("month").date();
       i++
     ) {
-      dList.push(i);
+      dList.push(i.toString().padStart(2, "0"));
     }
     setDayList(dList);
     setDay(dList[0]);
-  }, [month, monthList]);
+  }
   // 연/월 날짜 세팅
   useEffect(() => {
     var yList = [];
@@ -80,19 +81,24 @@ export default function DatePickerPopup(props) {
     setYear(yList[0]);
     setmonthList(mList);
     setMonth(mList[0]);
+    changeMonth(mList[0]);
     // 수정일경우
     if (props.attackId != undefined) {
       setIsUnknown(props.isUnknown);
       setUnknownRemark(props.unknownRemark);
       setBoss(props.boss);
+      // 날짜세팅
+      setYear(props.attackDate.substring(0, 4));
+      setMonth(props.attackDate.substring(5, 7));
+      changeMonth(props.attackDate.substring(5, 7)); // 달바뀜이벤트
+      setDay(props.attackDate.substring(8, 10));
+
+      setHour(props.attackDate.substring(11, 13));
+      setMinute(props.attackDate.substring(14, 16));
     }
   }, []);
 
-  const createCustomDate = (year, month, day, amPm, hour, minute) => {
-    // amPm이 "am"인 경우 hour은 그대로, "pm"인 경우 hour에 12를 더해줍니다.
-    if (amPm === "오후") {
-      hour += 12;
-    }
+  const createCustomDate = (year, month, day, hour, minute) => {
     // moment() 함수를 사용하여 특정 시간을 생성합니다.
     const date = moment()
       .year(year)
@@ -119,7 +125,7 @@ export default function DatePickerPopup(props) {
           year,
           month - 1,
           day,
-          aMPM,
+
           hour,
           minute
         ).format("YYYY-MM-DD HH:mm"),
@@ -128,7 +134,6 @@ export default function DatePickerPopup(props) {
         unknownRemark: unknownRemark,
         userId: userId,
       };
-      //console.log(param);
       if (props.attackId == undefined) {
         apiAxiosPromise("POST", "/api/raid-calendar", param)
           .then((res) => {
@@ -158,16 +163,33 @@ export default function DatePickerPopup(props) {
       }
     }
   }
+  function handleClose() {
+    // 값 초기화
+    if (props.attackId != undefined) {
+      setIsUnknown(props.isUnknown);
+      setUnknownRemark(props.unknownRemark);
+      setBoss(props.boss);
+      // 날짜세팅
+      setYear(props.attackDate.substring(0, 4));
+      setMonth(props.attackDate.substring(5, 7));
+      changeMonth(props.attackDate.substring(5, 7)); // 달바뀜이벤트
+      setDay(props.attackDate.substring(8, 10));
+
+      setHour(props.attackDate.substring(11, 13));
+      setMinute(props.attackDate.substring(14, 16));
+    }
+    props.handleClose();
+  }
   if (monthList[0] == undefined) {
     return (
-      <Dialog open={props.open} onClose={props.handleClose} fullWidth={false}>
+      <Dialog open={props.open} onClose={handleClose} fullWidth={false}>
         <DialogTitle> 날짜를 선택하세요.</DialogTitle>
       </Dialog>
     );
   } else {
     return (
       <>
-        <Dialog open={props.open} onClose={props.handleClose} fullWidth={false}>
+        <Dialog open={props.open} onClose={handleClose} fullWidth={false}>
           <DialogTitle>
             {props.attackId == undefined ? "일정등록" : "일정수정"}
           </DialogTitle>
@@ -238,6 +260,7 @@ export default function DatePickerPopup(props) {
                     label="월"
                     onChange={(evt) => {
                       setMonth(evt.target.value);
+                      changeMonth(evt.target.value);
                     }}
                     value={month}
                   >
@@ -282,23 +305,6 @@ export default function DatePickerPopup(props) {
                   alignItems="center"
                   spacing={0}
                 >
-                  <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    label="오전/오후"
-                    onChange={(evt) => {
-                      setAMPM(evt.target.value);
-                    }}
-                    value={aMPM}
-                  >
-                    {aMPMList.map((item, index) => {
-                      return (
-                        <MenuItem key={item} value={item}>
-                          {item}
-                        </MenuItem>
-                      );
-                    })}
-                  </Select>
                   <Select
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
@@ -403,7 +409,7 @@ export default function DatePickerPopup(props) {
             <Button onClick={handleSubmit} variant="contained">
               확인
             </Button>
-            <Button onClick={props.handleClose} variant="outlined">
+            <Button onClick={handleClose} variant="outlined">
               취소
             </Button>
           </DialogActions>
