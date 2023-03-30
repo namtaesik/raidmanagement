@@ -25,7 +25,6 @@ export default function ButtonAppBar() {
     setTitle(menuState.menu.find((c) => c.path === location.pathname).name);
     if (store.getState().loginUser.userId ?? "" != "") setIsLogin(true);
   });
-  console.log(store.getState().loginUser.icon);
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static" enableColorOnDark={true}>
@@ -85,6 +84,7 @@ export default function ButtonAppBar() {
                 userSelect: "none",
                 paddingRight: "0px",
                 objectFit: "cover",
+                userSelect: "none",
               }}
             />
           ) : (
