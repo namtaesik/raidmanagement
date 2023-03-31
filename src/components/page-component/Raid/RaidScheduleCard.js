@@ -15,6 +15,7 @@ import weekOfDay from "../../../services/dateFormat/weekOfDay";
 import BtnDelSchedule from "../../page-component/Raid/BtnDelSchedule";
 import { Button } from "@mui/material";
 import BtnUpdateSchedule from "./BtnUpdateSchedule";
+import Dday from "../../DateComp/Dday";
 export default function RaidCard(props) {
   const [open, setOpen] = React.useState(false);
   const [partyData, setPartyData] = React.useState([{}]);
@@ -31,6 +32,7 @@ export default function RaidCard(props) {
     };
   }, []);
   const attackId = props.RaidSchedule.attackId; // 스케줄 ID
+  //console.log((moment() - props.RaidSchedule.attackDateOrigin).getDay())
 
   function isThisWeek(date) {
     const today = moment();
@@ -72,6 +74,7 @@ export default function RaidCard(props) {
         borderWidth: "1px",
         borderStyle: "solid",
         color: "black",
+        position: "relative",
       }}
       key={attackId}
     >
@@ -101,9 +104,8 @@ export default function RaidCard(props) {
             secondary={props.RaidSchedule.bossCode}
             sx={{ userSelect: "none" }}
           >
-            {/* {props.RaidSchedule.attackDateOrigin} */}
             {props.RaidSchedule.isUnknown
-              ? "[날짜미정]" + props.RaidSchedule.unknownRemark
+              ? "[미정]" + props.RaidSchedule.unknownRemark
               : DateFormatter(props.RaidSchedule.attackDateOrigin)}
           </ListItemText>
         </div>
@@ -117,15 +119,31 @@ export default function RaidCard(props) {
         >
           인원:{props.RaidSchedule.memberCount}명
         </p>
-        <KeyboardArrowDown
-          sx={{
-            mr: -1,
-            opacity: 1,
-            transform: open ? "rotate(-180deg)" : "rotate(0)",
-            transition: "0.2s",
-            marginRight: "10px",
-          }}
-        />
+        <Box sx={{ flexDirection: "column" }}>
+          <KeyboardArrowDown
+            sx={{
+              mr: -1,
+              opacity: 1,
+              transform: open ? "rotate(-180deg)" : "rotate(0)",
+              transition: "0.3s",
+              marginRight: "10px",
+            }}
+          />
+        </Box>{" "}
+        {props.RaidSchedule.isUnknown ? (
+          ""
+        ) : (
+          <Dday
+            eventDate={props.RaidSchedule.attackDateOrigin}
+            sx={{
+              background: "#CAE3FF",
+              position: "absolute",
+              right: "5px",
+              top: "-10px",
+              fontWeight: "bold",
+            }}
+          />
+        )}
       </Box>
       {open && (
         <CardContent key={attackId} sx={{ margin: "0px", padding: "0px" }}>
@@ -136,6 +154,7 @@ export default function RaidCard(props) {
                   <CharacterInfo
                     key={item.userId}
                     userId={item.userId}
+                    characterId={item.characterId}
                     characterName={item.characterName}
                     characterLevel={item.characterLevel}
                     className={item.className}

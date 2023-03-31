@@ -15,6 +15,7 @@ import { useNavigate } from "react-router-dom";
 import { SET_SELECTOR } from "../../constants/action-types";
 import { store } from "../../store/index";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
+import ProfileImage from "../UserInfo/ProfileImage";
 export default function TemporaryDrawer() {
   const navigate = useNavigate();
 
@@ -53,19 +54,9 @@ export default function TemporaryDrawer() {
           <ListItemIcon>
             {store.getState().loginUser.image != undefined &&
             store.getState().loginUser.image != "" ? (
-              <img
-                src={
-                  process.env.PUBLIC_URL +
-                  "images/loginUserImages/" +
-                  store.getState().loginUser.image
-                }
-                style={{
-                  width: "32px",
-                  height: "32px",
-                  objectFit: "cover",
-                  userSelect: "none",
-                }}
-                alt="Logo"
+              <ProfileImage
+                imageName={store.getState().loginUser.image}
+                size="48px"
               />
             ) : (
               <AccountBoxIcon />
