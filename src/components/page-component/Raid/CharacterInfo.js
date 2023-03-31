@@ -15,6 +15,7 @@ import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import SearchIcon from "@mui/icons-material/Search";
 import ProfileImage from "../../UserInfo/ProfileImage";
 import BtnSignEdit from "./BtnSignEdit";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 export default function CharacterInfo(props) {
   var ItemTextSecondary = props.className + " (" + props.characterLevel + ")";
   const supportClass = ["HolyNight", "Artist", "Bard"];
@@ -74,8 +75,10 @@ export default function CharacterInfo(props) {
           primaryTypographyProps={{ fontSize: "12px", fontWeight: "bold" }}
         ></ListItemText>
       </Box>
-      {props.image != undefined && props.image != "" && (
+      {props.image != undefined && props.image != "" ? (
         <ProfileImage imageName={props.image} size={"32px"} />
+      ) : (
+        <AccountCircleIcon sx={{ fontSize: "32px" }} />
       )}
       <ListItemText
         primary={props.characterName}
@@ -102,25 +105,6 @@ export default function CharacterInfo(props) {
         }}
       />
       <ListItemText primary={props.remark} sx={{ userSelect: "none" }} />
-      {supportClass.findIndex((el) => {
-        return el === props.classCode;
-      }) >= 0 ? (
-        <img
-          src={process.env.PUBLIC_URL + "images/supporter.png"}
-          style={{
-            width: "24px",
-            height: "24px",
-            objectFit: "cover",
-            userSelect: "none",
-            // position: "absolute",
-            // top: "0px",
-            // left: "13px",
-          }}
-          alt="Logo"
-        />
-      ) : (
-        ""
-      )}{" "}
       {store.getState().loginUser.userId == props.userId ? (
         <BtnSignEdit
           onClickHandler={() => {
@@ -142,6 +126,25 @@ export default function CharacterInfo(props) {
             quitRaid();
           }}
         ></DeleteForeverIcon>
+      ) : (
+        ""
+      )}
+      {supportClass.findIndex((el) => {
+        return el === props.classCode;
+      }) >= 0 ? (
+        <img
+          src={process.env.PUBLIC_URL + "images/supporter.png"}
+          style={{
+            width: "24px",
+            height: "24px",
+            objectFit: "cover",
+            userSelect: "none",
+            // position: "absolute",
+            // top: "0px",
+            // left: "13px",
+          }}
+          alt="Logo"
+        />
       ) : (
         ""
       )}
