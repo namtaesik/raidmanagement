@@ -13,6 +13,8 @@ import { apiAxiosPromise } from "../../../services/apiAxios/apiAxios";
 import { Box, fontSize } from "@mui/system";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import SearchIcon from "@mui/icons-material/Search";
+import ProfileImage from "../../UserInfo/ProfileImage";
+import BtnSignEdit from "./BtnSignEdit";
 export default function CharacterInfo(props) {
   var ItemTextSecondary = props.className + " (" + props.characterLevel + ")";
   const supportClass = ["HolyNight", "Artist", "Bard"];
@@ -73,36 +75,14 @@ export default function CharacterInfo(props) {
         ></ListItemText>
       </Box>
       {props.image != undefined && props.image != "" && (
-        <img
-          src={process.env.PUBLIC_URL + "images/loginUserImages/" + props.image}
-          style={{
-            width: "32px",
-            height: "32px",
-            objectFit: "cover",
-            userSelect: "none",
-          }}
-          alt="Logo"
-        />
+        <ProfileImage imageName={props.image} size={"32px"} />
       )}
       <ListItemText
         primary={props.characterName}
         secondary={ItemTextSecondary}
-        // secondaryTypographyProps={{
-        //   //"none",
-        //   backgroundColor:
-        //     supportClass.findIndex((el) => {
-        //       return el === props.classCode;
-        //     }) < 0
-        //       ? "none"
-        //       : "#00D8FF",
-        //   borderRadius: "5px",
-        //   marginRight: "10px",
-        //   // paddingLeft: "3px",
-        // }}
         sx={{ userSelect: "none", maxWidth: "200px" }}
         // 클릭시 대표캐릭터 표시
         onClick={() => {
-          console.log("눌럿다");
           apiAxiosPromise("GET", "/api/user", { userId: props.userId })
             .then((res) => {
               //console.log(res[0]);
@@ -140,15 +120,27 @@ export default function CharacterInfo(props) {
         />
       ) : (
         ""
+      )}{" "}
+      {store.getState().loginUser.userId == props.userId ? (
+        <BtnSignEdit
+          onClickHandler={() => {
+            props.onClickHandler();
+          }}
+          attackId={props.attackId}
+          characterId={props.characterId}
+          remark={props.remark}
+          proficiency={props.proficiency}
+        ></BtnSignEdit>
+      ) : (
+        ""
       )}
       {store.getState().loginUser.userId == props.userId ? (
         <DeleteForeverIcon
           size="small"
-          variant="contained"
+          color="error"
           onClick={() => {
             quitRaid();
           }}
-          color="error"
         ></DeleteForeverIcon>
       ) : (
         ""
