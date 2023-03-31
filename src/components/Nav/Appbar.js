@@ -12,6 +12,7 @@ import { SET_USER, SET_CHARACTER } from "../../constants/action-types";
 import LoginPopup from "../Popup/LoginPopup";
 import { useNavigate } from "react-router-dom";
 import ProfileImage from "../UserInfo/ProfileImage";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 export default function ButtonAppBar() {
   const navigator = useNavigate();
   var menuState = store.getState().navMenu;
@@ -78,21 +79,7 @@ export default function ButtonAppBar() {
               size="48px"
             />
           ) : (
-            // <img
-            //   src={
-            //     process.env.PUBLIC_URL +
-            //     "images/loginUserImages/" +
-            //     store.getState().loginUser.image
-            //   }
-            //   style={{
-            //     height: "48px",
-            //     width: "48px",
-            //     userSelect: "none",
-            //     paddingRight: "0px",
-            //     objectFit: "cover",
-            //   }}
-            // />
-            ""
+            <AccountCircleIcon sx={{ fontSize: "48px" }} />
           )}
           <LoginPopup
             open={open}

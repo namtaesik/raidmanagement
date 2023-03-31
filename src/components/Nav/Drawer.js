@@ -12,10 +12,9 @@ import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MenuIcon from "@mui/icons-material/Menu";
 import IconButton from "@mui/material/IconButton";
 import { useNavigate } from "react-router-dom";
-import { SET_SELECTOR } from "../../constants/action-types";
 import { store } from "../../store/index";
-import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import ProfileImage from "../UserInfo/ProfileImage";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 export default function TemporaryDrawer() {
   const navigate = useNavigate();
 
@@ -59,7 +58,7 @@ export default function TemporaryDrawer() {
                 size="48px"
               />
             ) : (
-              <AccountBoxIcon />
+              <AccountCircleIcon sx={{ fontSize: "48px" }} />
             )}
           </ListItemIcon>
           <ListItemText>
