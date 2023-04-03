@@ -26,6 +26,8 @@ export default function RaidCard(props) {
     setResize(window.innerWidth);
   };
   useEffect(() => {
+    GetRaidDetail();
+
     window.addEventListener("resize", handleResize);
     return () => {
       window.removeEventListener("resize", handleResize);
@@ -84,8 +86,6 @@ export default function RaidCard(props) {
           if (!open) {
             GetRaidDetail();
           } else {
-            //데이터 삭제
-            setPartyData([{}]);
           }
           setOpen(!open);
         }}
@@ -117,7 +117,7 @@ export default function RaidCard(props) {
             userSelect: "none",
           }}
         >
-          인원:{props.RaidSchedule.memberCount}명
+          인원:{partyData.length}명
         </p>
         <Box sx={{ flexDirection: "column" }}>
           <KeyboardArrowDown
