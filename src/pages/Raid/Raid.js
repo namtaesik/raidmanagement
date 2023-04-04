@@ -51,6 +51,9 @@ export default function Raid() {
             position: "fixed",
             bottom: "16px",
             right: "16px",
+            width: "64px",
+            height: "64px",
+
             zIndex: 9999,
           }}
         >
