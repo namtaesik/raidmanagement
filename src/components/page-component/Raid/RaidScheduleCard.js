@@ -100,14 +100,15 @@ export default function RaidCard(props) {
           key={attackId}
         >
           <ListItemText
-            primaryTypographyProps={{ fontWeight: "" }}
-            secondary={props.RaidSchedule.bossCode}
+            primary={props.RaidSchedule.bossCode}
+            primaryTypographyProps={{ fontWeight: "", fontWeight: "bold" }}
+            secondary={
+              props.RaidSchedule.isUnknown
+                ? "[미정]" + props.RaidSchedule.unknownRemark
+                : DateFormatter(props.RaidSchedule.attackDateOrigin)
+            }
             sx={{ userSelect: "none" }}
-          >
-            {props.RaidSchedule.isUnknown
-              ? "[미정]" + props.RaidSchedule.unknownRemark
-              : DateFormatter(props.RaidSchedule.attackDateOrigin)}
-          </ListItemText>
+          ></ListItemText>
         </div>
         <p
           style={{
