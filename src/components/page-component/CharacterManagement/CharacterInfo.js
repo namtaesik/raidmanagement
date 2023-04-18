@@ -49,7 +49,6 @@ export default function CharacterInfo(props) {
             userId: props.info.userId,
           })
             .then((res) => {
-              console.log(res);
               store.dispatch({ type: SET_USER, payload: res });
             })
             .catch((err) => {

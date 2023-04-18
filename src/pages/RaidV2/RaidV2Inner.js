@@ -1,16 +1,16 @@
 import { Fab, SpeedDialIcon } from "@mui/material";
 import React, { useState } from "react";
 import { Navigate } from "react-router-dom";
-import RaidScheduleCard from "../../components/page-component/Raid/RaidScheduleCard";
+import { useLocation } from "react-router-dom"; // useNavigate를 이용하여 받은 state 인자값을 취득하기.
+import RaidScheduleCard from "../../components/page-component/RaidV2/RaidScheduleCard";
 import { apiAxiosPromise } from "../../services/apiAxios/apiAxios";
-import DatePickerPopup from "../../components/Popup/Raid/DatePickerPopup";
+import DatePickerPopup from "../../components/Popup/RaidV2/DatePickerPopup";
 import store from "../../store";
-export default function Raid() {
-  // const classes = useStyles();
+export default function Raid(props) {
+  const location = useLocation(); // 1. useLocation 훅 취득
   const [schedule, setSchedule] = React.useState([{}]);
   const [isRendered, setIsRendered] = useState(false);
   const [open, setOpen] = React.useState(false);
-
   React.useEffect(() => {
     getRaidCalendar();
     setIsRendered(true);
@@ -21,8 +21,12 @@ export default function Raid() {
     return <Navigate to="/" />;
   }
   async function getRaidCalendar() {
-    await apiAxiosPromise("GET", "/api/raid-calendar", {})
+    // await apiAxiosPromise("GET", "/api/raid-calendar-v2", {
+    await apiAxiosPromise("GET", "/api/raid-calendar-v2", {
+      contentsCode: location.state.contentsCode,
+    })
       .then((res) => {
+        console.log(res);
         setSchedule(res);
       })
       .catch((err) => {
@@ -64,6 +68,7 @@ export default function Raid() {
           handleClose={() => {
             setOpen(false);
           }}
+          contentsCode={location.state.contentsCode}
         ></DatePickerPopup>
       </div>
     );

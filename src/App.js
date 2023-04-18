@@ -3,6 +3,8 @@ import "./styles/App/App.css";
 import Home from "./pages/Home/Home";
 import Sub from "./pages/Sub/Sub";
 import Raid from "./pages/Raid/Raid";
+import RiadV2 from "./pages/RaidV2/RaidV2";
+import RaidV2Inner from "./pages/RaidV2/RaidV2Inner";
 import CharacterManagement from "./pages/CharacterManagement/CharacterManagement";
 import Test from "./pages/Test/Test"; // 테스트api용
 import React from "react";
@@ -20,6 +22,11 @@ class App extends React.Component {
             <Route path="/" element={<Home></Home>}></Route>
             <Route path="/Sub" element={<Sub></Sub>}></Route>
             <Route path="/Raid" element={<Raid></Raid>}></Route>
+            <Route path="/RaidV2" element={<RiadV2></RiadV2>}></Route>
+            <Route
+              path="/RaidV2Inner"
+              element={<RaidV2Inner></RaidV2Inner>}
+            ></Route>
             <Route
               path="/CharacterManagement"
               element={<CharacterManagement></CharacterManagement>}
