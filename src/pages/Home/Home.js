@@ -69,22 +69,25 @@ export default function Home() {
       }}
     >
       <ListItem key="txtFirst">
-        <Typography>로그인 정보를 입력하세요.</Typography>
+        <Typography sx={{ userSelect: "none" }}>
+          로그인 정보를 입력하세요.
+        </Typography>
       </ListItem>
       <ListItem key="txtSecond">
-        <Typography>
+        <Typography sx={{ userSelect: "none" }}>
           회원가입을 하시려면 우측 하단의 버튼을 눌러주세요.
         </Typography>
       </ListItem>
       <ListItem key="inputId" sx={{ justifyContent: "center" }}>
         <TextField
           required
-          id="outlined-required"
+          //id="outlined-required"
           label="아이디"
+          type="text"
           onChange={(evt) => {
             userModel.userId = evt.target.value;
           }}
-          sx={{ width: "200px" }}
+          sx={{ width: "200px", userSelect: "none" }}
         />
       </ListItem>
       <ListItem key="inputPw" sx={{ justifyContent: "center" }}>
@@ -97,7 +100,7 @@ export default function Home() {
             userModel.password = encryptAES256(evt.target.value);
           }}
           onKeyDown={handleKeyDown}
-          sx={{ width: "200px" }}
+          sx={{ width: "200px", userSelect: "none" }}
         />
       </ListItem>
       <ListItem key="btnLogin" sx={{ justifyContent: "center" }}>
