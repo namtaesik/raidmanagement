@@ -23,8 +23,12 @@ export default function ButtonAppBar() {
 
   const location = useLocation();
   useEffect(() => {
-    console.log("rendered");
-    setTitle(menuState.menu.find((c) => c.path === location.pathname).name);
+    // 23.04.18 | 추가 | 레이드일정V2일 경우 선택된 레이드 일정을 표시
+    if (location.pathname === "/RaidV2Inner") {
+      setTitle(store.getState().contentsName);
+    } else {
+      setTitle(menuState.menu.find((c) => c.path === location.pathname).name);
+    }
     if (store.getState().loginUser.userId ?? "" != "") setIsLogin(true);
   });
   return (
