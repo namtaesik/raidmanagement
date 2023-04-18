@@ -12,7 +12,7 @@ import { useState, useEffect } from "react";
 import CharacterInfo from "./CharacterInfo";
 import moment from "moment/moment";
 import weekOfDay from "../../../services/dateFormat/weekOfDay";
-import BtnDelSchedule from "../../page-component/Raid/BtnDelSchedule";
+import BtnDelSchedule from "./BtnDelSchedule";
 import { Button } from "@mui/material";
 import BtnUpdateSchedule from "./BtnUpdateSchedule";
 import Dday from "../../DateComp/Dday";
@@ -22,10 +22,12 @@ export default function RaidCard(props) {
   var isJoined = false; // 해당 스케줄에 참가하였는지여부(userId 기준)
   const [resize, setResize] = useState();
   const handleResize = () => {
+    //console.log(window.innerWidth);
     setResize(window.innerWidth);
   };
   useEffect(() => {
     GetRaidDetail();
+    console.log(props.RaidSchedule);
 
     window.addEventListener("resize", handleResize);
     return () => {
@@ -33,6 +35,7 @@ export default function RaidCard(props) {
     };
   }, []);
   const attackId = props.RaidSchedule.attackId; // 스케줄 ID
+  //console.log((moment() - props.RaidSchedule.attackDateOrigin).getDay())
 
   function isThisWeek(date) {
     const today = moment();
@@ -51,7 +54,7 @@ export default function RaidCard(props) {
     // 데이터 불러오기 (axios)
     var PartyDetail = await apiAxiosPromise(
       "GET",
-      "/api/raid-calendar/detail",
+      "/api/raid-calendar-v2/detail",
       { attackId: attackId }
     );
     // 데이터 담기
@@ -61,7 +64,6 @@ export default function RaidCard(props) {
       if (item.userId == store.getState().loginUser.userId) isJoined = true;
     });
   }
-
   const card = (
     <Card
       sx={{
@@ -98,7 +100,7 @@ export default function RaidCard(props) {
           key={attackId}
         >
           <ListItemText
-            primary={props.RaidSchedule.bossCode}
+            primary={props.RaidSchedule.remark}
             primaryTypographyProps={{ fontWeight: "", fontWeight: "bold" }}
             secondary={
               props.RaidSchedule.isUnknown
@@ -189,9 +191,11 @@ export default function RaidCard(props) {
               attackId={attackId}
               isUnknown={props.RaidSchedule.isUnknown}
               unknownRemark={props.RaidSchedule.unknownRemark}
-              boss={props.RaidSchedule.bossCode}
+              remark={props.RaidSchedule.remark}
               regUser={props.RaidSchedule.regUser}
               attackDate={props.RaidSchedule.attackDate}
+              contentsCode={props.RaidSchedule.contentsCode}
+              difficultyCode={props.RaidSchedule.difficultyCode}
               onClickHandler={() => {
                 GetRaidDetail();
               }}
