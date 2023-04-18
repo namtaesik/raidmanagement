@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import Button from "@mui/material/Button";
-import { useSelector } from "react-redux";
+import ModeEditOutlineIcon from "@mui/icons-material/ModeEditOutline";
 import { SET_CHARACTER } from "../../../constants/action-types";
 import {
   Dialog,
@@ -20,7 +20,7 @@ import {
 import store from "../../../store";
 import { apiAxiosPromise } from "../../../services/apiAxios/apiAxios";
 import { Stack } from "@mui/system";
-export default function BtnSignUp(props) {
+export default function BtnSignEdit(props) {
   // 최초 캐릭터 조회
   useEffect(() => {
     apiAxiosPromise("GET", "/api/character", store.getState().loginUser).then(
@@ -32,22 +32,25 @@ export default function BtnSignUp(props) {
     );
   }, []);
   // 토글버튼
-  const [selected, setSelected] = React.useState("트라이");
+  const [selected, setSelected] = React.useState(props.proficiency);
   const handleSelected = (event, newSelected) => {
     if (newSelected !== null) {
       setSelected(newSelected);
     }
   };
   // 캐릭터선택
-  const [selectedCharacter, setSelectedCharacter] = React.useState(-1);
+  const beforeCharacterId = props.characterId;
+  const [selectedCharacter, setSelectedCharacter] = React.useState(
+    props.characterId
+  );
   const characterList = store.getState().loginUserDetail;
-  const [remark, setRemark] = React.useState("");
+  const [remark, setRemark] = React.useState(props.remark);
   const [open, setOpen] = React.useState(false);
 
   const handleClose = () => {
     setOpen(false);
   };
-  var addJoinRaidParams = {};
+  var EditRaidDetailParams = {};
 
   const userInfo = store.getState().loginUser;
   function btnClick(obj, e) {
@@ -57,10 +60,14 @@ export default function BtnSignUp(props) {
     return (
       //"캐릭터가 없습니다. 캐릭터관리에서 캐릭터를 등록하세요."
       <div key={userInfo.userId}>
-        <Button variant="contained" size="small" onClick={btnClick}>
-          {props.title}
-        </Button>
-
+        <ModeEditOutlineIcon
+          size="small"
+          variant="contained"
+          onClick={() => {
+            btnClick();
+          }}
+          color="error"
+        />
         <Dialog open={open} onClose={handleClose} fullWidth={false}>
           <DialogTitle sx={{ userSelect: "none" }}>
             {" "}
@@ -79,10 +86,13 @@ export default function BtnSignUp(props) {
   } else {
     return (
       <div key={userInfo.userId}>
-        <Button variant="contained" size="small" onClick={btnClick}>
-          {props.title}
-        </Button>
-
+        <ModeEditOutlineIcon
+          size="small"
+          variant="contained"
+          onClick={() => {
+            btnClick();
+          }}
+        />
         <Dialog
           open={open}
           onClose={handleClose}
@@ -90,7 +100,6 @@ export default function BtnSignUp(props) {
           sx={{ minWidth: "300px" }}
         >
           <DialogTitle sx={{ userSelect: "none" }}>
-            {" "}
             {userInfo.userId}님
           </DialogTitle>
           <Divider />
@@ -118,8 +127,8 @@ export default function BtnSignUp(props) {
                         }
                         size="small"
                         onClick={() => {
-                          addJoinRaidParams = {
-                            ...addJoinRaidParams,
+                          EditRaidDetailParams = {
+                            ...EditRaidDetailParams,
                             userId: item.userId,
                             characterId: item.characterId,
                             attackId: props.attackId,
@@ -173,6 +182,7 @@ export default function BtnSignUp(props) {
                 id="outlined-required"
                 label="비고"
                 inputProps={{ maxLength: 15 }}
+                value={remark}
                 onChange={(evt) => {
                   if (evt.target.value.length > 15) {
                     alert("15글자 까지만 입력 가능합니다.");
@@ -192,23 +202,22 @@ export default function BtnSignUp(props) {
                   alert("신청할 캐릭터를 선택해주세요.");
                   return false;
                 }
-                addJoinRaidParams = {
+                EditRaidDetailParams = {
                   userId: userInfo.userId,
+                  beforeCharacterId: beforeCharacterId,
                   characterId: selectedCharacter,
                   attackId: props.attackId,
                   remark: remark,
                   proficiency: selected,
                 };
+
                 apiAxiosPromise(
                   "POST",
-                  "/api/raid-calendar/join",
-                  addJoinRaidParams
+                  "/api/raid-calendar-v2/detail/edit",
+                  EditRaidDetailParams
                 )
                   .then((res) => {
                     alert(res[0].codeName);
-                    setSelectedCharacter(-1);
-                    setSelected("트라이");
-                    setRemark("");
                     props.onClickHandler();
                     setOpen(false);
                   })
@@ -217,7 +226,7 @@ export default function BtnSignUp(props) {
                   });
               }}
             >
-              신청
+              수정
             </Button>
             <Button onClick={handleClose}>취소</Button>
           </DialogActions>

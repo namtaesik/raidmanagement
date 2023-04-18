@@ -21,7 +21,7 @@ export default function CharacterInfo(props) {
   const supportClass = ["HolyNight", "Artist", "Bard"];
   function quitRaid() {
     if (window.confirm("삭제하시겠습니까?")) {
-      apiAxiosPromise("POST", "/api/raid-calendar/quit", {
+      apiAxiosPromise("POST", "/api/raid-calendar-v2/quit", {
         attackId: props.attackId,
         userId: props.userId,
       })
@@ -98,7 +98,9 @@ export default function CharacterInfo(props) {
                 " 입니다.";
               alert(msg);
             })
-            .catch((err) => {});
+            .catch((err) => {
+              console.log(err);
+            });
         }}
       />
       <ListItemText primary={props.remark} sx={{ userSelect: "none" }} />

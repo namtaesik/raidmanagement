@@ -6,11 +6,13 @@ module.exports = function (app) {
   app.use(
     createProxyMiddleware(["/api"], {
       target: "http://loacatcountryserver.cafe24app.com",
+      // target: "http://127.0.0.1:3001",
       pathRewrite: {
         "/api": "",
       },
       router: {
         "/api": "http://loacatcountryserver.cafe24app.com",
+        // "/api": "http://127.0.0.1:3001",
       },
       changeOrigin: true,
     })
