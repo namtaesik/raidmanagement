@@ -201,7 +201,7 @@ export default function BtnSignUp(props) {
                 };
                 apiAxiosPromise(
                   "POST",
-                  "/api/raid-calendar/join",
+                  "/api/raid-calendar-v2/join",
                   addJoinRaidParams
                 )
                   .then((res) => {
