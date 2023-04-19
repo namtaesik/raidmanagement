@@ -27,7 +27,6 @@ export default function RaidCard(props) {
   };
   useEffect(() => {
     GetRaidDetail();
-    console.log(props.RaidSchedule);
 
     window.addEventListener("resize", handleResize);
     return () => {
@@ -70,7 +69,12 @@ export default function RaidCard(props) {
         width: resize > 1014 ? "auto" : "auto",
         minWidth: 264,
         margin: "7px 7px 7px 7px",
-        background: isWeek ? "#f0f7ff" : "#D3D3D3",
+        background:
+          props.RaidSchedule.limitMember <= partyData.length
+            ? "#ff7777"
+            : isWeek
+            ? "#f0f7ff"
+            : "#D3D3D3",
         borderColor: isWeek ? "#007fff" : "#D3D3D3",
         borderRadius: "10px",
         borderWidth: "1px",
@@ -161,7 +165,7 @@ export default function RaidCard(props) {
                     className={item.className}
                     classCode={item.classCode}
                     attackId={attackId}
-                    remark={item.remark}
+                    remark={item.remarkDetail}
                     proficiency={item.proficiency}
                     image={item.image}
                     onClickHandler={() => {
@@ -177,14 +181,18 @@ export default function RaidCard(props) {
             key="btngrpRaidCard"
             sx={{ paddingLeft: "13px", justifyContent: "space-between" }}
           >
-            <BtnSignUp
-              key="btnJoin"
-              title="신청하기"
-              attackId={attackId}
-              onClickHandler={() => {
-                GetRaidDetail();
-              }}
-            ></BtnSignUp>
+            {props.RaidSchedule.limitMember > partyData.length && (
+              <BtnSignUp
+                key="btnJoin"
+                title="신청하기"
+                attackId={attackId}
+                limitMember={props.RaidSchedule.limitMember}
+                memberCount={partyData.length}
+                onClickHandler={() => {
+                  GetRaidDetail();
+                }}
+              ></BtnSignUp>
+            )}
             <BtnUpdateSchedule
               key="btnUpdateSchedule"
               title="일정수정"
@@ -196,6 +204,7 @@ export default function RaidCard(props) {
               attackDate={props.RaidSchedule.attackDate}
               contentsCode={props.RaidSchedule.contentsCode}
               difficultyCode={props.RaidSchedule.difficultyCode}
+              limitMember={props.RaidSchedule.limitMember}
               onClickHandler={() => {
                 GetRaidDetail();
               }}

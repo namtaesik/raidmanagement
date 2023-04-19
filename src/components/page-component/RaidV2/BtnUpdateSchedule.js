@@ -49,6 +49,7 @@ export default function BtnUpdateSchedule(props) {
         remark={props.remark}
         contentsCode={props.contentsCode}
         difficultyCode={props.difficultyCode}
+        limitMember={props.limitMember}
         handleClose={() => {
           setOpen(false);
         }}
