@@ -33,7 +33,6 @@ export function apiAxiosPromise(actionType, url, param) {
     window.location.hostname === "localhost"
       ? url
       : "http://loacatcountryserver.cafe24app.com" + url.replace("/api", "");
-  console.log(param);
   const promise = new Promise((resolve, reject) => {
     switch (actionType) {
       case "GET":

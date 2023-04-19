@@ -50,7 +50,6 @@ export default function EditCharacterPopup(props) {
       setRootClassCode(props.characterInfo.rootClassCode);
     });
     // 수정이므로 기본 root클래스 지정 및 class 세팅
-    console.log("test", props.characterInfo.rootClassCode);
     apiAxiosPromise("GET", "/api/code", {
       groupCode: props.characterInfo.rootClassCode,
     }).then((res) => {

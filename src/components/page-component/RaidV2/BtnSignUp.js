@@ -53,6 +53,7 @@ export default function BtnSignUp(props) {
   function btnClick(obj, e) {
     setOpen(true);
   }
+
   if (characterList[0].characterId == undefined) {
     return (
       //"캐릭터가 없습니다. 캐릭터관리에서 캐릭터를 등록하세요."

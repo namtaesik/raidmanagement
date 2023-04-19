@@ -26,7 +26,6 @@ export default function Raid(props) {
       contentsCode: location.state.contentsCode,
     })
       .then((res) => {
-        console.log(res);
         setSchedule(res);
       })
       .catch((err) => {

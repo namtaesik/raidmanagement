@@ -37,7 +37,7 @@ export default function DatePickerPopup(props) {
     0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
     21, 22, 23,
   ];
-  const [hour, setHour] = useState(7);
+  const [hour, setHour] = useState(17);
   const minuteList = [0, 10, 20, 30, 40, 50];
   const [minute, setMinute] = useState(30);
   // 날짜 미정관련 state
@@ -48,6 +48,8 @@ export default function DatePickerPopup(props) {
   const [difficultyCodeList, setDifficultyCodeList] = useState([{}]);
   const [contentsCode, setContentsCode] = useState("");
   const [difficultyCode, setDifficultyCode] = useState("");
+  // 22.04.19 | 추가 | 유저 수 제한
+  const [limitMember, setLimitMember] = useState(0);
   // 유저정보
   const userId = store.getState().loginUser.userId;
   function changeMonth(pMonth) {
@@ -102,10 +104,11 @@ export default function DatePickerPopup(props) {
       setMinute(props.attackDate.substring(14, 16));
     }
   }, []);
-  // 컨텐츠 및 난이도 세팅
+  // 컨텐츠 및 난이도, 제한 인원 수 세팅
   useEffect(() => {
     getContentsCode();
     getDifficultyCode();
+    setLimitMember(props.limitMember ?? 8);
   }, []);
   const createCustomDate = (year, month, day, hour, minute) => {
     // moment() 함수를 사용하여 특정 시간을 생성합니다.
@@ -144,6 +147,7 @@ export default function DatePickerPopup(props) {
         userId: userId,
         contentsCode: contentsCode,
         difficultyCode: difficultyCode,
+        limitMember: limitMember,
       };
       if (props.attackId == undefined) {
         apiAxiosPromise("POST", "/api/raid-calendar-v2", param)
@@ -467,6 +471,31 @@ export default function DatePickerPopup(props) {
             )}
           </DialogContent>
           <Divider />
+          <Stack
+            direction="column"
+            justifyContent="center"
+            alignItems="center"
+            spacing={0}
+          >
+            <DialogTitle sx={{ fontSize: "1rem" }}>
+              {"최대 인원을 입력하세요. "}
+            </DialogTitle>
+            <TextField
+              id="outlined-required"
+              label="ex)8"
+              value={limitMember}
+              inputProps={{ maxLength: 2 }}
+              type="number"
+              onChange={(evt) => {
+                if (evt.target.value > 99) {
+                  alert("99 까지만 입력 가능합니다.");
+                  return false;
+                }
+                setLimitMember(evt.target.value);
+              }}
+              sx={{ width: "200px", marginTop: "10px" }}
+            />
+          </Stack>
           <DialogContent sx={{ padding: "7px" }}>
             <Stack
               sx={{ marginTop: "10px" }}
