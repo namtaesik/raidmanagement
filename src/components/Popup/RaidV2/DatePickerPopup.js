@@ -201,6 +201,7 @@ export default function DatePickerPopup(props) {
       groupCode: "Contents",
     })
       .then((res) => {
+        res = res.filter((item) => item.code != "");
         setContentsCodeList(res);
         setContentsCode(props.contentsCode ?? "");
       })
