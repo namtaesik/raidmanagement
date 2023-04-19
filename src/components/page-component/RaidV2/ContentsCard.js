@@ -20,11 +20,14 @@ import Dday from "../../DateComp/Dday";
 export default function RaidCard(props) {
   const [open, setOpen] = React.useState(false);
   const [resize, setResize] = useState();
+  const [raidCount, serRaidCount] = useState(-1);
   const handleResize = () => {
     //console.log(window.innerWidth);
     setResize(window.innerWidth);
   };
   useEffect(() => {
+    // 레이드 수 가져오기
+    getRaidCount();
     window.addEventListener("resize", handleResize);
     return () => {
       window.removeEventListener("resize", handleResize);
@@ -36,6 +39,18 @@ export default function RaidCard(props) {
       payload: [props.Contents.codeName],
     });
     props.onContentsClick(props.Contents.code);
+  }
+  // 코드에 맞는 레이드 파티 수 가져오기
+  async function getRaidCount() {
+    await apiAxiosPromise("GET", "/api/raid-calendar-v2", {
+      contentsCode: props.Contents.code,
+    })
+      .then((res) => {
+        serRaidCount(res.length);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
   const card = (
     <Card
@@ -50,6 +65,7 @@ export default function RaidCard(props) {
         borderStyle: "solid",
         color: "black",
         position: "relative",
+        height: "53px",
       }}
       key={props.Contents.code}
     >
@@ -70,10 +86,37 @@ export default function RaidCard(props) {
         >
           <ListItemText
             primary={props.Contents.codeName}
-            primaryTypographyProps={{ fontWeight: "", fontWeight: "bold" }}
+            primaryTypographyProps={{
+              fontWeight: "",
+              fontWeight: "bold",
+            }}
             sx={{ userSelect: "none" }}
           ></ListItemText>
         </div>
+        {raidCount >= 0 && (
+          <p
+            style={{
+              marginLeft: "auto",
+              marginRight: "10px",
+              minWidth: "70px",
+              userSelect: "none",
+            }}
+          >
+            일정 수:{raidCount}개
+          </p>
+        )}
+        {raidCount < 0 && (
+          <p
+            style={{
+              marginLeft: "auto",
+              marginRight: "10px",
+              minWidth: "70px",
+              userSelect: "none",
+            }}
+          >
+            {"일정 수 : "}
+          </p>
+        )}
       </Box>
     </Card>
   );
