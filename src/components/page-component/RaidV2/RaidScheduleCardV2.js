@@ -186,6 +186,7 @@ export default function RaidCardV2Temp(props) {
               fontSize: "14px",
               fontWeight: "bold",
             }}
+            sx={{ userSelect: "none" }}
           ></ListItemText>
         </div>
         <Box
