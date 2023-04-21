@@ -146,7 +146,7 @@ export default function RaidCardV2Temp(props) {
                   >
                     {props.RaidSchedule.difficultyName}
                   </span>
-                  {/* 왼쪽 공백 */ " "} {props.RaidSchedule.contentsName}
+                  {props.RaidSchedule.contentsName}
                   <span
                     style={{
                       paddingLeft: "5px",

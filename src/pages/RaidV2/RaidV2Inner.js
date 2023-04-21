@@ -4,6 +4,7 @@ import { Navigate } from "react-router-dom";
 import { useLocation } from "react-router-dom"; // useNavigate를 이용하여 받은 state 인자값을 취득하기.
 import RaidScheduleCard from "../../components/page-component/RaidV2/RaidScheduleCard";
 import RaidScheduleCardV2 from "../../components/page-component/RaidV2/RaidScheduleCardV2";
+import RaidScheduleCardV2Temp from "../../components/page-component/RaidV2/RaidScheduleCardV2_temp";
 import { apiAxiosPromise } from "../../services/apiAxios/apiAxios";
 import DatePickerPopup from "../../components/Popup/RaidV2/DatePickerPopup";
 import store from "../../store";
@@ -40,7 +41,9 @@ export default function Raid(props) {
       <div>
         {schedule?.map((item) => {
           if (item?.attackId != undefined) {
-            return <RaidScheduleCard key={item.attackId} RaidSchedule={item} />;
+            return (
+              <RaidScheduleCardV2 key={item.attackId} RaidSchedule={item} />
+            );
           }
         })}
         <Fab

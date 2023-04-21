@@ -1,0 +1,7 @@
+.titlebox {
+  font-size: 20px;
+  display: flex;
+  padding-left: 10px;
+  flex-direction: column;
+  width: 100%;
+}
