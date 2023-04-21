@@ -13,10 +13,10 @@ import CharacterInfo from "./CharacterInfo";
 import moment from "moment/moment";
 import weekOfDay from "../../../services/dateFormat/weekOfDay";
 import BtnDelSchedule from "./BtnDelSchedule";
-import { Button } from "@mui/material";
+import { Button, Divider } from "@mui/material";
 import BtnUpdateSchedule from "./BtnUpdateSchedule";
 import Dday from "../../DateComp/Dday";
-export default function RaidCard(props) {
+export default function RaidCardV2(props) {
   const [open, setOpen] = React.useState(false);
   const [partyData, setPartyData] = React.useState([{}]);
   var isJoined = false; // 해당 스케줄에 참가하였는지여부(userId 기준)
@@ -80,6 +80,7 @@ export default function RaidCard(props) {
             ? "red"
             : "#007fff"
           : "#D3D3D3",
+
         borderRadius: "10px",
         borderWidth: "1px",
         borderStyle: "solid",
@@ -107,16 +108,73 @@ export default function RaidCard(props) {
           }}
           key={attackId}
         >
-          <ListItemText
-            primary={props.RaidSchedule.remark}
-            primaryTypographyProps={{ fontWeight: "", fontWeight: "bold" }}
-            secondary={
-              props.RaidSchedule.isUnknown
-                ? "[미정]" + props.RaidSchedule.unknownRemark
-                : DateFormatter(props.RaidSchedule.attackDateOrigin)
-            }
-            sx={{ userSelect: "none" }}
-          ></ListItemText>
+          {props.RaidSchedule.contentsCode != "Other" && (
+            <ListItemText
+              primary={
+                <span>
+                  <span
+                    style={{
+                      background:
+                        props.RaidSchedule.difficultyCode == "Rehearsal"
+                          ? "lightblue"
+                          : props.RaidSchedule.difficultyCode == "Normal"
+                          ? "yellow"
+                          : props.RaidSchedule.difficultyCode == "Hard"
+                          ? "orange"
+                          : props.RaidSchedule.difficultyCode == "Hell"
+                          ? "red"
+                          : "grey",
+                      fontSize: "12px",
+                      color:
+                        props.RaidSchedule.difficultyCode == "Hell" ||
+                        props.RaidSchedule.difficultyCode == "None"
+                          ? "white"
+                          : "black",
+                      alignItems: "center",
+                      padding: "2px 4px 2px 4px",
+                    }}
+                  >
+                    {props.RaidSchedule.difficultyName}
+                  </span>{" "}
+                  {props.RaidSchedule.contentsName}
+                </span>
+              }
+              primaryTypographyProps={{ fontWeight: "", fontWeight: "bold" }}
+              secondary={
+                props.RaidSchedule.isUnknown
+                  ? "[미정]" + props.RaidSchedule.unknownRemark
+                  : DateFormatter(props.RaidSchedule.attackDateOrigin)
+              }
+              sx={{ userSelect: "none" }}
+            ></ListItemText>
+          )}
+          {props.RaidSchedule.contentsCode == "Other" && (
+            <ListItemText
+              primary={
+                <span>
+                  <span
+                    style={{
+                      background: "black",
+                      fontSize: "12px",
+                      alignItems: "center",
+                      padding: "2px",
+                      color: "white",
+                    }}
+                  >
+                    {props.RaidSchedule.contentsName}
+                  </span>{" "}
+                  {props.RaidSchedule.remark}
+                </span>
+              }
+              primaryTypographyProps={{ fontWeight: "", fontWeight: "bold" }}
+              secondary={
+                props.RaidSchedule.isUnknown
+                  ? "[미정]" + props.RaidSchedule.unknownRemark
+                  : DateFormatter(props.RaidSchedule.attackDateOrigin)
+              }
+              sx={{ userSelect: "none" }}
+            ></ListItemText>
+          )}
         </div>
         <p
           style={{
@@ -156,6 +214,18 @@ export default function RaidCard(props) {
       </Box>
       {open && (
         <CardContent key={attackId} sx={{ margin: "0px", padding: "0px" }}>
+          {props.RaidSchedule.contentsCode != "Other" && (
+            <ListItem key="liRemark">
+              <ListItemText
+                primary={props.RaidSchedule.remark}
+                primaryTypographyProps={{
+                  fontSize: "14px",
+                  fontWeight: "bold",
+                }}
+              ></ListItemText>
+            </ListItem>
+          )}
+          <Divider />
           {partyData?.map((item, index) => {
             if (item.userId != undefined) {
               return (

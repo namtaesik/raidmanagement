@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { Navigate } from "react-router-dom";
 import { useLocation } from "react-router-dom"; // useNavigate를 이용하여 받은 state 인자값을 취득하기.
 import RaidScheduleCard from "../../components/page-component/RaidV2/RaidScheduleCard";
+import RaidScheduleCardV2 from "../../components/page-component/RaidV2/RaidScheduleCardV2";
 import { apiAxiosPromise } from "../../services/apiAxios/apiAxios";
 import DatePickerPopup from "../../components/Popup/RaidV2/DatePickerPopup";
 import store from "../../store";

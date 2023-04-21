@@ -58,7 +58,7 @@ export default function RaidCard(props) {
         width: resize > 1014 ? "auto" : "auto",
         minWidth: 264,
         margin: "7px 7px 7px 7px",
-        background: "#f0f7ff",
+        background: props.Contents.code == "" ? "#CAE3FF" : "#f0f7ff",
         borderColor: "#007fff",
         borderRadius: "10px",
         borderWidth: "1px",
