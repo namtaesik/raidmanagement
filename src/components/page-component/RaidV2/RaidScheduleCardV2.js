@@ -39,6 +39,7 @@ export default function RaidCardV2Temp(props) {
 
   function isThisWeek(date) {
     const today = moment();
+    if (today.weekday() == 0) today.add(-1, "day"); // 일요일일 경우 하루 빼서 한주 지나지 않도록 적용
     const startOfWeek = today.clone().startOf("week").add(1, "day"); // 한 주의 시작일을 월요일로 설정
     const endOfWeek = today.clone().endOf("week").add(1, "day"); // 한 주의 마지막일을 일요일로 설정
     if (props.RaidSchedule.isUnknown) {
@@ -76,11 +77,12 @@ export default function RaidCardV2Temp(props) {
             : isWeek
             ? "#f0f7ff"
             : "#D3D3D3",
-        borderColor: isWeek
-          ? props.RaidSchedule.limitMember <= partyData.length
+        borderColor:
+          props.RaidSchedule.limitMember <= partyData.length
             ? "red"
-            : "#007fff"
-          : "#D3D3D3",
+            : isWeek
+            ? "#007fff"
+            : "#D3D3D3",
 
         borderRadius: "10px",
         borderWidth: "1px",
