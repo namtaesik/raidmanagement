@@ -46,7 +46,7 @@ export default function DatePickerPopup(props) {
   // 22.04.18 | 추가 | 컨텐츠 코드, 난이도
   const [contentsCodeList, setContentsCodeList] = useState([{}]);
   const [difficultyCodeList, setDifficultyCodeList] = useState([{}]);
-  const [contentsCode, setContentsCode] = useState("");
+  const [contentsCode, setContentsCode] = useState("Other");
   const [difficultyCode, setDifficultyCode] = useState("");
   // 22.04.19 | 추가 | 유저 수 제한
   const [limitMember, setLimitMember] = useState(0);
@@ -203,7 +203,9 @@ export default function DatePickerPopup(props) {
       .then((res) => {
         res = res.filter((item) => item.code != "");
         setContentsCodeList(res);
-        setContentsCode(props.contentsCode ?? "");
+        setContentsCode(
+          props.contentsCode == "" ? "Other" : props.contentsCode
+        );
       })
       .catch((err) => {
         console.log(err);
@@ -240,7 +242,7 @@ export default function DatePickerPopup(props) {
           {/*  컨텐츠 선택  */}
           <DialogContent
             sx={{
-              paddingLeft: "auto",
+              paddingLeft: "10px",
               paddingBottom: "0px",
               paddingTop: "0px",
             }}
@@ -250,14 +252,15 @@ export default function DatePickerPopup(props) {
                 fontSize: "1rem",
                 userSelect: "none",
                 paddingBottom: "0px",
+                padding: "16px 0px 0 0 ",
               }}
             >
-              {"컨텐츠를 선택하세요. "}
+              {"컨텐츠와 난이도를 선택하세요. "}
             </DialogTitle>{" "}
             <Stack
               direction="row"
-              justifyContent="center"
-              alignItems="center"
+              justifyContent="start"
+              alignItems="start"
               spacing={0}
             >
               <Select
@@ -303,7 +306,7 @@ export default function DatePickerPopup(props) {
               paddingTop: "0px",
             }}
           >
-            <FormControlLabel
+            {/* <FormControlLabel
               control={
                 <Switch
                   checked={isUnknown}
@@ -313,14 +316,26 @@ export default function DatePickerPopup(props) {
                 />
               }
               label="날짜미정"
-            />
+            /> */}
           </DialogContent>
+          <FormControlLabel
+            control={
+              <Switch
+                checked={isUnknown}
+                onChange={(evt) => {
+                  setIsUnknown(evt.target.checked);
+                }}
+              />
+            }
+            label="날짜미정"
+            sx={{ alignSelf: "flex-start", margin: "10px 0px 0px 0px" }}
+          />
           <DialogContent sx={{ padding: "10px" }}>
             {!isUnknown && (
               <Stack
                 direction="column"
-                justifyContent="center"
-                alignItems="center"
+                justifyContent="start"
+                alignItems="start"
                 spacing={0}
                 marginTop="0px"
               >
@@ -328,7 +343,8 @@ export default function DatePickerPopup(props) {
                   sx={{
                     fontSize: "1rem",
                     userSelect: "none",
-                    paddingBottom: "0px",
+
+                    padding: "0px 24px 0 0 ",
                   }}
                 >
                   {"날짜를 선택하세요. "}
@@ -396,7 +412,7 @@ export default function DatePickerPopup(props) {
                   sx={{
                     fontSize: "1rem",
                     userSelect: "none",
-                    paddingBottom: "0px",
+                    padding: "16px 24px 0 0 ",
                   }}
                 >
                   {"시간을 선택하세요. "}
@@ -472,45 +488,41 @@ export default function DatePickerPopup(props) {
             )}
           </DialogContent>
           <Divider />
-          <Stack
-            direction="column"
-            justifyContent="center"
-            alignItems="center"
-            spacing={0}
+          <DialogContent
+            sx={{
+              padding: "10px",
+              alignItems: "start",
+              justifyContent: "center",
+            }}
           >
-            <DialogTitle sx={{ fontSize: "1rem" }}>
-              {"최대 인원을 입력하세요. "}
-            </DialogTitle>
-            <TextField
-              id="outlined-required"
-              label="ex)8"
-              value={limitMember}
-              inputProps={{ maxLength: 2 }}
-              type="number"
-              onChange={(evt) => {
-                if (evt.target.value > 99) {
-                  alert("99 까지만 입력 가능합니다.");
-                  return false;
-                }
-                setLimitMember(evt.target.value);
-              }}
-              sx={{ width: "200px", marginTop: "10px" }}
-            />
-          </Stack>
-          <DialogContent sx={{ padding: "7px" }}>
-            <Stack
-              sx={{ marginTop: "10px" }}
-              direction="column"
-              justifyContent="center"
-              alignItems="center"
-              spacing={0}
-            >
+            <Stack direction="column" spacing={0}>
+              <DialogTitle sx={{ fontSize: "1rem", padding: "16px 24px 0 0 " }}>
+                {"최대 인원을 입력하세요. "}
+              </DialogTitle>
+              <TextField
+                id="outlined-required"
+                label="ex)8"
+                value={limitMember}
+                inputProps={{ maxLength: 2 }}
+                type="number"
+                onChange={(evt) => {
+                  if (evt.target.value > 99) {
+                    alert("99 까지만 입력 가능합니다.");
+                    return false;
+                  }
+                  setLimitMember(evt.target.value);
+                }}
+                sx={{ width: "200px", marginTop: "10px" }}
+              />
+            </Stack>
+          </DialogContent>
+          <DialogContent sx={{ padding: "10px" }}>
+            <Stack direction="column" spacing={0}>
               <DialogTitle
                 sx={{
                   fontSize: "1rem",
                   userSelect: "none",
-                  paddingTop: "0px",
-                  paddingBottom: "0px",
+                  padding: "0px 24px 0 0 ",
                 }}
               >
                 {"파티제목을 입력하세요"}

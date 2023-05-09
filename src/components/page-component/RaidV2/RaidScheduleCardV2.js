@@ -16,7 +16,7 @@ import BtnDelSchedule from "./BtnDelSchedule";
 import { Button, Divider } from "@mui/material";
 import BtnUpdateSchedule from "./BtnUpdateSchedule";
 import Dday from "../../DateComp/Dday";
-import css from "./css/titleBox.css";
+import Moment from "moment";
 export default function RaidCardV2Temp(props) {
   const [open, setOpen] = React.useState(false);
   const [partyData, setPartyData] = React.useState([{}]);
@@ -64,6 +64,12 @@ export default function RaidCardV2Temp(props) {
       if (item.userId == store.getState().loginUser.userId) isJoined = true;
     });
   }
+  // 일정 지낫는지 확인하기위한 분 계산
+  const isBeforeRaid = (eventDate) => {
+    const today = Moment();
+    const diffMinute = Moment(eventDate).diff(today, "minute");
+    return diffMinute < 0 ? true : false;
+  };
   const card = (
     <Card
       sx={{
@@ -82,8 +88,8 @@ export default function RaidCardV2Temp(props) {
             : "#007fff"
           : "#D3D3D3",
 
-        borderRadius: "10px",
-        borderWidth: "1px",
+        borderRadius: "3px",
+        borderWidth: "1px 1px 3px 1px",
         borderStyle: "solid",
         color: "black",
         position: "relative",
@@ -146,7 +152,10 @@ export default function RaidCardV2Temp(props) {
                   >
                     {props.RaidSchedule.difficultyName}
                   </span>
-                  {/* 왼쪽 공백 */ " "} {props.RaidSchedule.contentsName}
+                  {/* 왼쪽 공백 */ " "}{" "}
+                  <span style={{ fontSize: 16 }}>
+                    {props.RaidSchedule.contentsName}
+                  </span>
                   <span
                     style={{
                       paddingLeft: "5px",
@@ -179,15 +188,27 @@ export default function RaidCardV2Temp(props) {
               }}
             />
           </div>
-          {/* 파티제목 */}
-          <ListItemText
-            primary={props.RaidSchedule.remark}
-            primaryTypographyProps={{
-              fontSize: "14px",
-              fontWeight: "bold",
-            }}
-            sx={{ userSelect: "none" }}
-          ></ListItemText>
+          {/* 파티제목(비고) */}
+          {!isBeforeRaid(props.RaidSchedule.attackDateOrigin) && (
+            <ListItemText
+              primary={props.RaidSchedule.remark}
+              primaryTypographyProps={{
+                fontSize: "14px",
+                fontWeight: "bold",
+              }}
+              sx={{ userSelect: "none" }}
+            ></ListItemText>
+          )}
+          {isBeforeRaid(props.RaidSchedule.attackDateOrigin) && open && (
+            <ListItemText
+              primary={props.RaidSchedule.remark}
+              primaryTypographyProps={{
+                fontSize: "14px",
+                fontWeight: "bold",
+              }}
+              sx={{ userSelect: "none" }}
+            ></ListItemText>
+          )}
         </div>
         <Box
           sx={{
@@ -202,7 +223,6 @@ export default function RaidCardV2Temp(props) {
           <Dday
             eventDate={props.RaidSchedule.attackDateOrigin}
             sx={{
-              background: "#CAE3FF",
               position: "absolute",
               right: "5px",
               top: "-10px",
