@@ -191,7 +191,8 @@ export default function RaidCardV2Temp(props) {
             />
           </div>
           {/* 파티제목(비고) */}
-          {!isBeforeRaid(props.RaidSchedule.attackDateOrigin) && (
+          {(!isBeforeRaid(props.RaidSchedule.attackDateOrigin) ||
+            props.RaidSchedule.isUnknown) && (
             <ListItemText
               primary={props.RaidSchedule.remark}
               primaryTypographyProps={{
@@ -201,16 +202,18 @@ export default function RaidCardV2Temp(props) {
               sx={{ userSelect: "none" }}
             ></ListItemText>
           )}
-          {isBeforeRaid(props.RaidSchedule.attackDateOrigin) && open && (
-            <ListItemText
-              primary={props.RaidSchedule.remark}
-              primaryTypographyProps={{
-                fontSize: "14px",
-                fontWeight: "bold",
-              }}
-              sx={{ userSelect: "none" }}
-            ></ListItemText>
-          )}
+          {isBeforeRaid(props.RaidSchedule.attackDateOrigin) &&
+            !props.RaidSchedule.isUnknown &&
+            open && (
+              <ListItemText
+                primary={props.RaidSchedule.remark}
+                primaryTypographyProps={{
+                  fontSize: "14px",
+                  fontWeight: "bold",
+                }}
+                sx={{ userSelect: "none" }}
+              ></ListItemText>
+            )}
         </div>
         <Box
           sx={{
