@@ -20,7 +20,9 @@ import {
 import store from "../../../store";
 import { apiAxiosPromise } from "../../../services/apiAxios/apiAxios";
 import { Stack } from "@mui/system";
+import { LIMIT_REMARK_LENGTH } from "../../../constants/comp-variables";
 export default function BtnSignEdit(props) {
+
   // 최초 캐릭터 조회
   useEffect(() => {
     apiAxiosPromise("GET", "/api/character", store.getState().loginUser).then(
@@ -181,11 +183,12 @@ export default function BtnSignEdit(props) {
                 required
                 id="outlined-required"
                 label="비고"
-                inputProps={{ maxLength: 15 }}
+                inputProps={{ maxLength: LIMIT_REMARK_LENGTH+1 }}
                 value={remark}
                 onChange={(evt) => {
-                  if (evt.target.value.length > 15) {
-                    alert("15글자 까지만 입력 가능합니다.");
+                  console.log (evt.target.value.length ,LIMIT_REMARK_LENGTH,evt.target.value.length > LIMIT_REMARK_LENGTH );
+                  if (evt.target.value.length > LIMIT_REMARK_LENGTH) {
+                    alert(LIMIT_REMARK_LENGTH+"글자 까지만 입력 가능합니다.");
                     return false;
                   }
                   setRemark(evt.target.value);
