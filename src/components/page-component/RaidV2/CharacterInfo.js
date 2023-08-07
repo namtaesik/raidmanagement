@@ -10,7 +10,7 @@ import BeachAccessIcon from "@mui/icons-material/BeachAccess";
 import { Button, ListItemIcon, TextField } from "@mui/material";
 import store from "../../../store";
 import { apiAxiosPromise } from "../../../services/apiAxios/apiAxios";
-import { Box, fontSize } from "@mui/system";
+import { Box, fontSize, style } from "@mui/system";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import SearchIcon from "@mui/icons-material/Search";
 import ProfileImage from "../../UserInfo/ProfileImage";
@@ -70,9 +70,8 @@ export default function CharacterInfo(props) {
       >
         {/* "#1565c0" */}
         <ListItemText
-          sx={{ color: "#1565c0", userSelect: "none", width: "10px" }}
           primary={props.proficiency}
-          primaryTypographyProps={{ fontSize: "12px", fontWeight: "bold" }}
+          primaryTypographyProps={{ fontSize: "12px", fontWeight: "bold",color: "#1565c0", userSelect: "none", width: "4px", }}
         ></ListItemText>
       </Box>
       {props.image != undefined && props.image != "" ? (
@@ -82,8 +81,10 @@ export default function CharacterInfo(props) {
       )}
       <ListItemText
         primary={props.characterName}
+        primaryTypographyProps={{style:{fontSize:"14px"}}}
         secondary={ItemTextSecondary}
-        sx={{ userSelect: "none", maxWidth: "200px" }}
+        secondaryTypographyProps={{style:{fontSize:"12px"}}}
+        sx={{ userSelect: "none", maxWidth: "115px", minWidth:"100px" }}
         // 클릭시 대표캐릭터 표시
         onClick={() => {
           apiAxiosPromise("GET", "/api/user", { userId: props.userId })
@@ -103,7 +104,7 @@ export default function CharacterInfo(props) {
             });
         }}
       />
-      <ListItemText primary={props.remark} sx={{ userSelect: "none" }} />
+      <ListItemText primary={props.remark} primaryTypographyProps={{style:{ wordWrap:"break-word", userSelect: "none", fontSize:"14px"}}} />
       {store.getState().loginUser.userId == props.userId ? (
         <BtnSignEdit
           onClickHandler={() => {
