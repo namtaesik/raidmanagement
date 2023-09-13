@@ -6,6 +6,7 @@ import Raid from "./pages/Raid/Raid";
 import RiadV2 from "./pages/RaidV2/RaidV2";
 import RaidV2Inner from "./pages/RaidV2/RaidV2Inner";
 import CharacterManagement from "./pages/CharacterManagement/CharacterManagement";
+import JobOffer from './pages/JobOffer/JobOffer';
 import Test from "./pages/Test/Test"; // 테스트api용
 import React from "react";
 
@@ -23,6 +24,7 @@ class App extends React.Component {
             <Route path="/Sub" element={<Sub></Sub>}></Route>
             <Route path="/Raid" element={<Raid></Raid>}></Route>
             <Route path="/RaidV2" element={<RiadV2></RiadV2>}></Route>
+            <Route path="/JobOffer" element={<JobOffer></JobOffer>}></Route>
             <Route
               path="/RaidV2Inner"
               element={<RaidV2Inner></RaidV2Inner>}

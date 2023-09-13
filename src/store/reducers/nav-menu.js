@@ -35,6 +35,13 @@ const initialState = {
       auth: true,
       icon: <ManageAccountsIcon />,
     },
+    {
+      useyn: true,
+      path: "/JobOffer",
+      name: "구인공고",
+      auth: true,
+      icon: <ManageAccountsIcon />,
+    },
     { useyn: false, path: "/Test", name: "테스트Page", auth: true },
   ],
   selector: 0,
