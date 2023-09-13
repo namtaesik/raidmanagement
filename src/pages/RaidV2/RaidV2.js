@@ -1,9 +1,10 @@
 import { Fab, SpeedDialIcon } from "@mui/material";
 import React, { useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
-import ContentsCard from "../../components/page-component/RaidV2/ContentsCard";
+import ContentsCard from "../../components/page-component/RaidV2/ContentsCardV2";
 import { apiAxiosPromise } from "../../services/apiAxios/apiAxios";
 import store from "../../store";
+import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 export default function Raid() {
   // const classes = useStyles();
   const [isRendered, setIsRendered] = useState(false);
@@ -33,7 +34,7 @@ export default function Raid() {
     return <div>Loading</div>;
   } else {
     return (
-      <div>
+      <Grid2 container flexDirection="row" justifyContent="center" alignItems="center" spacing={2} sx={{width:'100vw',maxWidth:'400px',  paddingLeft:'10px',paddingRight:'10px'}} >
         {contentsCode?.map((item) => {
           if (item?.code != undefined) {
             return (
@@ -45,7 +46,7 @@ export default function Raid() {
             );
           }
         })}
-      </div>
+      </Grid2>
     );
   }
   // 230117 | 작업필요 | 카드들넣어야함.

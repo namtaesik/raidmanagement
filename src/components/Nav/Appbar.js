@@ -33,7 +33,7 @@ export default function ButtonAppBar() {
   });
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static" enableColorOnDark={true}>
+      <AppBar position="static" enableColorOnDark={true} sx={{marginBottom:'10px'}}>
         <Toolbar sx={{ paddingRight: "5px", userSelect: "none" }}>
           <Drawer />
           <Typography
