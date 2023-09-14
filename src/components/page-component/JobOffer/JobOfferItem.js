@@ -69,7 +69,7 @@ export default function JobOfferItem({ jobOfferId,userId,image, mainCharacterNam
     };
     const onClickCommentDelete = (id)=>{
         if(window.confirm('댓글을 삭제하시겠습니까?')){
-            apiAxiosPromise("POST", "http://localhost:3001/job-offer/comment/delete", {jobOfferId:jobOfferId,commentId:clickedCommentId })
+            apiAxiosPromise("POST", "/api/job-offer/comment/delete", {jobOfferId:jobOfferId,commentId:clickedCommentId })
              .then((res) => {
                alert('삭제되었습니다.');
                window.location.reload();
@@ -102,7 +102,7 @@ export default function JobOfferItem({ jobOfferId,userId,image, mainCharacterNam
         alert('댓글 내용을 입력하세요.');
         return false;
     }
-    apiAxiosPromise("POST", "http://localhost:3001/job-offer/comment/add", {jobOfferId:jobOfferId ,userId:currentUserId,comment:comment})
+    apiAxiosPromise("POST", "/api/job-offer/comment/add", {jobOfferId:jobOfferId ,userId:currentUserId,comment:comment})
           .then((res) => {
             alert('저장되었습니다.');
             window.location.reload();
@@ -115,7 +115,7 @@ export default function JobOfferItem({ jobOfferId,userId,image, mainCharacterNam
   // 게시글 삭제
   const onClickDeleteOffer = ()=>{
      if(window.confirm('구인공고를 삭제하시겠습니까?')){
-         apiAxiosPromise("POST", "http://localhost:3001/job-offer/delete", {jobOfferId:jobOfferId })
+         apiAxiosPromise("POST", "/api/job-offer/delete", {jobOfferId:jobOfferId })
           .then((res) => {
             
             alert('삭제되었습니다.');

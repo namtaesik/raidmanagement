@@ -18,11 +18,11 @@ export default function JobOffer() {
   React.useEffect(() => {
     var tempJobOfferList=[];
     // 데이터 조회
-    apiAxiosPromise("GET", "http://localhost:3001/job-offer/list", {})
+    apiAxiosPromise("GET", "/api/job-offer/list", {})
       .then((res) => {
         res.map(item=>{
           // 댓글조회
-          apiAxiosPromise("GET", "http://localhost:3001/job-offer/comment/get", {jobOfferId:item.JobOfferId})
+          apiAxiosPromise("GET", "/api/job-offer/comment/get", {jobOfferId:item.JobOfferId})
           .then((res2) => {
             tempJobOfferList = [{...item,comments:res2}, ...tempJobOfferList];
             setJobOfferList(tempJobOfferList);
