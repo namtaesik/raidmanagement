@@ -82,11 +82,11 @@ export default function AddJobOffer() {
     };
     //console.log(saveObj);
     var offerId;
-    apiAxiosPromise("POST", "http://localhost:3001/job-offer/add", saveObj)
+    apiAxiosPromise("POST", "/api/job-offer/add", saveObj)
       .then((res) => {
         //console.log(res);
         offerId = res.offerId;
-        apiAxiosPromise("POST", "http://localhost:3001/job-offer/add-hash-tag", {offerId:offerId ,...saveObj})
+        apiAxiosPromise("POST", "/api/job-offer/add-hash-tag", {offerId:offerId ,...saveObj})
           .then((res) => {
             console.log(res);
             offerId = res.offerId;
