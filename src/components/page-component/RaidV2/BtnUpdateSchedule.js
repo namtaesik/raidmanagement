@@ -20,6 +20,7 @@ import store from "../../../store";
 import { apiAxiosPromise } from "../../../services/apiAxios/apiAxios";
 import { Stack } from "@mui/system";
 import DatePickerPopup from "../../Popup/RaidV2/DatePickerPopup";
+import DatePickerPopupV2 from "../../Popup/RaidV2/DatePickerPopupV2";
 export default function BtnUpdateSchedule(props) {
   const [open, setOpen] = React.useState(false);
   const userInfo = store.getState().loginUser;
@@ -40,7 +41,7 @@ export default function BtnUpdateSchedule(props) {
         {props.title}
       </Button>
 
-      <DatePickerPopup
+      <DatePickerPopupV2
         open={open}
         attackId={props.attackId}
         isUnknown={props.isUnknown}
@@ -53,7 +54,7 @@ export default function BtnUpdateSchedule(props) {
         handleClose={() => {
           setOpen(false);
         }}
-      ></DatePickerPopup>
+      ></DatePickerPopupV2>
     </div>
   );
 }

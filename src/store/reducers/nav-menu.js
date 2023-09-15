@@ -2,6 +2,7 @@ import { ADD_MENU, SET_SELECTOR } from "../../constants/action-types";
 import HouseIcon from "@mui/icons-material/House";
 import EventNoteIcon from "@mui/icons-material/EventNote";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
+import Diversity1Icon from '@mui/icons-material/Diversity1';
 const initialState = {
   menu: [
     {
@@ -40,7 +41,7 @@ const initialState = {
       path: "/JobOffer",
       name: "구인공고",
       auth: true,
-      icon: <ManageAccountsIcon />,
+      icon: <Diversity1Icon />,
     },
     { useyn: false, path: "/Test", name: "테스트Page", auth: true },
   ],

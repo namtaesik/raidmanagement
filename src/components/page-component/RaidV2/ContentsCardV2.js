@@ -56,12 +56,10 @@ export default function ContentsCardV2(props) {
       });
   }
   const noImage = (obj) => {
-    console.log(obj);
     obj.target.src= "/images/RaidSymbol/All.png";  
     
  }
  const backColor = (obj)=>{
-  console.log(obj.target.id);
   var color = '';
   switch(obj.target.id){
     case 'Valtan':
