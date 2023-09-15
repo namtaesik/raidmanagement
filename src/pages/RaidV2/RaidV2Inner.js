@@ -7,6 +7,7 @@ import { apiAxiosPromise } from "../../services/apiAxios/apiAxios";
 import DatePickerPopup from "../../components/Popup/RaidV2/DatePickerPopup";
 import store from "../../store";
 import Box from "@mui/material/Box";
+import DatePickerPopupV2 from "../../components/Popup/RaidV2/DatePickerPopupV2";
 export default function Raid(props) {
   const location = useLocation(); // 1. useLocation 훅 취득
   const [schedule, setSchedule] = React.useState([{}]);
@@ -46,7 +47,7 @@ export default function Raid(props) {
           }
         })}
         <Box sx={{ height: "80px" }}></Box>
-        <Fab
+        {/* <Fab
           aria-label="SpeedDial controlled open example"
           size="small"
           direction="right"
@@ -65,14 +66,35 @@ export default function Raid(props) {
           }}
         >
           {<SpeedDialIcon />}
-        </Fab>
-        <DatePickerPopup
+        </Fab> */}
+        {/* <DatePickerPopup
           open={open}
           handleClose={() => {
             setOpen(false);
           }}
           contentsCode={location.state.contentsCode}
-        ></DatePickerPopup>
+        ></DatePickerPopup> */}
+        <Fab
+        aria-label="SpeedDial controlled open example"
+        size="small"
+        direction="right"
+        onClick={()=>{setOpen(true);}}
+        color="primary"
+        sx={{
+          position: "fixed",
+          bottom: "16px",
+          right: "16px",
+          width: "64px",
+          height: "64px",
+
+          zIndex: 9999,
+        }}
+      >
+        {<SpeedDialIcon />}
+      </Fab>
+         <DatePickerPopupV2 contentsCode={location.state.contentsCode} open={open} handleClose={() => {
+            setOpen(false);
+          }}/> 
       </div>
     );
   }

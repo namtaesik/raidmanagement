@@ -54,25 +54,25 @@ export default function AddJobOffer() {
   // 저장 버튼 클릭 시
   const handleSaveClick = () => {
     // 유효성 검증
-    if(document.getElementById("title").value==''){
-        alert('제목을 입력하세요.');
-        return false;
+    if (document.getElementById("title").value == "") {
+      alert("제목을 입력하세요.");
+      return false;
     }
-    if(document.getElementById("content").value==''){
-        alert('내용을 입력하세요.');
-        return false;
+    if (document.getElementById("content").value == "") {
+      alert("내용을 입력하세요.");
+      return false;
     }
-    if(document.getElementById("hashTag").value==''){
-        alert('해시태그를 입력하세요.');
-        return false;
+    if (document.getElementById("hashTag").value == "") {
+      alert("해시태그를 입력하세요.");
+      return false;
     }
     var hashArrCheck = document.getElementById("hashTag").value.substring(1).split("#");
     var checkFlag = true;
-    hashArrCheck.map(item=>{
-        if(item == ''){
-            alert('해시태그에 빈값이 있습니다.(ex - ##해시');
-        }
-    })
+    hashArrCheck.map((item) => {
+      if (item == "") {
+        alert("해시태그에 빈값이 있습니다.(ex - ##해시");
+      }
+    });
     var saveObj = {
       userId: userId,
       characterId: selectedCharId,
@@ -86,11 +86,11 @@ export default function AddJobOffer() {
       .then((res) => {
         //console.log(res);
         offerId = res.offerId;
-        apiAxiosPromise("POST", "/api/job-offer/add-hash-tag", {offerId:offerId ,...saveObj})
+        apiAxiosPromise("POST", "/api/job-offer/add-hash-tag", { offerId: offerId, ...saveObj })
           .then((res) => {
-            console.log(res);
+            //console.log(res);
             offerId = res.offerId;
-            alert('저장되었습니다.');
+            alert("저장되었습니다.");
             setOpen(false);
             // 부모컴포넌트에 이벤트 전달하여 내용 재조회
             window.location.reload();
@@ -147,21 +147,21 @@ export default function AddJobOffer() {
           </Toolbar>
         </AppBar>
         <List>
-          <ListItem key='typoTitle'>
-            <Typography variant="body2" color="text.secondary">
+          <ListItem key="typoTitle">
+            <Typography variant="body2" color="text.secondary" sx={{ width: "100%" }}>
               제목
             </Typography>
           </ListItem>
-          <ListItem key='inputTitle'>
-            <TextField id="title" label="제목" variant="outlined" />
+          <ListItem key="inputTitle">
+            <TextField id="title" label="제목" variant="outlined" sx={{ width: "100%" }} />
           </ListItem>
           <Divider />
-          <ListItem key='typoCharacter'>
+          <ListItem key="typoCharacter">
             <Typography variant="body2" color="text.secondary">
               캐릭터선택
             </Typography>
           </ListItem>
-          <ListItem key='selectCharacter'>
+          <ListItem key="selectCharacter">
             <Select sx={{ width: "100%" }} labelId="demo-simple-select-label" id="demo-simple-select" value={selectedCharId} label="Age" onChange={handleChange}>
               {characterList?.map((item) => {
                 if (item.characterId != undefined) {
@@ -178,12 +178,12 @@ export default function AddJobOffer() {
             </Select>
           </ListItem>
           <Divider />
-          <ListItem key='typoContent'>
+          <ListItem key="typoContent">
             <Typography variant="body2" color="text.secondary">
               구인공고 내용
             </Typography>
           </ListItem>
-          <ListItem key='inputContent'>
+          <ListItem key="inputContent">
             <textarea
               onChange={(e) => {
                 //setContent(e.target.value)
@@ -194,7 +194,7 @@ export default function AddJobOffer() {
               //value={content}
             />
           </ListItem>
-          <ListItem key='inputHashTag'>
+          <ListItem key="inputHashTag">
             <TextField id="hashTag" label="해시태그입력(#으로 구분 띄어쓰기 불가)" variant="outlined" sx={{ width: "100%" }} onInput={onInputHash} />
           </ListItem>
         </List>
