@@ -4,7 +4,7 @@ import { ListItem, List, Fab, SpeedDialIcon } from "@mui/material";
 import { apiAxiosPromise } from "../../services/apiAxios/apiAxios";
 import CharacterInfo from "../../components/page-component/CharacterManagement/CharacterInfo";
 import AddCharacterPopup from "../../components/Popup/CharacterManagement/AddCharacterPopup";
-import { Box } from "@mui/system";
+import { Box, Container } from "@mui/system";
 import { SET_CHARACTER } from "../../constants/action-types";
 export default function CharacterManagement() {
   // 캐릭터 불러오기
@@ -55,10 +55,11 @@ export default function CharacterManagement() {
     );
   } else {
     return (
+      <Container maxWidth="sm" sx={{ justifyContent: "center" , marginBottom:'100px', paddingLeft:'2px',paddingRight:'2px'}}>
       <List>
         {characters.map((item, index) => {
           return (
-            <ListItem key={item.characterId} sx={{ justifyContent: "center" }}>
+            <ListItem key={item.characterId} sx={{ justifyContent: "center" , paddingLeft:'2px',paddingRight:'2px'}}>
               <CharacterInfo
                 info={item}
                 onClickHandler={() => {
@@ -94,6 +95,7 @@ export default function CharacterManagement() {
           }}
         ></AddCharacterPopup>
       </List>
+      </Container>
     );
   }
 }

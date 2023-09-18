@@ -8,6 +8,7 @@ import DatePickerPopup from "../../components/Popup/RaidV2/DatePickerPopup";
 import store from "../../store";
 import Box from "@mui/material/Box";
 import DatePickerPopupV2 from "../../components/Popup/RaidV2/DatePickerPopupV2";
+import { Container } from "@mui/system";
 export default function Raid(props) {
   const location = useLocation(); // 1. useLocation 훅 취득
   const [schedule, setSchedule] = React.useState([{}]);
@@ -38,7 +39,7 @@ export default function Raid(props) {
     return <div>Loading</div>;
   } else {
     return (
-      <div>
+      <Container maxWidth="md" sx={{ justifyContent: "center" , marginBottom:'100px', paddingLeft:'2px',paddingRight:'2px'}}>
         {schedule?.map((item) => {
           if (item?.attackId != undefined) {
             return (
@@ -74,28 +75,29 @@ export default function Raid(props) {
           }}
           contentsCode={location.state.contentsCode}
         ></DatePickerPopup> */}
-        <Fab
+        {!open&&<Fab
         aria-label="SpeedDial controlled open example"
         size="small"
         direction="right"
         onClick={()=>{setOpen(true);}}
         color="primary"
+        
         sx={{
           position: "fixed",
           bottom: "16px",
           right: "16px",
           width: "64px",
           height: "64px",
-
+          
           zIndex: 9999,
         }}
       >
         {<SpeedDialIcon />}
-      </Fab>
+      </Fab>}
          <DatePickerPopupV2 contentsCode={location.state.contentsCode} open={open} handleClose={() => {
             setOpen(false);
           }}/> 
-      </div>
+      </Container>
     );
   }
   // 230117 | 작업필요 | 카드들넣어야함.

@@ -11,19 +11,22 @@ import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import CloseIcon from "@mui/icons-material/Close";
 import Slide from "@mui/material/Slide";
-import { Fab, MenuItem, Select, SpeedDialIcon, TextField } from "@mui/material";
+import { Fab, ListItemButton, ListItemIcon, MenuItem, Select, SpeedDialIcon, TextField } from "@mui/material";
 import store from "../../../store";
 import { apiAxiosPromise } from "../../../services/apiAxios/apiAxios";
+import { ModeEdit } from "@mui/icons-material";
 import { Container } from "@mui/system";
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function AddJobOffer() {
+export default function EditJobOffer({jobOfferId, characterId, p_title, contents, hashText}) {
   const [open, setOpen] = React.useState(false);
-  const [hashTag, setHashTag] = React.useState("");
   const [characterList, setCharacterList] = React.useState([]);
-  const [selectedCharId, setSelectedCharId] = React.useState(1);
+  const [selectedCharId, setSelectedCharId] = React.useState(characterId);
+  const [title, setTitle] = React.useState(p_title);
+  const [content, setContent] = React.useState(contents);
+  const [hashTag, setHashTag] = React.useState(hashText?.replaceAll(' ',''));// #사이 스페이스 제거
   var userId = store.getState().loginUser.userId;
   React.useEffect(() => {
     // 캐릭터 정보 조회하기
@@ -31,9 +34,8 @@ export default function AddJobOffer() {
       userId: userId,
     })
       .then((res) => {
-        //console.log(res);
         setCharacterList(res);
-        setSelectedCharId(res[0]?.characterId);
+        //setSelectedCharId(res[0]?.characterId);
       })
       .catch((err) => {
         alert("오류발생 : ", err);
@@ -44,6 +46,7 @@ export default function AddJobOffer() {
   const handleChange = (event) => {
     setSelectedCharId(event.target.value);
   };
+
   // 해시태그 입력시 #구분 및 스페이스제거 등 작업
   const onInputHash = (evt) => {
     if (evt.target.value[0] != "#" && evt.target.value.length > 1) {
@@ -55,19 +58,19 @@ export default function AddJobOffer() {
   // 저장 버튼 클릭 시
   const handleSaveClick = () => {
     // 유효성 검증
-    if (document.getElementById("title").value == "") {
+    if (title == "") {
       alert("제목을 입력하세요.");
       return false;
     }
-    if (document.getElementById("content").value == "") {
+    if (content == "") {
       alert("내용을 입력하세요.");
       return false;
     }
-    if (document.getElementById("hashTag").value == "") {
+    if (hashTag == "") {
       alert("해시태그를 입력하세요.");
       return false;
     }
-    var hashArrCheck = document.getElementById("hashTag").value.substring(1).split("#");
+    var hashArrCheck = hashTag.substring(1).split("#");
     var checkFlag = true;
     hashArrCheck.map((item) => {
       if (item == "") {
@@ -75,36 +78,41 @@ export default function AddJobOffer() {
       }
     });
     var saveObj = {
+      offerId : jobOfferId,
       userId: userId,
       characterId: selectedCharId,
-      title: document.getElementById("title").value,
-      contents: document.getElementById("content").value,
-      hashTagArr: document.getElementById("hashTag").value.substring(1).split("#"),
+      title: title,
+      contents: content,
+      hashTagArr: hashTag.substring(1).split("#"),
     };
-    //console.log(saveObj);
-    var offerId;
-    apiAxiosPromise("POST", "/api/job-offer/add", saveObj)
-      .then((res) => {
-        //console.log(res);
-        offerId = res.offerId;
-        apiAxiosPromise("POST", "/api/job-offer/add-hash-tag", { offerId: offerId, ...saveObj })
-          .then((res) => {
-            //console.log(res);
-            offerId = res.offerId;
-            alert("저장되었습니다.");
-            setOpen(false);
-            // 부모컴포넌트에 이벤트 전달하여 내용 재조회
-            window.location.reload();
-          })
-          .catch((err) => {
-            alert("오류발생 : ", err);
-            console.log(err);
-          });
-      })
-      .catch((err) => {
-        alert("오류발생 : ", err);
-        console.log(err);
-      });
+     apiAxiosPromise("POST", "/api/job-offer/update", saveObj)
+       .then((res) => {
+       
+         // 삭제 후 재삽임
+         apiAxiosPromise("POST", "/api/job-offer/delete-hash-tag", { offerId: jobOfferId, ...saveObj })
+           .then((res) => {
+             // 재삽입
+             apiAxiosPromise("POST", "/api/job-offer/add-hash-tag", { offerId: jobOfferId, ...saveObj })
+              .then((res) => {
+                alert("저장되었습니다.");
+                setOpen(false);
+                // 부모컴포넌트에 이벤트 전달하여 내용 재조회
+                window.location.reload();
+              })
+              .catch((err) => {
+                alert("오류발생 : ", err);
+                console.log(err);
+              });
+           })
+           .catch((err) => {
+             alert("오류발생 : ", err);
+             console.log(err);
+           });
+       })
+       .catch((err) => {
+         alert("오류발생 : ", err);
+         console.log(err);
+       });
     //setOpen(false);
   };
   // 닫기버튼 클릭시
@@ -113,26 +121,19 @@ export default function AddJobOffer() {
   };
   return (
     <div>
-      <Fab
-        aria-label="SpeedDial controlled open example"
-        size="small"
-        direction="right"
-        onClick={() => {
-          setOpen(true);
-        }}
-        color="primary"
-        sx={{
-          position: "fixed",
-          bottom: "16px",
-          right: "16px",
-          width: "64px",
-          height: "64px",
-
-          zIndex: 9999,
-        }}
-      >
-        {<SpeedDialIcon />}
-      </Fab>
+      <ListItemButton onClick={()=>{
+                  setOpen(true);
+                  
+                }}
+                
+                >
+                    <ListItemIcon>
+                        
+                        <ModeEdit/>
+                    </ListItemIcon>
+                    <ListItemText primary="수정"/>
+                </ListItemButton>
+      {open&&
       <Dialog fullScreen open={open} onClose={handleClose} TransitionComponent={Transition}>
         <AppBar sx={{ position: "relative" }}>
           <Toolbar>
@@ -153,7 +154,13 @@ export default function AddJobOffer() {
             </Typography>
           </ListItem>
           <ListItem key="inputTitle">
-            <TextField id="title" label="제목" variant="outlined" sx={{ width: "100%" }} />
+            <TextField id="title" label="제목" variant="outlined" sx={{ width: "100%" }} value={title} onChange={(evt)=>{
+              if(evt.target.value.length >49){
+                alert("제목은 50자까지만 입력 가능합니다.");
+                return false;
+              }
+              setTitle(evt.target.value)
+              }}/>
           </ListItem>
           <Divider />
           <ListItem key="typoCharacter">
@@ -186,16 +193,16 @@ export default function AddJobOffer() {
           <ListItem key="inputContent">
             <textarea
               onChange={(e) => {
-                //setContent(e.target.value)
+                setContent(e.target.value)
               }}
               style={{ width: "100%", height: "40vh", font: "inherit" }}
               placeholder="내용을 입력하세요"
               id="content"
-              //value={content}
-            />
+              value={content}
+            >{content}</textarea>
           </ListItem>
           <ListItem key="inputHashTag">
-            <TextField id="hashTag" label="해시태그입력(#으로 구분 띄어쓰기 불가)" variant="outlined" sx={{ width: "100%" }} onInput={onInputHash} />
+            <TextField id="hashTag" label="해시태그입력(#으로 구분 띄어쓰기 불가)" variant="outlined" sx={{ width: "100%" }} onInput={onInputHash} value={hashTag}/>
           </ListItem>
           <Divider/>
           <ListItem key='saveBtn' sx={{justifyContent:'end'}}>
@@ -205,7 +212,7 @@ export default function AddJobOffer() {
           </ListItem>
         </List>
         </Container>
-      </Dialog>
+      </Dialog>}
     </div>
   );
 }

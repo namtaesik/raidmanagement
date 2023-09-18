@@ -15,7 +15,7 @@ import { red } from "@mui/material/colors";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import ShareIcon from "@mui/icons-material/Share";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { DeleteForever,  ExpandMore, ModeEdit, RotateLeft, SendOutlined } from "@mui/icons-material";
+import { DeleteForever,  ExpandMore, InfoOutlined, ModeEdit, RotateLeft, SendOutlined } from "@mui/icons-material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { Divider, List, ListItem, ListItemButton, ListItemIcon, ListItemText, TextField } from "@mui/material";
@@ -24,16 +24,19 @@ import { Box } from "@mui/system";
 import SendIcon from '@mui/icons-material/Send';
 import { apiAxiosPromise } from "../../../services/apiAxios/apiAxios";
 import Popover from '@mui/material/Popover';
-export default function JobOfferItem({ jobOfferId,userId,image, mainCharacterName, characterName, className, level, title, content, hashTag, comments }) {
+import EditJobOffer from "./EditJobOffer";
+export default function JobOfferItem({ jobOfferId,userId,image, characterId, mainCharacterName, characterName, className, level, title, content, hashTag, comments }) {
   const [expanded, setExpanded] = useState(false);
   var currentUserId = store.getState().loginUser.userId;
   // 게시글 수정 popover 버튼 관련
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [anchorElNoAuth, setAnchorElNoAuth] = React.useState(null);
   const openMain = Boolean(anchorEl);
-  const opennMainNoAuth = Boolean(anchorElNoAuth);
+  const openMainNoAuth = Boolean(anchorElNoAuth);
   const id = openMain ? 'simple-popover' : undefined;
-  const noAuthId = opennMainNoAuth ? 'no-auth-popover' : undefined;
+  const noAuthId = openMainNoAuth ? 'no-auth-popover' : undefined;
+  // 게시글 수정 팝업 변수
+  const [editOpen, setEditOpen] = React.useState(false);
   const handleClickAuth = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -127,7 +130,7 @@ export default function JobOfferItem({ jobOfferId,userId,image, mainCharacterNam
           });
      }
   }
-  console.log(image);
+
   return (
     <Card sx={{ width: "100%", maxWidth: 552, marginTop: "12px" }}>
       {/* 작성자 정보영역 시작 */}
@@ -139,7 +142,7 @@ export default function JobOfferItem({ jobOfferId,userId,image, mainCharacterNam
             <MoreVertIcon />
             
           </IconButton>:<IconButton aria-label="settings" aria-describedby={noAuthId} onClick={handleClickNoAuth}>
-            <MoreVertIcon />
+            <InfoOutlined />
             
           </IconButton>
           
@@ -159,15 +162,15 @@ export default function JobOfferItem({ jobOfferId,userId,image, mainCharacterNam
         }}
       >
         <List sx={{width:'100%',bgcolor: 'background.paper' }}>
-            {/* <ListItem>
-                <ListItemButton>
-                    <ListItemIcon>
-                        
-                        <ModeEdit/>
-                    </ListItemIcon>
-                    <ListItemText primary="수정"/>
-                </ListItemButton>
-            </ListItem> */}
+            <ListItem>
+            <EditJobOffer 
+                jobOfferId={jobOfferId}
+                characterId={characterId}
+                p_title={title}
+                contents={content}
+                hashText = {hashTag}
+                />
+            </ListItem>
             <ListItem>
                 <ListItemButton onClick={onClickDeleteOffer}>
                     <ListItemIcon>
@@ -178,11 +181,12 @@ export default function JobOfferItem({ jobOfferId,userId,image, mainCharacterNam
             </ListItem>
         </List>
       </Popover>
+      
       {/* 게시글 수정 Popover 끝 */}
       {/* 수정권한없는 Popover 시작 */}
       <Popover
         id={noAuthId}
-        open={opennMainNoAuth}
+        open={openMainNoAuth}
         anchorEl={anchorElNoAuth}
         onClose={handleCloseNoAuth}
         anchorOrigin={{
@@ -201,7 +205,7 @@ export default function JobOfferItem({ jobOfferId,userId,image, mainCharacterNam
         <Typography variant="body1" color="#1976d2" fontWeight="bold">
           {title}
         </Typography>
-        <Typography variant="body2" color="text.primary">
+        <Typography variant="body2" color="text.primary" style={{whiteSpace: "pre-wrap"}}>
           {content}
         </Typography>
       </CardContent>
