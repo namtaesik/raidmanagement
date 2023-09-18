@@ -22,7 +22,7 @@ import dayjs, { Dayjs } from "dayjs";
 import "dayjs/locale/ko"; // 한글설정
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
-import { Stack } from "@mui/system";
+import { Container, Stack } from "@mui/system";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -192,16 +192,16 @@ export default function AddJobOffer(props) {
             <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
               {props.attackId == undefined ? "레이드 일정 추가" : "레이드 일정 수정"}
             </Typography>
-            <Button autoFocus color="inherit" onClick={handleSaveClick}>
-              저장
-            </Button>
+            
           </Toolbar>
         </AppBar>
+        <Container maxWidth="sm" sx={{ justifyContent: "center" , marginBottom:'100px', paddingLeft:'2px',paddingRight:'2px'}}>
         <List>
-          <ListItem key="typoTitle">
-            <Typography variant="body2" color="text.secondary" sx={{ width: "100%" }}>
+          <ListItem key="typoTitle" >
+            <Typography variant="body2" color="text.secondary" sx={{ width: "100%", maxWidth:'800px' }}>
               파티제목
             </Typography>
+            
           </ListItem>
           <ListItem key="inputTitle">
             <TextField
@@ -209,6 +209,7 @@ export default function AddJobOffer(props) {
               label="제목"
               variant="outlined"
               value={title}
+              autoFocus
               onChange={(evt) => {
                 if (evt.target.value.length > 39) {
                   alert("40자까지만 입력하세요.");
@@ -345,10 +346,17 @@ export default function AddJobOffer(props) {
                 setLimitMember(evt.target.value);
               }}
             />
+            
           </ListItem>
-          <Divider />
           {/* 최대인원 종료 */}
+          <Divider />
+          <ListItem key='saveBtn' sx={{justifyContent:'end'}}>
+          <Button  variant="contained" color="primary" onClick={handleSaveClick}>
+              저장
+            </Button>
+          </ListItem>
         </List>
+        </Container>
       </Dialog>
     </div>
   );

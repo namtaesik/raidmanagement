@@ -64,6 +64,7 @@ export default function JobOffer() {
                 jobOfferId={jobOffer.JobOfferId}
                 userId={jobOffer.UserId}
                 image={jobOffer.image}
+                characterId = {jobOffer.CharacterId}
                 characterName={jobOffer.CharacterName}
                 mainCharacterName={jobOffer.MainCharacterName}
                 className={jobOffer.ClassName}

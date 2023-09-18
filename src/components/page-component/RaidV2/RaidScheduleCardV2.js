@@ -77,6 +77,7 @@ export default function RaidCardV2Temp(props) {
         width: resize > 1014 ? "auto" : "auto",
         minWidth: 264,
         margin: "7px 7px 7px 7px",
+         paddingLeft:'2px',
         background:
           props.RaidSchedule.limitMember <= partyData.length
             ? "#ff7777"
