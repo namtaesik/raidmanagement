@@ -19,8 +19,9 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function AddJobOffer() {
+export default function AddJobOffer({editOpen}) {
   const [open, setOpen] = React.useState(false);
+  //const [editOpen, setEditOpen]=React.useState(onEditPopupOpen);
   const [hashTag, setHashTag] = React.useState("");
   const [characterList, setCharacterList] = React.useState([]);
   const [selectedCharId, setSelectedCharId] = React.useState(1);
@@ -113,7 +114,7 @@ export default function AddJobOffer() {
   };
   return (
     <div>
-      <Fab
+      {!editOpen&&!open&&<Fab
         aria-label="SpeedDial controlled open example"
         size="small"
         direction="right"
@@ -132,7 +133,7 @@ export default function AddJobOffer() {
         }}
       >
         {<SpeedDialIcon />}
-      </Fab>
+      </Fab>}
       <Dialog fullScreen open={open} onClose={handleClose} TransitionComponent={Transition}>
         <AppBar sx={{ position: "relative" }}>
           <Toolbar>

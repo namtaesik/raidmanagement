@@ -25,7 +25,7 @@ import SendIcon from '@mui/icons-material/Send';
 import { apiAxiosPromise } from "../../../services/apiAxios/apiAxios";
 import Popover from '@mui/material/Popover';
 import EditJobOffer from "./EditJobOffer";
-export default function JobOfferItem({ jobOfferId,userId,image, characterId, mainCharacterName, characterName, className, level, title, content, hashTag, comments }) {
+export default function JobOfferItem({ jobOfferId,userId,image, characterId, mainCharacterName, characterName, className, level, title, content, hashTag, comments,onEditPopupOpen }) {
   const [expanded, setExpanded] = useState(false);
   var currentUserId = store.getState().loginUser.userId;
   // 게시글 수정 popover 버튼 관련
@@ -130,7 +130,9 @@ export default function JobOfferItem({ jobOfferId,userId,image, characterId, mai
           });
      }
   }
-
+  const onEditPopupOpened = (open)=>{
+    onEditPopupOpen(open)
+  }
   return (
     <Card sx={{ width: "100%", maxWidth: 552, marginTop: "12px" }}>
       {/* 작성자 정보영역 시작 */}
@@ -169,6 +171,7 @@ export default function JobOfferItem({ jobOfferId,userId,image, characterId, mai
                 p_title={title}
                 contents={content}
                 hashText = {hashTag}
+                onEditPopupOpen={onEditPopupOpened}
                 />
             </ListItem>
             <ListItem>
