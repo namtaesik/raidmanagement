@@ -6,6 +6,7 @@ import { apiAxiosPromise } from "../../services/apiAxios/apiAxios";
 import store from "../../store";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import { Container } from "@mui/system";
+import moment from "moment";
 export default function Raid() {
   // const classes = useStyles();
   const [isRendered, setIsRendered] = useState(false);
@@ -13,6 +14,9 @@ export default function Raid() {
   const navigate = useNavigate();
   React.useEffect(() => {
     getContentsCode();
+    if(moment() < moment('2023-09-25')){
+    alert('[2023.09.19]안내\r\n비밀번호가 \'1\'로 모두 초기화되었습니다.\r\n\'회원정보관리\'메뉴에 들어가서 비밀번호를 변경해주세요.\r\n불편을 드려 죄송합니다.\r\n\r\n해당 메세지는 일요일(2023.09.24)까지 유지하겠습니다.');
+    }
   }, []);
   async function getContentsCode() {
     await apiAxiosPromise("GET", "/api/code", { groupCode: "Contents" })
