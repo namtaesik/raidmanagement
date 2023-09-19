@@ -2,7 +2,7 @@ import { ADD_MENU, SET_SELECTOR } from "../../constants/action-types";
 import HouseIcon from "@mui/icons-material/House";
 import EventNoteIcon from "@mui/icons-material/EventNote";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
-import Diversity1Icon from '@mui/icons-material/Diversity1';
+import Diversity1Icon from "@mui/icons-material/Diversity1";
 const initialState = {
   menu: [
     {
@@ -26,6 +26,13 @@ const initialState = {
       useyn: true,
       path: "/RaidV2",
       name: "컨텐츠 선택",
+      auth: true,
+      icon: <EventNoteIcon />,
+    },
+    {
+      useyn: true,
+      path: "/RaidV3",
+      name: "레이드V3",
       auth: true,
       icon: <EventNoteIcon />,
     },
@@ -60,7 +67,7 @@ const initialState = {
 
 const navMenuReducer = (state = initialState, action) => {
   switch (action.type) {
-    case ADD_MENU: 
+    case ADD_MENU:
       // 230118 | 추가기능은 안씀
       //return {...state, menu:[...state.menu, action.payload]}
       return state;
