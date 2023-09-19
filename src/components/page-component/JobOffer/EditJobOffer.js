@@ -20,7 +20,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function EditJobOffer({jobOfferId, characterId, p_title, contents, hashText}) {
+export default function EditJobOffer({jobOfferId, characterId, p_title, contents, hashText,onEditPopupOpen}) {
   const [open, setOpen] = React.useState(false);
   const [characterList, setCharacterList] = React.useState([]);
   const [selectedCharId, setSelectedCharId] = React.useState(characterId);
@@ -42,6 +42,11 @@ export default function EditJobOffer({jobOfferId, characterId, p_title, contents
         console.log(err);
       });
   }, []);
+  // 팝업 오픈 이벤트 감시, EditJobOffer->JobOfferItem->JobOffer 로 상태 전달
+  // JobOffer->AddJobOffer로 상태 전달한 뒤 AddJobOffer에서 EditJobOffer 열려있으면 Fab 가리기
+  React.useEffect(()=>{
+    onEditPopupOpen(open);
+  },[open])
   // 캐릭터 선택 이벤트
   const handleChange = (event) => {
     setSelectedCharId(event.target.value);
@@ -123,7 +128,6 @@ export default function EditJobOffer({jobOfferId, characterId, p_title, contents
     <div>
       <ListItemButton onClick={()=>{
                   setOpen(true);
-                  
                 }}
                 
                 >
@@ -141,7 +145,7 @@ export default function EditJobOffer({jobOfferId, characterId, p_title, contents
               <CloseIcon />
             </IconButton>
             <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
-              구인공고 작성
+              구인공고 수정
             </Typography>
            
           </Toolbar>

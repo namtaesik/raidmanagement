@@ -14,7 +14,7 @@ export default function JobOffer() {
   // const classes = useStyles();
   const [isRendered, setIsRendered] = useState(false);
   const [jobOfferList, setJobOfferList] = useState([]);
-
+  const [open,setOpen]=useState(false);
   React.useEffect(() => {
     var tempJobOfferList=[];
     // 데이터 조회
@@ -45,7 +45,9 @@ export default function JobOffer() {
     // 없으면 리다이렉트
     return <Navigate to="/" />;
   }
-
+  const onEditPopupOpen = (open)=>{
+    setOpen(open);
+  }
   if (!isRendered) {
     return <div>Loading</div>;
   } else {
@@ -73,12 +75,13 @@ export default function JobOffer() {
                 content={jobOffer.Contents}
                 hashTag={jobOffer.HashTagName}
                 comments={jobOffer.comments}
+                onEditPopupOpen={onEditPopupOpen}
               />
             );
           })}
         </Stack>
 
-        <AddJobOffer />
+        <AddJobOffer editOpen={open}/>
       </Container>
     );
   }
