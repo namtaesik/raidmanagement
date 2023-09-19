@@ -93,6 +93,29 @@ export default function TemporaryDrawer() {
         )}
       </List>
       <Divider />
+      <List>
+        {pageList.managementMenu.map(
+          (item, index) =>
+            item.useyn &&
+            ((item.auth && store.getState().loginUser.userId) ||
+              (item.loginHide && !store.getState().loginUser.userId)) && (
+              <ListItem
+                key={item.path}
+                disablePadding
+                onClick={(e) => {
+                  PageMove(item, index, e);
+                }}
+              >
+                <ListItemButton>
+                  <ListItemIcon>
+                    {item.icon != undefined ? item.icon : <InboxIcon />}
+                  </ListItemIcon>
+                  <ListItemText primary={item.name} />
+                </ListItemButton>
+              </ListItem>
+            )
+        )}
+      </List>
     </Box>
   );
 

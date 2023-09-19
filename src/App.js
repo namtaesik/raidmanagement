@@ -6,6 +6,7 @@ import Raid from "./pages/Raid/Raid";
 import RiadV2 from "./pages/RaidV2/RaidV2";
 import RaidV2Inner from "./pages/RaidV2/RaidV2Inner";
 import CharacterManagement from "./pages/CharacterManagement/CharacterManagement";
+import UserInfoManagement from "./pages/UserInfoManagement/UserInfoManagement";
 import JobOffer from './pages/JobOffer/JobOffer';
 import Test from "./pages/Test/Test"; // 테스트api용
 import React from "react";
@@ -33,6 +34,7 @@ class App extends React.Component {
               path="/CharacterManagement"
               element={<CharacterManagement></CharacterManagement>}
             ></Route>
+            <Route path="/UserInfoManagement" element={<UserInfoManagement></UserInfoManagement>}></Route>
             <Route path="/Test" element={<Test></Test>}></Route>
           </Routes>
         </BrowserRouter>

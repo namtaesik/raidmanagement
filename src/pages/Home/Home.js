@@ -6,7 +6,7 @@ import React, { useState } from "react";
 import { Navigate } from "react-router-dom";
 import { apiAxiosPromise } from "../../services/apiAxios/apiAxios";
 import store from "../../store";
-import { encryptAES256 } from "../../utils/crypto";
+import { encryptAES256, decryptAES256 } from "../../utils/crypto";
 import SigninPopup from "../../components/Popup/SigninPopup";
 export default function Home() {
   // 회원가입 팝업 표시

@@ -31,6 +31,17 @@ const initialState = {
     },
     {
       useyn: true,
+      path: "/JobOffer",
+      name: "구인공고",
+      auth: true,
+      icon: <Diversity1Icon />,
+    },
+
+    { useyn: false, path: "/Test", name: "테스트Page", auth: true },
+  ],
+  managementMenu: [
+    {
+      useyn: true,
       path: "/CharacterManagement",
       name: "캐릭터관리",
       auth: true,
@@ -38,19 +49,18 @@ const initialState = {
     },
     {
       useyn: true,
-      path: "/JobOffer",
-      name: "구인공고",
+      path: "/UserInfoManagement",
+      name: "회원정보 관리",
       auth: true,
-      icon: <Diversity1Icon />,
+      icon: <ManageAccountsIcon />,
     },
-    { useyn: false, path: "/Test", name: "테스트Page", auth: true },
   ],
   selector: 0,
 };
 
 const navMenuReducer = (state = initialState, action) => {
   switch (action.type) {
-    case ADD_MENU:
+    case ADD_MENU: 
       // 230118 | 추가기능은 안씀
       //return {...state, menu:[...state.menu, action.payload]}
       return state;
