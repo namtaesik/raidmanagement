@@ -27,7 +27,12 @@ export default function ButtonAppBar() {
     if (location.pathname === "/RaidV2Inner") {
       setTitle(store.getState().contentsName);
     } else {
+      if(menuState.menu.find((c) => c.path === location.pathname) != undefined){
       setTitle(menuState.menu.find((c) => c.path === location.pathname).name);
+    }
+    else{
+      setTitle(menuState.managementMenu.find((c) => c.path === location.pathname).name);
+    }
     }
     if (store.getState().loginUser.userId ?? "" != "") setIsLogin(true);
   });

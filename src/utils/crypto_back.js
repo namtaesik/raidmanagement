@@ -1,14 +1,13 @@
 import CryptoJS from "crypto-js";
 
-const secretKey = process.env.REACT_APP_CPT_KEY;
-const ivKey = process.env.REACT_APP_IV_KEY;
+const secretKey = process.env.CPT_KEY;
 // AES256 암호화
 export const encryptAES256 = (data) => {
   const encryptedData = CryptoJS.AES.encrypt(
     data,
     CryptoJS.enc.Utf8.parse(secretKey),
     {
-      iv: CryptoJS.enc.Utf8.parse(ivKey),
+      iv: CryptoJS.enc.Utf8.parse(""),
       padding: CryptoJS.pad.Pkcs7,
       mode: CryptoJS.mode.CBC,
     }
@@ -18,14 +17,6 @@ export const encryptAES256 = (data) => {
 
 // AES256 복호화
 export const decryptAES256 = (encryptedData) => {
-  const decryptedData = CryptoJS.AES.decrypt(
-    encryptedData,
-    CryptoJS.enc.Utf8.parse(secretKey),
-    {
-      iv: CryptoJS.enc.Utf8.parse(ivKey),
-      padding: CryptoJS.pad.Pkcs7,
-      mode: CryptoJS.mode.CBC,
-    }
-  );
+  const decryptedData = CryptoJS.AES.decrypt(encryptedData, secretKey);
   return decryptedData.toString(CryptoJS.enc.Utf8);
 };
