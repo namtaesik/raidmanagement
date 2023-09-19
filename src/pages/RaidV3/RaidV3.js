@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { List, ListItem } from "@mui/material";
+import { List, ListItem, ListItemText } from "@mui/material";
 import { Container } from "@mui/system";
 import { Navigate } from "react-router";
 import store from "../../store";
@@ -14,10 +14,9 @@ export default function RaidV3() {
   const [isRendered, setIsRendered] = useState(false);
   const [contentsCode, setContentsCode] = useState([{}]);
   const [selectedCode, setSelectedCode] = useState("");
-  // 스케쥴 리스트 - 작업필요 230920
-  const [schList, setSchList] = useState({});
+  // 스케쥴 리스트
+  const [schList, setSchList] = useState([{}]);
   const handleChange = (e, newValue) => {
-    console.log(newValue);
     console.log(contentsCode[newValue].code);
     setSelectedCode(contentsCode[newValue].code);
     setValue(newValue);
@@ -33,13 +32,31 @@ export default function RaidV3() {
         setContentsCode(res);
         setIsRendered(true);
         setSelectedCode(res[0].code);
+        getScheduleList(res[0].code);
       })
       .catch((err) => {
         console.log(err);
       });
+    
   }, []);
   // 탭 변경시 데이터 가져오기
-
+  useEffect(()=>{
+    getScheduleList(selectedCode);
+  },[selectedCode])
+  // 스케줄 api
+  function getScheduleList(contentsCode){
+    return apiAxiosPromise("GET", "/api/raid-calendar-v2", {
+      contentsCode: contentsCode,
+    })
+      .then((res) => {
+        setSchList(res);
+       
+      })
+      .catch((err) => {
+        console.log(err);
+        return null;
+      });
+  }
   if (!isRendered) {
     return <div>Loading</div>;
   } else {
@@ -60,6 +77,13 @@ export default function RaidV3() {
         </Tabs>
         <Container fixed maxWidth="sm" sx={{ justifyContent: "center" }}>
           {/* 이부분에 schList 뿌려줘야함. */}
+          <List>
+            
+          {schList?.map((item)=>{
+            return(
+            <ListItem><ListItemText>{JSON.stringify(item)}</ListItemText></ListItem>);
+          })}
+          </List>
         </Container>
       </div>
     );
