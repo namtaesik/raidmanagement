@@ -14,6 +14,7 @@ export default function Raid(props) {
   const [schedule, setSchedule] = React.useState([{}]);
   const [isRendered, setIsRendered] = useState(false);
   const [open, setOpen] = React.useState(false);
+  const [editOpen, setEditOpen] = React.useState(false);
   React.useEffect(() => {
     getRaidCalendar();
     setIsRendered(true);
@@ -26,7 +27,7 @@ export default function Raid(props) {
   async function getRaidCalendar() {
     // await apiAxiosPromise("GET", "/api/raid-calendar-v2", {
     await apiAxiosPromise("GET", "/api/raid-calendar-v2", {
-      contentsCode: location.state.contentsCode,
+      contentsCode: location?.state?.contentsCode??"",
     })
       .then((res) => {
         setSchedule(res);
@@ -43,7 +44,17 @@ export default function Raid(props) {
         {schedule?.map((item) => {
           if (item?.attackId != undefined) {
             return (
-              <RaidScheduleCardV2 key={item.attackId} RaidSchedule={item} />
+              <RaidScheduleCardV2 
+              key={item.attackId} 
+              RaidSchedule={item} 
+              open={editOpen} 
+              handleClose={() => {
+                setEditOpen(false);
+              }}
+              handleOpen = {()=>{
+                setEditOpen(true);
+              }}
+              />
             );
           }
         })}
@@ -75,7 +86,7 @@ export default function Raid(props) {
           }}
           contentsCode={location.state.contentsCode}
         ></DatePickerPopup> */}
-        {!open&&<Fab
+        {!editOpen &&!open&&<Fab
         aria-label="SpeedDial controlled open example"
         size="small"
         direction="right"
@@ -94,7 +105,7 @@ export default function Raid(props) {
       >
         {<SpeedDialIcon />}
       </Fab>}
-         <DatePickerPopupV2 contentsCode={location.state.contentsCode} open={open} handleClose={() => {
+         <DatePickerPopupV2 contentsCode={location?.state?.contentsCode??""} open={open} handleClose={() => {
             setOpen(false);
           }}/> 
       </Container>

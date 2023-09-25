@@ -14,7 +14,7 @@ const initialState = {
       icon: <HouseIcon />,
     },
     //{ path: "/Home", name: "홈" },
-    { useyn: false, path: "/Sub", name: "서브", auth: true },
+    // { useyn: false, path: "/Sub", name: "서브", auth: true },
     // {
     //   useyn: true,
     //   path: "/Raid",
@@ -24,25 +24,33 @@ const initialState = {
     // },
     {
       useyn: true,
-      path: "/RaidV2",
-      name: "컨텐츠 선택",
-      auth: true,
-      icon: <EventNoteIcon />,
-    },
-    {
-      useyn: true,
-      path: "/RaidV3",
-      name: "레이드V3",
-      auth: true,
-      icon: <EventNoteIcon />,
-    },
-    {
-      useyn: true,
       path: "/JobOffer",
       name: "구인공고",
       auth: true,
       icon: <Diversity1Icon />,
     },
+    {
+      useyn: true,
+      path: "/RaidV2Inner",
+      name: "일정전체보기",
+      auth: true,
+      icon: <EventNoteIcon />,
+    },
+    {
+      useyn: true,
+      path: "/RaidV2",
+      name: "컨텐츠 선택",
+      auth: true,
+      icon: <EventNoteIcon />,
+    },
+    // {
+    //   useyn: true,
+    //   path: "/RaidV3",
+    //   name: "레이드V3",
+    //   auth: true,
+    //   icon: <EventNoteIcon />,
+    // },
+
 
     { useyn: false, path: "/Test", name: "테스트Page", auth: true },
   ],

@@ -295,7 +295,10 @@ export default function RaidCardV2Temp(props) {
               limitMember={props.RaidSchedule.limitMember}
               onClickHandler={() => {
                 GetRaidDetail();
+                props.handleOpen();
               }}
+              open={props.open}
+              handleClose={()=>{props.handleClose();}}
             ></BtnUpdateSchedule>
             <BtnDelSchedule
               key="btnDelSchedule"

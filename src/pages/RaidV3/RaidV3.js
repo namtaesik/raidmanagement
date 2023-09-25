@@ -1,12 +1,13 @@
 import React, { useEffect } from "react";
 import { List, ListItem, ListItemText } from "@mui/material";
-import { Container } from "@mui/system";
+import { Container, Stack } from "@mui/system";
 import { Navigate } from "react-router";
 import store from "../../store";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import { useState } from "react";
 import { apiAxiosPromise } from "../../services/apiAxios/apiAxios";
+import ScheduleItem from "./Components/ScheduleItem";
 
 export default function RaidV3() {
   const [value, setValue] = React.useState(0);
@@ -77,13 +78,13 @@ export default function RaidV3() {
         </Tabs>
         <Container fixed maxWidth="sm" sx={{ justifyContent: "center" }}>
           {/* 이부분에 schList 뿌려줘야함. */}
-          <List>
+          <Stack sx={{ alignItems: "center" }}>
             
           {schList?.map((item)=>{
             return(
-            <ListItem><ListItemText>{JSON.stringify(item)}</ListItemText></ListItem>);
+            <ScheduleItem ScheduleProps={item}></ScheduleItem>);
           })}
-          </List>
+          </Stack>
         </Container>
       </div>
     );
