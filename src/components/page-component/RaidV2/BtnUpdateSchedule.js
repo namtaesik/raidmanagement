@@ -33,7 +33,8 @@ export default function BtnUpdateSchedule(props) {
       );
       return false;
     }
-    setOpen(true);
+    //setOpen(true);
+    props.onClickHandler();
   }
   return (
     <div key={userInfo.userId}>
@@ -42,7 +43,7 @@ export default function BtnUpdateSchedule(props) {
       </Button>
 
       <DatePickerPopupV2
-        open={open}
+        open={props.open}
         attackId={props.attackId}
         isUnknown={props.isUnknown}
         unknownRemark={props.unknownRemark}
@@ -52,7 +53,7 @@ export default function BtnUpdateSchedule(props) {
         difficultyCode={props.difficultyCode}
         limitMember={props.limitMember}
         handleClose={() => {
-          setOpen(false);
+          props.handleClose();
         }}
       ></DatePickerPopupV2>
     </div>
