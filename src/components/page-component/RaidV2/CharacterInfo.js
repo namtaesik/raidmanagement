@@ -39,13 +39,13 @@ export default function CharacterInfo(props) {
 
   return (
    
-      <List sx={{width:'100%'}}>
+      <List sx={{width:'100%', paddingTop:'0px',paddingBottom:'0px'}}>
       {/* <ListItemAvatar>
         <Avatar>
           <ImageIcon />
         </Avatar>
       </ListItemAvatar> */}
-      <ListItem sx={{width:'100%'}}>
+      <ListItem sx={{width:'100%', paddingTop:'0px',paddingBottom:'0px'}}>
       <Box
         component="span"
         sx={{
@@ -59,7 +59,7 @@ export default function CharacterInfo(props) {
         {/* "#1565c0" */}
         <ListItemText
           primary={props.proficiency}
-          primaryTypographyProps={{ fontSize: "12px", fontWeight: "bold",color: "#1565c0", userSelect: "none", width: "4px", }}
+          primaryTypographyProps={{ fontSize: "12px", fontWeight: "bold",color: "#1565c0", width: "4px", }}
         ></ListItemText>
       </Box>
       {props.image != undefined && props.image != "" ? (
