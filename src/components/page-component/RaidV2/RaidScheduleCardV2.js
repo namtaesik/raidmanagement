@@ -260,6 +260,8 @@ export default function RaidCardV2Temp(props) {
                       GetRaidDetail();
                     }}
                   ></CharacterInfo>
+                  
+                <Divider/>
                 </ListItem>
               );
             }

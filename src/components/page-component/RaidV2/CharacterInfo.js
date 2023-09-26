@@ -7,7 +7,7 @@ import Avatar from "@mui/material/Avatar";
 import ImageIcon from "@mui/icons-material/Image";
 import WorkIcon from "@mui/icons-material/Work";
 import BeachAccessIcon from "@mui/icons-material/BeachAccess";
-import { Button, ListItemIcon, TextField } from "@mui/material";
+import { Button, Divider, ListItemIcon, TextField, Typography } from "@mui/material";
 import store from "../../../store";
 import { apiAxiosPromise } from "../../../services/apiAxios/apiAxios";
 import { Box, fontSize, style } from "@mui/system";
@@ -38,26 +38,14 @@ export default function CharacterInfo(props) {
   }
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "row",
-        justifyContent: "center",
-        alignItems: "center",
-        width: "100%",
-        borderBottom: 1,
-        borderColor: "grey",
-        paddingBottom: 1,
-        height: "65px",
-        userSelect: "none",
-      }}
-    >
-      {" "}
+   
+      <List sx={{width:'100%'}}>
       {/* <ListItemAvatar>
         <Avatar>
           <ImageIcon />
         </Avatar>
       </ListItemAvatar> */}
+      <ListItem sx={{width:'100%'}}>
       <Box
         component="span"
         sx={{
@@ -104,7 +92,7 @@ export default function CharacterInfo(props) {
             });
         }}
       />
-      <ListItemText primary={props.remark} primaryTypographyProps={{style:{ wordWrap:"break-word", userSelect: "none", fontSize:"14px"}}} />
+      
       {store.getState().loginUser.userId == props.userId ? (
         <BtnSignEdit
           onClickHandler={() => {
@@ -135,19 +123,25 @@ export default function CharacterInfo(props) {
         <img
           src={process.env.PUBLIC_URL + "images/supporter.png"}
           style={{
-            width: "24px",
-            height: "24px",
+            width: "32px",
+            height: "32px",
             objectFit: "cover",
             userSelect: "none",
-            // position: "absolute",
-            // top: "0px",
-            // left: "13px",
+            marginLeft:'auto'
           }}
           alt="Logo"
         />
       ) : (
         ""
       )}
-    </Box>
+      </ListItem>
+      <ListItem>
+      <Typography variant="body2" >{props.remark}</Typography>
+      
+      
+      </ListItem>
+      
+      <Divider/>
+      </List>
   );
 }
