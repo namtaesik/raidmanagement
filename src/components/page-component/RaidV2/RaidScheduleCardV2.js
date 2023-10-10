@@ -261,7 +261,6 @@ export default function RaidCardV2Temp(props) {
                     }}
                   ></CharacterInfo>
                   
-                <Divider/>
                 </ListItem>
               );
             }
@@ -297,7 +296,7 @@ export default function RaidCardV2Temp(props) {
               limitMember={props.RaidSchedule.limitMember}
               onClickHandler={() => {
                 GetRaidDetail();
-                props.handleOpen();
+                props.handleOpen(props.RaidSchedule);
               }}
               open={props.open}
               handleClose={()=>{props.handleClose();}}

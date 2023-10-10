@@ -15,6 +15,7 @@ export default function Raid(props) {
   const [isRendered, setIsRendered] = useState(false);
   const [open, setOpen] = React.useState(false);
   const [editOpen, setEditOpen] = React.useState(false);
+  const [editScheduleInfo,setEditScheduleInfo] = React.useState({});// "일정수정" 클릭 시 클릭한 스케줄의 정보를 담음
   React.useEffect(() => {
     getRaidCalendar();
     setIsRendered(true);
@@ -51,41 +52,23 @@ export default function Raid(props) {
               handleClose={() => {
                 setEditOpen(false);
               }}
-              handleOpen = {()=>{
+              handleOpen = {(RaidSchedule)=>{
+                setEditScheduleInfo(RaidSchedule);
                 setEditOpen(true);
               }}
               />
             );
           }
         })}
-        <Box sx={{ height: "80px" }}></Box>
-        {/* <Fab
-          aria-label="SpeedDial controlled open example"
-          size="small"
-          direction="right"
-          onClick={() => {
-            setOpen(true);
-          }}
-          color="primary"
-          sx={{
-            position: "fixed",
-            bottom: "16px",
-            right: "16px",
-            width: "64px",
-            height: "64px",
-
-            zIndex: 9999,
-          }}
-        >
-          {<SpeedDialIcon />}
-        </Fab> */}
-        {/* <DatePickerPopup
-          open={open}
-          handleClose={() => {
-            setOpen(false);
-          }}
-          contentsCode={location.state.contentsCode}
-        ></DatePickerPopup> */}
+        {/* 수정팝업 */}
+         <DatePickerPopupV2
+        open={editOpen}
+        editScheduleInfo={editScheduleInfo}
+        handleClose={() => {
+          //props.handleClose();
+          setEditOpen(false);
+        }}
+      ></DatePickerPopupV2>
         {!editOpen &&!open&&<Fab
         aria-label="SpeedDial controlled open example"
         size="small"

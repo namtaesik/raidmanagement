@@ -37,10 +37,6 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 export default function AddJobOffer(props) {
-  const [open, setOpen] = React.useState(false);
-  const [hashTag, setHashTag] = React.useState("");
-  const [characterList, setCharacterList] = React.useState([]);
-  const [selectedCharId, setSelectedCharId] = React.useState(1);
   // 제목 state
   const [title, setTitle] = useState("");
   // 날짜 미정관련 state
@@ -60,35 +56,35 @@ export default function AddJobOffer(props) {
     dayjs().format("YYYY/MM/DD 19:00")
   );
   React.useEffect(() => {
-    // 캐릭터 정보 조회하기
-    apiAxiosPromise("GET", "/api/character", {
-      userId: userId,
-    })
-      .then((res) => {
-        //console.log(res);
-        setCharacterList(res);
-        setSelectedCharId(res[0]?.characterId);
-      })
-      .catch((err) => {
-        alert("오류발생 : ", err);
-        console.log(err);
-      });
+   
     // 컨텐츠 및 난이도, 제한 인원 수 세팅
     getContentsCode();
     getDifficultyCode();
-    setLimitMember(props.limitMember ?? 8);
+    setLimitMember(props.editScheduleInfo?.limitMember ?? 8);
 
-    // 수정일경우
-    if (props.attackId != undefined) {
-      setIsUnknown(props.isUnknown);
-      setUnknownRemark(props.unknownRemark);
-      setTitle(props.remark);
-      // 날짜세팅
-      //console.log(props.attackDate);
-      setDatePickerValue(props.attackDate);
-    }
+    
   }, []);
-  // 컨텐츠 가져오기
+  // 'props.editScheduleInfo' state를 전달받아 수정 감지 -> 데이터 교체
+ React.useEffect(()=>{ 
+  // 수정일경우 인자세팅
+  if (props.editScheduleInfo?.attackId != undefined) {
+  setIsUnknown(props.editScheduleInfo?.isUnknown);
+  setUnknownRemark(props.editScheduleInfo?.unknownRemark);
+  setTitle(props.editScheduleInfo?.remark);
+  // 날짜세팅
+  setContentsCode(props.editScheduleInfo?.contentsCode);
+  setDatePickerValue(props.editScheduleInfo?.attackDate);
+  // 컨텐츠코드 세팅
+  setContentsCode(
+    (props.editScheduleInfo?.contentsCode??"") == "" ? "Other" : props.editScheduleInfo?.contentsCode
+  );
+  // 제한인원 세팅
+  setLimitMember(props.editScheduleInfo?.limitMember ?? 8);
+  // 난이도 세팅
+  setDifficultyCode(props.editScheduleInfo?.difficultyCode);
+
+}},[props.editScheduleInfo])
+// 컨텐츠 가져오기
   async function getContentsCode() {
     await apiAxiosPromise("GET", "/api/code", {
       groupCode: "Contents",
@@ -96,9 +92,8 @@ export default function AddJobOffer(props) {
       .then((res) => {
         res = res.filter((item) => item.code != "");
         setContentsCodeList(res);
-        setContentsCode(
-          props.contentsCode == "" ? "Other" : props.contentsCode
-        );
+        
+        
       })
       .catch((err) => {
         console.log(err);
@@ -112,24 +107,13 @@ export default function AddJobOffer(props) {
     })
       .then((res) => {
         setDifficultyCodeList(res);
-        setDifficultyCode(props.difficultyCode ?? res[0].code);
+        setDifficultyCode(props.editScheduleInfo?.difficultyCode ?? res[0].code);
       })
       .catch((err) => {
         console.log(err);
       });
   }
-  // 캐릭터 선택 이벤트
-  const handleChange = (event) => {
-    setSelectedCharId(event.target.value);
-  };
-  // 해시태그 입력시 #구분 및 스페이스제거 등 작업
-  const onInputHash = (evt) => {
-    if (evt.target.value[0] != "#" && evt.target.value.length > 1) {
-      evt.target.value = "#" + evt.target.value;
-    }
-    evt.target.value = evt.target.value.replaceAll(" ", "");
-    setHashTag(evt.target.value);
-  };
+
   // 저장 버튼 클릭 시
   const handleSaveClick = () => {
     // 유효성 검증
@@ -147,12 +131,12 @@ export default function AddJobOffer(props) {
       return false;
     }
     const ment =
-      props.attackId == undefined
+      props.editScheduleInfo?.attackId == undefined
         ? "레이드 일정을 등록하시겠습니까?"
         : "레이드 일정을 수정하시겠습니까?";
     if (window.confirm(ment)) {
       var saveObj = {
-        attackId: props.attackId,
+        attackId: props.editScheduleInfo?.attackId,
         isUnknown: isUnknown,
         unknownRemark: unknownRemark,
         userId: userId,
@@ -162,7 +146,7 @@ export default function AddJobOffer(props) {
         attackDate: datePickerValue,
         limitMember: limitMember,
       };
-      if (props.attackId == undefined) {
+      if (props.editScheduleInfo?.attackId == undefined) {
         apiAxiosPromise("POST", "/api/raid-calendar-v2", saveObj)
           .then((res) => {
             if (res[0]?.code < 0) {
@@ -200,7 +184,8 @@ export default function AddJobOffer(props) {
     <div>
       <Dialog
         fullScreen
-        open={props.open}
+        open={props.open??false}
+        
         onClose={handleClose}
         TransitionComponent={Transition}
       >
@@ -215,7 +200,7 @@ export default function AddJobOffer(props) {
               <CloseIcon />
             </IconButton>
             <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
-              {props.attackId == undefined
+              {props.editScheduleInfo?.attackId == undefined
                 ? "레이드 일정 추가"
                 : "레이드 일정 수정"}
             </Typography>

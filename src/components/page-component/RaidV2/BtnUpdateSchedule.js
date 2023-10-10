@@ -37,12 +37,12 @@ export default function BtnUpdateSchedule(props) {
     props.onClickHandler();
   }
   return (
-    <div key={userInfo.userId}>
+    <div key={userInfo.attackId}>
       <Button variant="contained" size="small" onClick={btnClick}>
         {props.title}
       </Button>
 
-      <DatePickerPopupV2
+      {/* <DatePickerPopupV2
         open={props.open}
         attackId={props.attackId}
         isUnknown={props.isUnknown}
@@ -55,7 +55,7 @@ export default function BtnUpdateSchedule(props) {
         handleClose={() => {
           props.handleClose();
         }}
-      ></DatePickerPopupV2>
+      ></DatePickerPopupV2> */}
     </div>
   );
 }
