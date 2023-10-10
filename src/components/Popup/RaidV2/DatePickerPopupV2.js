@@ -12,15 +12,7 @@ import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import CloseIcon from "@mui/icons-material/Close";
 import Slide from "@mui/material/Slide";
-import {
-  Fab,
-  FormControlLabel,
-  MenuItem,
-  Select,
-  SpeedDialIcon,
-  Switch,
-  TextField,
-} from "@mui/material";
+import { Fab, FormControlLabel, MenuItem, Select, SpeedDialIcon, Switch, TextField } from "@mui/material";
 import store from "../../../store";
 import { apiAxiosPromise } from "../../../services/apiAxios/apiAxios";
 // 캘린더
@@ -37,54 +29,46 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 export default function AddJobOffer(props) {
-  // 제목 state
-  const [title, setTitle] = useState("");
-  // 날짜 미정관련 state
-  const [isUnknown, setIsUnknown] = useState(false);
-  const [unknownRemark, setUnknownRemark] = useState("미정");
-  //  컨텐츠 코드, 난이도
-  const [contentsCodeList, setContentsCodeList] = useState([{}]);
-  const [difficultyCodeList, setDifficultyCodeList] = useState([{}]);
-  const [contentsCode, setContentsCode] = useState("Other");
-  const [difficultyCode, setDifficultyCode] = useState("");
-  // 유저 수 제한
-  const [limitMember, setLimitMember] = useState(0);
-  // 로그인 한 유저 ID 조회
-  var userId = store.getState().loginUser.userId;
-  // 날짜선택 값
-  const [datePickerValue, setDatePickerValue] = useState(
-    dayjs().format("YYYY/MM/DD 19:00")
-  );
+  // 정적 변수
+  const UnknownRemarkLengthLimit = 50;
+  const TitleLengthLimit = 50;
+  const MaxLimitMember = 99;
+  // 상태 변수
+  const [headerTitle, setHeaderTitle] = React.useState("레이드 일정 추가");// 상단 페이지 제목
+  const [title, setTitle] = useState("");// 제목 state
+  const [isUnknown, setIsUnknown] = useState(false);// 날짜 미정 여부 | Default false, 일정선택 필요
+  const [unknownRemark, setUnknownRemark] = useState("미정");// 날짜 미정 비고 | Default 미정
+  const [contentsCodeList, setContentsCodeList] = useState([{}]);//  컨텐츠 코드 리스트
+  const [difficultyCodeList, setDifficultyCodeList] = useState([{}]);//  난이도 리스트
+  const [contentsCode, setContentsCode] = useState("Other");//  선택한 컨텐츠 코드 | Default 기타
+  const [difficultyCode, setDifficultyCode] = useState("");//  선택한 난이도 코드
+  const [limitMember, setLimitMember] = useState(8);// 유저 수 제한 | Default 8
+  var userId = store.getState().loginUser.userId;// 로그인 한 유저 ID 조회
+  const [datePickerValue, setDatePickerValue] = useState(dayjs().format("YYYY/MM/DD 19:00"));// 날짜선택 값
+
+  // 최초 코드들 조회
   React.useEffect(() => {
-   
     // 컨텐츠 및 난이도, 제한 인원 수 세팅
     getContentsCode();
     getDifficultyCode();
-    setLimitMember(props.editScheduleInfo?.limitMember ?? 8);
-
-    
   }, []);
   // 'props.editScheduleInfo' state를 전달받아 수정 감지 -> 데이터 교체
- React.useEffect(()=>{ 
-  // 수정일경우 인자세팅
-  if (props.editScheduleInfo?.attackId != undefined) {
-  setIsUnknown(props.editScheduleInfo?.isUnknown);
-  setUnknownRemark(props.editScheduleInfo?.unknownRemark);
-  setTitle(props.editScheduleInfo?.remark);
-  // 날짜세팅
-  setContentsCode(props.editScheduleInfo?.contentsCode);
-  setDatePickerValue(props.editScheduleInfo?.attackDate);
-  // 컨텐츠코드 세팅
-  setContentsCode(
-    (props.editScheduleInfo?.contentsCode??"") == "" ? "Other" : props.editScheduleInfo?.contentsCode
-  );
-  // 제한인원 세팅
-  setLimitMember(props.editScheduleInfo?.limitMember ?? 8);
-  // 난이도 세팅
-  setDifficultyCode(props.editScheduleInfo?.difficultyCode);
+  React.useEffect(() => {
+    // 수정일경우 인자세팅
+    if (props.editScheduleInfo?.attackId != undefined) {
+      setHeaderTitle("레이드 일정 수정"); // 페이지 제목 수정
+      setIsUnknown(props.editScheduleInfo?.isUnknown);
+      setUnknownRemark(props.editScheduleInfo?.unknownRemark);
+      setTitle(props.editScheduleInfo?.remark); // 날짜세팅
+      setContentsCode(props.editScheduleInfo?.contentsCode);
+      setDatePickerValue(props.editScheduleInfo?.attackDate); // 컨텐츠코드 세팅
+      setContentsCode((props.editScheduleInfo?.contentsCode ?? "") == "" ? "Other" : props.editScheduleInfo?.contentsCode); // 제한인원 세팅
+      setLimitMember(props.editScheduleInfo?.limitMember ?? 8); // 난이도 세팅
+      setDifficultyCode(props.editScheduleInfo?.difficultyCode);
+    }
+  }, [props.editScheduleInfo]);
 
-}},[props.editScheduleInfo])
-// 컨텐츠 가져오기
+  // 컨텐츠 가져오기
   async function getContentsCode() {
     await apiAxiosPromise("GET", "/api/code", {
       groupCode: "Contents",
@@ -92,8 +76,6 @@ export default function AddJobOffer(props) {
       .then((res) => {
         res = res.filter((item) => item.code != "");
         setContentsCodeList(res);
-        
-        
       })
       .catch((err) => {
         console.log(err);
@@ -130,10 +112,7 @@ export default function AddJobOffer(props) {
       alert("최대인원을 1명 이상으로 설정해주세요.");
       return false;
     }
-    const ment =
-      props.editScheduleInfo?.attackId == undefined
-        ? "레이드 일정을 등록하시겠습니까?"
-        : "레이드 일정을 수정하시겠습니까?";
+    const ment = props.editScheduleInfo?.attackId == undefined ? "레이드 일정을 등록하시겠습니까?" : "레이드 일정을 수정하시겠습니까?";
     if (window.confirm(ment)) {
       var saveObj = {
         attackId: props.editScheduleInfo?.attackId,
@@ -175,34 +154,21 @@ export default function AddJobOffer(props) {
       }
     }
   };
-  // 닫기버튼 클릭시
+  // 닫기버튼 클릭시 이벤트 전달
   const handleClose = () => {
     props.handleClose();
   };
 
   return (
     <div>
-      <Dialog
-        fullScreen
-        open={props.open??false}
-        
-        onClose={handleClose}
-        TransitionComponent={Transition}
-      >
+      <Dialog fullScreen open={props.open ?? false} onClose={handleClose} TransitionComponent={Transition}>
         <AppBar sx={{ position: "relative" }}>
           <Toolbar>
-            <IconButton
-              edge="start"
-              color="inherit"
-              onClick={handleClose}
-              aria-label="close"
-            >
+            <IconButton edge="start" color="inherit" onClick={handleClose} aria-label="close">
               <CloseIcon />
             </IconButton>
             <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
-              {props.editScheduleInfo?.attackId == undefined
-                ? "레이드 일정 추가"
-                : "레이드 일정 수정"}
+              {headerTitle}
             </Typography>
           </Toolbar>
         </AppBar>
@@ -217,11 +183,7 @@ export default function AddJobOffer(props) {
         >
           <List>
             <ListItem key="typoTitle">
-              <Typography
-                variant="body2"
-                color="text.secondary"
-                sx={{ width: "100%", maxWidth: "800px" }}
-              >
+              <Typography variant="body2" color="text.secondary" sx={{ width: "100%", maxWidth: "800px" }}>
                 파티제목
               </Typography>
             </ListItem>
@@ -233,8 +195,9 @@ export default function AddJobOffer(props) {
                 value={title}
                 autoFocus
                 onChange={(evt) => {
-                  if (evt.target.value.length > 39) {
-                    alert("40자까지만 입력하세요.");
+                  if (evt.target.value.length > TitleLengthLimit) {
+                    alert(TitleLengthLimit+"글자 까지만 입력 가능합니다.");
+                    return false;
                   }
                   setTitle(evt.target.value);
                 }}
@@ -247,16 +210,9 @@ export default function AddJobOffer(props) {
               </Typography>
             </ListItem>
             <ListItem key="selectContentAndDifficulty">
-              <Stack
-                direction="row"
-                justifyContent="start"
-                alignItems="start"
-                spacing={0}
-                sx={{ width: "100%" }}
-              >
+              <Stack direction="row" justifyContent="start" alignItems="start" spacing={0} sx={{ width: "100%" }}>
                 <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
+                
                   label="컨텐츠"
                   onChange={(evt) => {
                     setContentsCode(evt.target.value);
@@ -275,8 +231,7 @@ export default function AddJobOffer(props) {
                   })}
                 </Select>
                 <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
+                 
                   label="난이도"
                   onChange={(evt) => {
                     setDifficultyCode(evt.target.value);
@@ -297,14 +252,8 @@ export default function AddJobOffer(props) {
             <Divider />
             {/* 날짜 및 시간 선택 시작 */}
             <ListItem>
-              <Typography
-                variant="body2"
-                color="text.secondary"
-                sx={{ width: "100%" }}
-              >
-                {!isUnknown
-                  ? "날짜 및 시간 선택"
-                  : "날짜미정의 경우 비고를 입력하세요."}
+              <Typography variant="body2" color="text.secondary" sx={{ width: "100%" }}>
+                {!isUnknown ? "날짜 및 시간 선택" : "날짜미정의 경우 비고를 입력하세요."}
               </Typography>
               <FormControlLabel
                 control={
@@ -319,13 +268,10 @@ export default function AddJobOffer(props) {
                 sx={{ alignSelf: "flex-start", margin: "10px 0px 0px 0px" }}
               />
             </ListItem>
-            {/* 날짜미정 false일 경우 일정 선택 */}
+            {/* 날짜미정 false일 경우 일자 및 시간 선택 컴포넌트 표시 */}
             {!isUnknown && (
               <ListItem>
-                <LocalizationProvider
-                  dateAdapter={AdapterDayjs}
-                  adapterLocale="ko"
-                >
+                <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ko">
                   <DemoContainer components={["DateTimePicker"]}>
                     <DateTimePicker
                       label="Tip! 오전/오후를 알맞게 선택하세요"
@@ -339,26 +285,24 @@ export default function AddJobOffer(props) {
                       minutesStep={5}
                       onChange={(val) => {
                         console.log("val : ", val);
-                        setDatePickerValue(
-                          dayjs(val).format(`YYYY-MM-DD HH:mm`)
-                        );
+                        setDatePickerValue(dayjs(val).format(`YYYY-MM-DD HH:mm`));
                       }}
                     />
                   </DemoContainer>
                 </LocalizationProvider>
               </ListItem>
             )}
-            {/* 날짜미정 true 경우 비고란 입력 */}
+            {/* 날짜미정 true 경우 비고란 컴포넌트 표시 */}
             {isUnknown && (
               <ListItem>
                 <TextField
                   id="outlined-required"
                   label="ex)이번주말, 태신과 협의"
                   value={unknownRemark}
-                  inputProps={{ maxLength: 25 }}
+                  inputProps={{ maxLength: UnknownRemarkLengthLimit }}
                   onChange={(evt) => {
-                    if (evt.target.value.length > 25) {
-                      alert("25글자 까지만 입력 가능합니다.");
+                    if (evt.target.value.length > UnknownRemarkLengthLimit ) {
+                      alert(UnknownRemarkLengthLimit+"글자 까지만 입력 가능합니다.");
                       return false;
                     }
                     setUnknownRemark(evt.target.value);
@@ -371,11 +315,7 @@ export default function AddJobOffer(props) {
             <Divider />
             {/* 최대인원 시작 */}
             <ListItem key="typoLimitMember">
-              <Typography
-                variant="body2"
-                color="text.secondary"
-                sx={{ width: "100%" }}
-              >
+              <Typography variant="body2" color="text.secondary" sx={{ width: "100%" }}>
                 최대인원
               </Typography>
             </ListItem>
@@ -387,8 +327,8 @@ export default function AddJobOffer(props) {
                 type="number"
                 value={limitMember}
                 onChange={(evt) => {
-                  if (evt.target.value > 99) {
-                    alert("99 까지만 입력 가능합니다.");
+                  if (evt.target.value > MaxLimitMember) {
+                    alert(MaxLimitMember+" 까지만 입력 가능합니다.");
                     return false;
                   }
                   setLimitMember(evt.target.value);
@@ -398,11 +338,7 @@ export default function AddJobOffer(props) {
             {/* 최대인원 종료 */}
             <Divider />
             <ListItem key="saveBtn" sx={{ justifyContent: "end" }}>
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={handleSaveClick}
-              >
+              <Button variant="contained" color="primary" onClick={handleSaveClick}>
                 저장
               </Button>
             </ListItem>
@@ -412,3 +348,4 @@ export default function AddJobOffer(props) {
     </div>
   );
 }
+
