@@ -37,6 +37,12 @@ export default function UserInfoManagement() {
     let encryptNewPw = encryptAES256(newPw);
     var newPwCheck = document.getElementById("newPwCheck").value;
     let encryptNewPwCheck = encryptAES256(newPwCheck);
+    // 유효성 검증
+    if (newPw == "" || newPwCheck == "") {
+      alert("변경할 새 비밀번호와 새 비밀번호 확인을 입력하세요.");
+      return false;
+    }
+
     // 현재 비밀번호 확인
     let userModel = {
       userId: loginUserId,
