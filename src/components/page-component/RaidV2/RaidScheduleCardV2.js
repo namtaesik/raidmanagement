@@ -77,7 +77,7 @@ export default function RaidCardV2Temp(props) {
         width: resize > 1014 ? "auto" : "auto",
         minWidth: 264,
         margin: "7px 7px 7px 7px",
-         paddingLeft:'2px',
+        paddingLeft: "2px",
         background:
           props.RaidSchedule.limitMember <= partyData.length
             ? "#ff7777"
@@ -260,8 +260,6 @@ export default function RaidCardV2Temp(props) {
                       GetRaidDetail();
                     }}
                   ></CharacterInfo>
-                  
-                <Divider/>
                 </ListItem>
               );
             }
@@ -297,10 +295,12 @@ export default function RaidCardV2Temp(props) {
               limitMember={props.RaidSchedule.limitMember}
               onClickHandler={() => {
                 GetRaidDetail();
-                props.handleOpen();
+                props.handleOpen(props.RaidSchedule);
               }}
               open={props.open}
-              handleClose={()=>{props.handleClose();}}
+              handleClose={() => {
+                props.handleClose();
+              }}
             ></BtnUpdateSchedule>
             <BtnDelSchedule
               key="btnDelSchedule"
