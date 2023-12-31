@@ -13,7 +13,7 @@ export default function Home() {
   const [openSignin, setOpenSignin] = useState(false);
   if (store.getState().loginUser.userId) {
     // 있으면 리다이렉트
-    return <Navigate to="/JobOffer" />;
+    return <Navigate to="/RaidV2Inner" />;
   }
 
   var userModel = { userId: "", password: "" };
